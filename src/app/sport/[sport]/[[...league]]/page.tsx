@@ -24,12 +24,13 @@ function formatTime(iso: string | null) {
 }
 
 export default function SportPage() {
-  const { sport: sportKey, league } = useParams<{ sport: string; league: string }>();
+  const { sport: sportKey, league } = useParams<{ sport: string; league?: string[] }>();
   const router = useRouter();
   const sport = getSport(sportKey);
-  const leagueName = league ? decodeURIComponent(league) : "";
+  const leagueName = league?.length ? decodeURIComponent(league[0]) : "";
   const [events, setEvents] = useState<Event[]>([]);
   const [games, setGames] = useState<Game[]>([]);
+  const [sportNews, setSportNews] = useState<Array<{ title: string; link: string; description: string; image: string | null; time: string; category: string; sport: { name: string; color: string } }> | null>(null);
 
   const load = useCallback(async () => {
     const res = await fetch("/api/home").then((r) => r.json()).catch(() => null);
@@ -37,6 +38,13 @@ export default function SportPage() {
   }, []);
 
   useEffect(() => { load(); }, [load]);
+  // اخبار اختصاصی ورزش از RSS واقعی
+  useEffect(() => {
+    if (!sport) return;
+    fetch(`/api/news/mixed?sport=${sport.key}`).then((r) => r.json()).then((res) => {
+      if (res?.success) setSportNews(res.items ?? []);
+    }).catch(() => {});
+  }, [sport]);
 
   if (!sport) {
     return (
@@ -111,6 +119,36 @@ export default function SportPage() {
           ) : (
             <div className="panel p-6 text-center text-sm" style={{ color: "var(--color-muted)" }}>
               پخش زنده‌ای برای {sport.name} در حال حاضر نیست.
+            </div>
+          )}
+        </section>
+
+        {/* اخبار اختصاصی ورزش — RSS واقعی */}
+        <section>
+          <h2 className="headline text-lg mb-3 flex items-center gap-2">
+            <span className="material-symbols-outlined" style={{ color }}>newspaper</span> اخبار {sport.name}
+          </h2>
+          {sportNews && sportNews.length ? (
+            <div className="grid gap-3 sm:grid-cols-2">
+              {sportNews.slice(0, 6).map((n, i) => (
+                <a key={i} href={n.link} target="_blank" rel="noreferrer" className="block rounded-2xl border p-4 transition-colors hover:border-white/20" style={{ background: "#2a2a2a", borderColor: "rgba(255,255,255,0.1)" }}>
+                  <div className="flex gap-3">
+                    {n.image && <img src={n.image} alt="" className="w-16 h-16 rounded-xl object-cover shrink-0" loading="lazy" />}
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-bold text-white leading-6 line-clamp-2">{n.title}</p>
+                      <div className="flex items-center gap-2 mt-1.5 text-[10px]">
+                        {n.category && <span className="px-1.5 py-0.5 rounded" style={{ background: `${sport.color}22`, color: sport.color }}>{n.category}</span>}
+                        {n.time && <span className="text-slate-500">{n.time}</span>}
+                        <span className="text-slate-600 mr-auto">خبرورزشی ↗</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <div className="panel p-6 text-center text-sm" style={{ color: "var(--color-muted)" }}>
+              اخبار {sport.name} به‌زودی...
             </div>
           )}
         </section>

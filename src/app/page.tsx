@@ -136,6 +136,7 @@ export default function HomePage() {
   const [liveData, setLiveData] = useState<{ persianGulfStandings: {rank: number; slug: string; name: string; played: number; pts: number}[]; leagueStandings: Record<string, any[]> } | null>(null);
   const [liveMatches, setLiveMatches] = useState(LIVE_MATCHES_FALLBACK);
   const [standings, setStandings] = useState(STANDINGS_FALLBACK);
+  const [mixedNews, setMixedNews] = useState<Array<{ title: string; link: string; description: string; image: string | null; time: string; category: string; sport: { key: string; name: string; color: string }; internal: boolean }> | null>(null);
 
   // ساعت و تاریخ زنده (تقویم شمسی)
   const [now, setNow] = useState(() => new Date());
@@ -143,6 +144,9 @@ export default function HomePage() {
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 1000);
     fetch("/api/home").then((r) => r.json()).then((res) => { if (res?.success) setUser(res.user ?? null); }).catch(() => {});
+    fetch("/api/news/mixed").then(r => r.json()).then(res => {
+      if (res?.success && Array.isArray(res.items) && res.items.length) setMixedNews(res.items);
+    }).catch(() => {});
     // دیتای واقعی
     fetch("/api/football/real-data").then(r => r.json()).then(res => {
       if (res?.success) {
@@ -443,19 +447,31 @@ export default function HomePage() {
             <Link href="/football/leagues/persian-gulf/standings" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#bee503" }}>مشاهده جدول کامل</Link>
           </div>
 
-          {/* ستون ۲: آخرین اخبار */}
+          {/* ستون ۲: آخرین اخبار — ترکیبی فوتبال + سایر ورزش‌ها */}
           <div className="rounded-2xl border border-white/10 p-4 flex flex-col" style={{ background: "rgba(37,37,37,0.9)", backdropFilter: "blur(8px)" }}>
             <h3 className="headline text-[16px] text-white mb-3">آخرین اخبار</h3>
             <div className="flex-1 flex flex-col gap-2.5">
-              {NEWS.map((n) => (
-                <Link key={n.title} href="/news" className="flex items-start gap-3 p-2 rounded-xl bg-white/[0.03] border border-white/5 transition-colors hover:bg-white/[0.06]">
+              {(mixedNews ?? NEWS.map((n) => ({
+                title: n.title, link: "/news", description: "", image: n.img,
+                time: n.time, category: "فوتبال", sport: { key: "football", name: "فوتبال", color: "#005cfc" }, internal: true,
+              }))).map((n, idx) => (
+                <a
+                  key={`${n.link}-${idx}`}
+                  href={n.link}
+                  {...(n.internal ? {} : { target: "_blank", rel: "noreferrer" })}
+                  className="flex items-start gap-3 p-2 rounded-xl bg-white/[0.03] border border-white/5 transition-colors hover:bg-white/[0.06]"
+                >
                   {/* تصویر — سمت راست (اول در RTL) */}
-                  <img src={n.img} alt={n.title} className="w-[84px] h-[58px] rounded-lg object-cover shrink-0" loading="lazy" />
+                  {n.image && <img src={n.image} alt={n.title} className="w-[84px] h-[58px] rounded-lg object-cover shrink-0" loading="lazy" />}
                   <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
+                      <span className="text-[9px] font-black px-1.5 py-0.5 rounded" style={{ background: `${n.sport.color}22`, color: n.sport.color }}>{n.sport.name}</span>
+                      {n.category && n.category !== n.sport.name && <span className="text-[9px] text-slate-600 truncate max-w-[100px]">{n.category}</span>}
+                    </div>
                     <p className="text-[12px] font-bold leading-5 line-clamp-2 text-white">{n.title}</p>
                     <span className="text-[10px] mt-1 block text-slate-500">{n.time}</span>
                   </div>
-                </Link>
+                </a>
               ))}
             </div>
             <Link href="/news" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#bee503" }}>مشاهده همه اخبار</Link>

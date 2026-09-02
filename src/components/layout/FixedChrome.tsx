@@ -10,10 +10,21 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  Menu, X, Clock3, CalendarDays, ChevronLeft, ChevronRight,
+  X, Clock3, CalendarDays, ChevronLeft, ChevronRight,
   Home, Trophy, Video, Heart, User, Gamepad2, Radio,
 } from "lucide-react";
 import { DRAWER_SPORTS } from "@/lib/sports";
+
+/** آیکون توپ فوتبال — پنج‌ضلعی مرکزی + خطوط دوخت */
+function FootballIcon({ size = 24 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <circle cx="12" cy="12" r="9.2" />
+      <path d="M12 8.2l3.3 2.4-1.26 3.9h-4.08L8.7 10.6z" fill="currentColor" stroke="none" />
+      <path d="M12 3v5.2M20.8 9.1l-5.5.4M18.3 20l-3.9-3.6M5.7 20l3.9-3.6M3.2 9.1l5.5.4" />
+    </svg>
+  );
+}
 
 const NAV_ITEMS = [
   { label: "فوتبال", href: "/football/leagues/premier-league" },
@@ -53,11 +64,6 @@ export function FixedChrome() {
 
   // Drawer
   const [menuOpen, setMenuOpen] = useState(false);
-  const [menuSearch, setMenuSearch] = useState("");
-  const [menuView, setMenuView] = useState<string>("root");
-  const sportsData = DRAWER_SPORTS;
-  const filtered = sportsData.filter((s) => s.name.includes(menuSearch.trim()) || menuSearch.trim() === "");
-  const activeSportObj = menuView !== "root" ? sportsData.find((s) => s.key === menuView) : null;
 
   return (
     <>
@@ -66,8 +72,8 @@ export function FixedChrome() {
         <div className="max-w-[1320px] mx-auto px-4 h-16 flex items-center justify-between gap-3">
           {/* راست: منو + برند */}
           <div className="flex items-center gap-3">
-            <button onClick={() => setMenuOpen((v) => !v)} aria-label="منو" className="p-1 transition-colors" style={{ color: "#005cfc" }}>
-              {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            <button onClick={() => setMenuOpen((v) => !v)} aria-label="ورزش‌ها" className="p-1.5 rounded-full transition-all hover:bg-white/10 hover:scale-110" style={{ color: "#005cfc" }} title="انتخاب ورزش">
+              {menuOpen ? <X size={24} /> : <FootballIcon size={26} />}
             </button>
             <Link href="/" className="leading-none">
               <span className="headline text-[20px] block">
@@ -113,49 +119,71 @@ export function FixedChrome() {
         </div>
       </header>
 
-      {/* ============ Drawer ورزش‌ها ============ */}
+      {/* ============ Drawer ورزش‌ها — اسلاید انتخاب ورزش ============ */}
       {menuOpen && (
         <div className="fixed inset-0 z-[60]" onClick={() => setMenuOpen(false)}>
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-[3px]" />
           <aside
-            className="absolute top-0 bottom-0 right-0 w-[85%] max-w-[400px] overflow-y-auto border-l border-white/10 animate-[megaSlideIn_0.28s_cubic-bezier(0.22,1,0.36,1)]"
-            style={{ background: "#252525" }}
+            className="absolute top-0 bottom-0 right-0 w-[88%] max-w-[420px] overflow-y-auto border-l border-white/10 animate-[megaSlideIn_0.32s_cubic-bezier(0.22,1,0.36,1)]"
+            style={{ background: "linear-gradient(180deg, #252525 0%, #1e1e1e 100%)" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 z-10 border-b border-white/5 px-5 py-4" style={{ background: "rgba(37,37,37,0.9)", backdropFilter: "blur(12px)" }}>
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="headline text-lg" style={{ background: "linear-gradient(135deg,#005cfc,#bee503)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>ورزش‌ها</h3>
-                <button onClick={() => setMenuOpen(false)} className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70"><X size={18} /></button>
-              </div>
-              <input
-                value={menuSearch} onChange={(e) => { setMenuSearch(e.target.value); setMenuView("root"); }}
-                placeholder="دنبال چه ورزشی هستی؟"
-                className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 px-3 text-sm placeholder-slate-500 focus:outline-none focus:border-[#005cfc] text-white"
-              />
-            </div>
-            <div className="p-5">
-              {activeSportObj ? (
-                <div>
-                  <button onClick={() => setMenuView("root")} className="flex items-center gap-2 mb-4 text-slate-400 text-sm"><ChevronRight size={18} /> بازگشت</button>
-                  <h4 className="headline text-base mb-3" style={{ color: activeSportObj.color }}>{activeSportObj.name}</h4>
-                  <div className="flex flex-col gap-2">
-                    {activeSportObj.subs.map((sub) => (
-                      <button key={sub} onClick={() => { setMenuOpen(false); router.push(`/sport/${activeSportObj.key}/${encodeURIComponent(sub)}`); }} className="sport-tile text-right px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-sm text-white/85">{sub}</button>
-                    ))}
+            {/* هدر drawer با گرادینت توپ */}
+            <div className="relative overflow-hidden border-b border-white/10 px-5 py-5">
+              <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full blur-3xl pointer-events-none" style={{ background: "rgba(0,92,252,0.25)" }} />
+              <div className="relative flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="w-11 h-11 rounded-2xl flex items-center justify-center text-white shrink-0" style={{ background: "linear-gradient(135deg,#005cfc,#bee503)", boxShadow: "0 4px 18px rgba(0,92,252,0.4)" }}>
+                    <FootballIcon size={24} />
+                  </span>
+                  <div>
+                    <h3 className="headline text-lg text-white">انتخاب ورزش</h3>
+                    <p className="text-[11px] text-slate-400">بخش اختصاصی خودت را بردار</p>
                   </div>
                 </div>
-              ) : (
-                <div className="flex flex-col gap-2">
-                  {filtered.map((s) => (
-                    <button key={s.key} onClick={() => { setMenuView(s.key); setMenuSearch(""); }} className="sport-tile flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/10 w-full">
-                      <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: `${s.color}22`, color: s.color }}><span className="material-symbols-outlined text-[20px]">{s.icon}</span></div>
-                      <span className="text-sm font-bold text-white">{s.name}</span>
-                      <ChevronLeft size={18} className="text-slate-600 mr-auto" />
-                    </button>
-                  ))}
-                </div>
-              )}
+                <button onClick={() => setMenuOpen(false)} className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:bg-white/10 transition-colors"><X size={18} /></button>
+              </div>
             </div>
+
+            {/* کارت‌های ورزش — انیمیشن stagger */}
+            <div className="p-4 space-y-3">
+              {DRAWER_SPORTS.map((s, i) => {
+                const isFootball = s.key === "football";
+                const href = isFootball ? "/football/leagues/persian-gulf" : `/sport/${s.key}`;
+                const desc = isFootball ? "لیگ‌ها، جدول، اخبار و بازیکنان" : `مسابقات، اخبار و بازی‌های ${s.name}`;
+                return (
+                  <Link
+                    key={s.key}
+                    href={href}
+                    onClick={() => setMenuOpen(false)}
+                    className="relative block rounded-2xl border p-4 overflow-hidden sport-tile group"
+                    style={{
+                      background: `linear-gradient(135deg, ${s.color}1f, #2a2a2a 65%)`,
+                      borderColor: `${s.color}44`,
+                      boxShadow: `0 0 0 0 ${s.color}00`,
+                      animation: `megaPop 0.4s cubic-bezier(0.22,1,0.36,1) both`,
+                      animationDelay: `${i * 70}ms`,
+                    }}
+                  >
+                    {/* glow hover */}
+                    <span className="absolute -top-8 -right-8 w-28 h-28 rounded-full blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-300 pointer-events-none" style={{ background: s.color }} />
+                    <div className="relative flex items-center gap-3.5">
+                      <span className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shrink-0" style={{ background: `${s.color}26`, border: `1px solid ${s.color}55` }}>{s.emoji}</span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="headline text-[15px] text-white">{s.name}</span>
+                          {isFootball && <span className="text-[9px] font-black px-2 py-0.5 rounded-full text-white" style={{ background: "linear-gradient(135deg,#005cfc,#bee503)" }}>پیشنهادی</span>}
+                        </div>
+                        <p className="text-[11px] text-slate-400 mt-0.5">{desc}</p>
+                      </div>
+                      <ChevronLeft size={20} className="text-slate-500 group-hover:text-white group-hover:-translate-x-1 transition-all shrink-0" />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+
+            <p className="text-center text-[10px] text-slate-600 pb-6">ورزش‌های بیشتر به‌زودی اضافه می‌شوند</p>
           </aside>
         </div>
       )}
