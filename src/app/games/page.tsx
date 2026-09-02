@@ -18,14 +18,6 @@ type Game = {
   endsIn: number | null;
 };
 
-type Fixture = {
-  homeId: number;
-  awayId: number;
-  homeName: string;
-  awayName: string;
-  time: string;
-};
-
 const TYPE_LABEL: Record<string, string> = {
   program: "برنامه‌ای",
   general: "عمومی",
@@ -39,22 +31,15 @@ const TYPE_COLOR: Record<string, string> = {
 
 export default function GamesPage() {
   const [games, setGames] = useState<Game[]>([]);
-  const [fixtures, setFixtures] = useState<Fixture[]>([]);
   const [filter, setFilter] = useState<string>("all");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
       try {
-        const [homeRes, realRes] = await Promise.all([
-          fetch("/api/home").then((r) => r.json()).catch(() => null),
-          fetch("/api/football/real-data").then((r) => r.json()).catch(() => null),
-        ]);
+        const homeRes = await fetch("/api/home").then((r) => r.json()).catch(() => null);
         if (homeRes?.success && Array.isArray(homeRes.games)) {
           setGames(homeRes.games);
-        }
-        if (realRes?.success && realRes.persianGulf?.fixtures) {
-          setFixtures(realRes.persianGulf.fixtures.slice(0, 4));
         }
       } finally {
         setLoading(false);
@@ -158,28 +143,6 @@ export default function GamesPage() {
                 </Link>
               );
             })}
-          </div>
-        )}
-
-        {/* فیکسچر خلیج فارس */}
-        {fixtures.length > 0 && (
-          <div className="mt-8">
-            <h2 className="headline text-[16px] text-white mb-3">بازی‌های امروز — لیگ خلیج فارس</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
-              {fixtures.map((f, i) => (
-                <div key={i} className="rounded-2xl border border-white/10 p-4 flex items-center justify-between" style={{ background: "rgba(255,255,255,0.04)" }}>
-                  <div className="flex items-center gap-2">
-                    <img src={`https://www.victoryapi.ir/flags/png/teams/${f.homeId}.png`} alt={f.homeName} className="w-7 h-7 object-contain" />
-                    <span className="text-xs font-bold text-white">{f.homeName}</span>
-                  </div>
-                  <span className="text-xs font-black tabular" style={{ color: "#005cfc" }}>{f.time}</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-white">{f.awayName}</span>
-                    <img src={`https://www.victoryapi.ir/flags/png/teams/${f.awayId}.png`} alt={f.awayName} className="w-7 h-7 object-contain" />
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         )}
       </div>
