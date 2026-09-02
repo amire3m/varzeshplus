@@ -26,7 +26,7 @@ const NAV_ITEMS = [
 
 const DOCK_ITEMS = [
   { key: "home", label: "خانه", href: "/", icon: Home },
-  { key: "minigame", label: "منی گیم", href: "/#games", icon: Gamepad2 },
+  { key: "minigame", label: "منی گیم", href: "/games", icon: Gamepad2 },
   { key: "favorites", label: "علاقه‌مندی", href: "/football/leagues/persian-gulf", icon: Heart },
   { key: "live", label: "پخش زنده", href: "/live", icon: Radio },
   { key: "profile", label: "پروفایل", href: "/login", icon: User },
