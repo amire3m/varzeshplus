@@ -67,20 +67,20 @@ export function PageShell({ children, badge, activeDock }: Props) {
   ] as const;
 
   return (
-    <div className="min-h-screen text-white" style={{ background: "#070b14" }}>
+    <div className="min-h-screen text-white" style={{ background: "#252525" }}>
 
       {/* ============ هدر ============ */}
-      <header className="sticky top-0 z-50 w-full border-b border-white/10" style={{ background: "rgba(7,11,20,0.92)", backdropFilter: "blur(14px)" }}>
+      <header className="sticky top-0 z-50 w-full border-b border-white/10" style={{ background: "rgba(37,37,37,0.95)", backdropFilter: "blur(14px)" }}>
         <div className="max-w-[1320px] mx-auto px-4 h-16 flex items-center justify-between gap-3">
           {/* راست: منو + برند */}
           <div className="flex items-center gap-3">
-            <button onClick={() => setMenuOpen((v) => !v)} aria-label="منو" className="p-1 transition-colors" style={{ color: "#00b4d8" }}>
+            <button onClick={() => setMenuOpen((v) => !v)} aria-label="منو" className="p-1 transition-colors" style={{ color: "#005cfc" }}>
               {menuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
             <Link href="/" className="leading-none">
               <span className="headline text-[20px] block">
                 <span className="text-white">Varzesh</span>{" "}
-                <span className="drop-shadow-[0_0_10px_rgba(0,180,216,0.6)]" style={{ color: "#00b4d8" }}>Plus</span>
+                <span className="drop-shadow-[0_0_10px_rgba(0,92,252,0.6)]" style={{ color: "#005cfc" }}>Plus</span>
               </span>
               <span className="text-[10px] block mt-1 text-slate-400">شبکه ورزش</span>
             </Link>
@@ -106,16 +106,16 @@ export function PageShell({ children, badge, activeDock }: Props) {
 
           {/* چپ: ساعت/تاریخ + حساب */}
           <div className="flex items-center gap-2">
-            <span className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 text-[12px] font-bold tabular text-white" style={{ background: "rgba(13,20,36,0.8)" }} dir="ltr">
-              <Clock3 size={14} style={{ color: "#00b4d8" }} />{timeStr}
+            <span className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 text-[12px] font-bold tabular text-white" style={{ background: "rgba(37,37,37,0.9)" }} dir="ltr">
+              <Clock3 size={14} style={{ color: "#005cfc" }} />{timeStr}
             </span>
-            <span className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 text-[11px] text-white" style={{ background: "rgba(13,20,36,0.8)" }}>
-              <CalendarDays size={14} style={{ color: "#00b4d8" }} />{dateStr}
+            <span className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 text-[11px] text-white" style={{ background: "rgba(37,37,37,0.9)" }}>
+              <CalendarDays size={14} style={{ color: "#005cfc" }} />{dateStr}
             </span>
             {user ? (
-              <Link href="/profile" className="hidden sm:flex items-center px-3 py-1.5 rounded-full border border-white/10 text-[12px] text-white" style={{ background: "rgba(13,20,36,0.8)" }}>{user.displayName}</Link>
+              <Link href="/profile" className="hidden sm:flex items-center px-3 py-1.5 rounded-full border border-white/10 text-[12px] text-white" style={{ background: "rgba(37,37,37,0.9)" }}>{user.displayName}</Link>
             ) : (
-              <Link href="/login" className="hidden sm:inline-flex px-4 py-1.5 rounded-full text-[12px] font-black text-white" style={{ background: "linear-gradient(135deg, #00b4d8, #8b5cf6)", boxShadow: "0 4px 16px rgba(0,180,216,0.3)" }}>ورود</Link>
+              <Link href="/login" className="hidden sm:inline-flex px-4 py-1.5 rounded-full text-[12px] font-black text-white" style={{ background: "linear-gradient(135deg, #005cfc, #bee503)", boxShadow: "0 4px 16px rgba(0,92,252,0.3)" }}>ورود</Link>
             )}
           </div>
         </div>
@@ -127,18 +127,18 @@ export function PageShell({ children, badge, activeDock }: Props) {
           <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
           <aside
             className="absolute top-0 bottom-0 right-0 w-[85%] max-w-[400px] overflow-y-auto border-l border-white/10 animate-[megaSlideIn_0.28s_cubic-bezier(0.22,1,0.36,1)]"
-            style={{ background: "#070b14" }}
+            style={{ background: "#252525" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 z-10 border-b border-white/5 px-5 py-4" style={{ background: "rgba(7,11,20,0.9)", backdropFilter: "blur(12px)" }}>
+            <div className="sticky top-0 z-10 border-b border-white/5 px-5 py-4" style={{ background: "rgba(37,37,37,0.9)", backdropFilter: "blur(12px)" }}>
               <div className="flex items-center justify-between mb-3">
-                <h3 className="headline text-lg" style={{ background: "linear-gradient(135deg,#00b4d8,#8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>ورزش‌ها</h3>
+                <h3 className="headline text-lg" style={{ background: "linear-gradient(135deg,#005cfc,#bee503)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>ورزش‌ها</h3>
                 <button onClick={() => setMenuOpen(false)} className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70"><X size={18} /></button>
               </div>
               <input
                 value={menuSearch} onChange={(e) => { setMenuSearch(e.target.value); setMenuView("root"); }}
                 placeholder="دنبال چه ورزشی هستی؟"
-                className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 px-3 text-sm placeholder-slate-500 focus:outline-none focus:border-[#00b4d8] text-white"
+                className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 px-3 text-sm placeholder-slate-500 focus:outline-none focus:border-[#005cfc] text-white"
               />
             </div>
             <div className="p-5">
@@ -175,7 +175,7 @@ export function PageShell({ children, badge, activeDock }: Props) {
       {activeDock && (
         <nav
           className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-6 py-2.5 rounded-full border border-white/10 shadow-2xl flex items-center gap-6"
-          style={{ background: "rgba(15,23,42,0.9)", backdropFilter: "blur(20px)" }}
+          style={{ background: "rgba(37,37,37,0.92)", backdropFilter: "blur(20px)" }}
           dir="rtl"
         >
           {dockItems.map((item) => {
@@ -186,7 +186,7 @@ export function PageShell({ children, badge, activeDock }: Props) {
                 key={item.key} href={item.href}
                 className={`flex items-center gap-1.5 transition-all duration-200 ${active ? "px-3.5 py-1.5 rounded-full" : "flex-col gap-0.5"}`}
                 style={active
-                  ? { background: "rgba(0,180,216,0.15)", border: "1px solid rgba(0,180,216,0.3)", color: "#00b4d8" }
+                  ? { background: "rgba(0,92,252,0.15)", border: "1px solid rgba(0,92,252,0.3)", color: "#005cfc" }
                   : { color: "#94a3b8" }}
               >
                 <Icon size={active ? 18 : 19} className={active ? "fill-current" : ""} />

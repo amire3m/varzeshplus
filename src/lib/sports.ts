@@ -8,7 +8,7 @@ export type Sport = {
 };
 
 export const SPORTS: Sport[] = [
-  { key: "football", name: "فوتبال", emoji: "⚽", icon: "sports_soccer", color: "#17b6cc", subs: ["بوندسلیگا", "پریمیرلیگ", "لیگ خلیج فارس", "سری آ", "لالیگا"] },
+  { key: "football", name: "فوتبال", emoji: "⚽", icon: "sports_soccer", color: "#005cfc", subs: ["بوندسلیگا", "پریمیرلیگ", "لیگ خلیج فارس", "سری آ", "لالیگا"] },
   { key: "volleyball", name: "والیبال", emoji: "🏐", icon: "sports_volleyball", color: "#22c55e", subs: ["لیگ برتر ایران", "لیگ ملت‌ها", "تیم ملی", "والیبال ساحلی"] },
   { key: "basketball", name: "بسکتبال", emoji: "🏀", icon: "sports_basketball", color: "#e8820c", subs: ["لیگ برتر ایران", "NBA", "یوروبسکت", "تیم ملی"] },
   { key: "tennis", name: "تنیس", emoji: "🎾", icon: "sports_tennis", color: "#84cc16", subs: ["گرند اسلم", "تنیس روی میز", "جام دیویس", "تیم ملی"] },
@@ -16,7 +16,7 @@ export const SPORTS: Sport[] = [
   { key: "martial", name: "رزمی", emoji: "🥊", icon: "sports_martial_arts", color: "#a855f7", subs: ["تکواندو", "کاراته", "بوکس", "MMA", "جودو"] },
   { key: "motorsport", name: "موتوراسپرت", emoji: "🏎️", icon: "sports_motorsports", color: "#f59e0b", subs: ["فرمول ۱", "موتوجی‌پی", "رالی", "فرمول ای"] },
   { key: "handball", name: "هندبال", emoji: "🤾", icon: "sports_handball", color: "#06b6d4", subs: ["لیگ برتر", "جام ملت‌ها", "تیم ملی"] },
-  { key: "swimming", name: "شنا", emoji: "🏊", icon: "pool", color: "#0ea5e9", subs: ["قهرمانی جهان", "المپیک", "لیگ ایران"] },
+  { key: "swimming", name: "شنا", emoji: "🏊", icon: "pool", color: "#bee503", subs: ["قهرمانی جهان", "المپیک", "لیگ ایران"] },
   { key: "athletics", name: "دوومیدانی", emoji: "🏃", icon: "directions_run", color: "#f97316", subs: ["قهرمانی جهان", "المپیک"] },
   { key: "chess", name: "شطرنج", emoji: "♟️", icon: "sports_esports", color: "#8b8b8b", subs: ["قهرمانی جهان", "لیگ ایران"] },
   { key: "ski", name: "اسکی", emoji: "⛷️", icon: "downhill_skiing", color: "#38bdf8", subs: ["آلپاین", "اسنوبرد", "پرش"] },

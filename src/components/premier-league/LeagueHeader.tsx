@@ -9,7 +9,7 @@ export function LeagueHeader({ todayCount }: { todayCount: number }) {
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <h1 className="headline text-xl md:text-2xl">لیگ برتر انگلیس</h1>
-          <span className="text-xs px-2 py-0.5 rounded-full font-bold tabular" style={{ background: "linear-gradient(135deg,#17b6cc,#7807c9)", color: "#fff" }}>2026/27</span>
+          <span className="text-xs px-2 py-0.5 rounded-full font-bold tabular" style={{ background: "linear-gradient(135deg,#005cfc,#bee503)", color: "#fff" }}>2026/27</span>
         </div>
         <p className="text-sm" style={{ color: "var(--color-muted)" }}>Premier League</p>
       </div>

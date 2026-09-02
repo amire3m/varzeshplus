@@ -9,7 +9,7 @@ const TABS: { key: LeagueTab; label: string }[] = [
 
 export function LeagueNavigation({ active, onChange }: { active: LeagueTab; onChange: (t: LeagueTab) => void }) {
   return (
-    <nav className="sticky top-16 z-30 -mx-1 px-1 py-2 backdrop-blur-xl" style={{ background: "rgba(21,21,21,0.85)", borderBottom: "1px solid rgba(120,160,200,0.14)" }}>
+    <nav className="sticky top-16 z-30 -mx-1 px-1 py-2 backdrop-blur-xl" style={{ background: "rgba(37,37,37,0.88)", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
       <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none" style={{ scrollbarWidth: "none" }}>
         {TABS.map((t) => {
           const isActive = active === t.key;

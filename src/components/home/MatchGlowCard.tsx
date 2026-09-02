@@ -28,7 +28,7 @@ export function MatchGlowCard({ match, home, away }: { match: Match; home: Team;
       className="group relative block shrink-0 w-[300px] rounded-[14px] overflow-hidden border transition-all duration-200 hover:-translate-y-[2px]"
       style={{
         background: "#0D1929",
-        borderColor: "rgba(120,160,200,0.15)",
+        borderColor: "rgba(255,255,255,0.1)",
       }}
       dir="rtl"
     >

@@ -17,7 +17,7 @@ export function SquadTable({ team }: { team: Team }) {
         <h2 className="headline text-lg">ترکیب {team.name}</h2>
         <div className="flex items-center gap-1.5 text-xs">
           {["2026/27", "2025/26"].map((s) => (
-            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors" style={season === s ? { background: "linear-gradient(135deg,#17b6cc,#7807c9)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>{s}</button>
+            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors" style={season === s ? { background: "linear-gradient(135deg,#005cfc,#bee503)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>{s}</button>
           ))}
         </div>
       </div>
@@ -28,12 +28,12 @@ export function SquadTable({ team }: { team: Team }) {
         return (
           <div key={pos} className="space-y-2">
             <h3 className="text-sm font-bold" style={{ color: "var(--color-muted)" }}>{POSITION_LABEL[pos]}</h3>
-            <div className="glass-panel overflow-x-auto rounded-[14px]" style={{ background: "#0d1424", borderColor: "rgba(120,160,200,0.15)" }}>
+            <div className="glass-panel overflow-x-auto rounded-[14px]" style={{ background: "#2a2a2a", borderColor: "rgba(255,255,255,0.1)" }}>
               <table className="w-full min-w-[640px] text-sm">
                 <thead>
                   <tr style={{ color: "#8FA1B5" }}>
                     {["#", "بازیکن", "پست", "سن", "ملیت", "بازی", "ترکیب اصلی", "گل", "پاس گل", "زرد", "قرمز"].map((h, i) => (
-                      <th key={i} className={`px-3 py-2.5 text-xs font-bold ${i <= 1 ? "text-right" : "text-center"} tabular`} style={{ background: "#132238", borderBottom: "1px solid rgba(120,160,200,0.12)" }}>{h}</th>
+                      <th key={i} className={`px-3 py-2.5 text-xs font-bold ${i <= 1 ? "text-right" : "text-center"} tabular`} style={{ background: "#2e2e2e", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>{h}</th>
                     ))}
                   </tr>
                 </thead>

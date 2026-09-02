@@ -40,7 +40,7 @@ export default function SportPage() {
 
   if (!sport) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-6 text-center" style={{ background: "#222" }}>
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-6 text-center" style={{ background: "#252525" }}>
         <span className="text-5xl">🤷</span>
         <h1 className="headline text-xl">ورزش پیدا نشد</h1>
         <Link href="/" className="btn-green px-5 py-2 text-sm">بازگشت به خانه</Link>
@@ -52,9 +52,9 @@ export default function SportPage() {
   const color = sport.color;
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#222" }}>
+    <div className="min-h-screen flex flex-col" style={{ background: "#252525" }}>
       {/* هدر */}
-      <header className="sticky top-0 z-30 neon-header flex items-center justify-between px-3 h-16 w-full" style={{ background: "#222" }}>
+      <header className="sticky top-0 z-30 neon-header flex items-center justify-between px-3 h-16 w-full" style={{ background: "#252525" }}>
         <div className="flex items-center gap-2">
           <button onClick={() => router.back()} className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/80 hover:bg-white/10"><span className="material-symbols-outlined text-[20px]">arrow_right_alt</span></button>
           <Link href="/" className="headline text-lg"><span className="text-primary">Varzesh</span>Plus</Link>
@@ -72,13 +72,13 @@ export default function SportPage() {
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="headline text-2xl md:text-3xl">{sport.name}</h1>
                 {leagueName && (
-                  <span className="text-xs px-3 py-1 rounded-full font-bold" style={{ background: "linear-gradient(135deg,#17b6cc,#7807c9)", color: "#fff", boxShadow: "0 0 12px rgba(120,7,201,0.4)" }}>{leagueName}</span>
+                  <span className="text-xs px-3 py-1 rounded-full font-bold" style={{ background: "linear-gradient(135deg,#005cfc,#bee503)", color: "#fff", boxShadow: "0 0 12px rgba(190,229,3,0.4)" }}>{leagueName}</span>
                 )}
               </div>
               <p className="text-sm mt-2 max-w-lg" style={{ color: "var(--color-muted)" }}>مسابقات، پخش‌های زنده و بازی‌های مرتبط با {sport.name} {leagueName ? `— ${leagueName}` : ""}</p>
               <div className="flex flex-wrap gap-2 mt-3">
                 {sport.subs.map((s) => (
-                  <button key={s} onClick={() => router.push(`/sport/${sport.key}/${encodeURIComponent(s)}`)} className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${s === leagueName ? "text-white font-bold border-transparent" : "bg-white/5 border-white/10 text-white/75 hover:bg-white/10"}`} style={s === leagueName ? { background: `linear-gradient(135deg,#17b6cc,#7807c9)` } : undefined}>
+                  <button key={s} onClick={() => router.push(`/sport/${sport.key}/${encodeURIComponent(s)}`)} className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${s === leagueName ? "text-white font-bold border-transparent" : "bg-white/5 border-white/10 text-white/75 hover:bg-white/10"}`} style={s === leagueName ? { background: `linear-gradient(135deg,#005cfc,#bee503)` } : undefined}>
                     {s}
                   </button>
                 ))}

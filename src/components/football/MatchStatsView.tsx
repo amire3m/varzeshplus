@@ -32,8 +32,8 @@ export function MatchStatsView({ match }: { match: Match }) {
                   <td className="px-4 py-3 text-center">
                     <div className="text-[11px] font-bold mb-1" style={{ color: "var(--color-muted)" }}>{label}</div>
                     <div className="flex items-center gap-1.5">
-                      <div className="h-1.5 rounded-full" style={{ width: `${homePct}%`, background: "linear-gradient(90deg, #17b6cc, #7807c9)" }} />
-                      <div className="h-1.5 rounded-full" style={{ width: `${awayPct}%`, background: "linear-gradient(90deg, #7807c9, #17b6cc)" }} />
+                      <div className="h-1.5 rounded-full" style={{ width: `${homePct}%`, background: "linear-gradient(90deg, #005cfc, #bee503)" }} />
+                      <div className="h-1.5 rounded-full" style={{ width: `${awayPct}%`, background: "linear-gradient(90deg, #bee503, #005cfc)" }} />
                     </div>
                   </td>
                   <td className="px-4 py-3 text-center tabular font-bold">{r.away}{suffix}</td>

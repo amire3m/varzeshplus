@@ -64,7 +64,7 @@ export default function TeamPage() {
               <section>
                 <h2 className="headline text-lg mb-3">مسابقه بعدی</h2>
                 <div className="glass-panel p-5 flex flex-col items-center gap-4">
-                  <span className="text-[11px] px-2.5 py-1 rounded-full" style={{ background: "rgba(23,182,204,0.12)", color: "#17b6cc" }}>{nextMatch.competition} • {nextMatch.kickoff}{nextMatch.stadium ? ` • ${nextMatch.stadium}` : ""}</span>
+                  <span className="text-[11px] px-2.5 py-1 rounded-full" style={{ background: "rgba(0,92,252,0.12)", color: "#005cfc" }}>{nextMatch.competition} • {nextMatch.kickoff}{nextMatch.stadium ? ` • ${nextMatch.stadium}` : ""}</span>
                   <div className="flex items-center gap-6 md:gap-10 w-full justify-center">
                     <div className="flex flex-col items-center gap-2 min-w-[100px]">
                       <TeamBadge team={getTeamById(nextMatch.homeTeamId)} size={56} />
@@ -94,7 +94,7 @@ export default function TeamPage() {
                     <div key={i} className="glass-panel px-4 py-3 flex items-center gap-3 text-sm">
                       <span className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-black text-white" style={{ background: col }}>{f.result}</span>
                       <span className="text-xs tabular" style={{ color: "var(--color-muted)" }}>{f.date}</span>
-                      <Link href={`/football/teams/${opp.slug}`} className="flex items-center gap-1.5 font-bold truncate hover:underline decoration-[#17b6cc]"><TeamBadge team={opp} size={20} />{opp.name}</Link>
+                      <Link href={`/football/teams/${opp.slug}`} className="flex items-center gap-1.5 font-bold truncate hover:underline decoration-[#005cfc]"><TeamBadge team={opp} size={20} />{opp.name}</Link>
                       <span className="mr-auto tabular font-black">{f.score}</span>
                     </div>
                   );
@@ -188,7 +188,7 @@ export default function TeamPage() {
             <div className="flex items-center flex-wrap gap-2">
               <h2 className="headline text-lg ml-auto">آمار {team.name}</h2>
               {["performance", "goals", "assists", "defense", "discipline"].map((s) => (
-                <button key={s} onClick={() => setSubStat(s)} className="px-3 py-1.5 rounded-full text-xs border transition-colors" style={subStat === s ? { background: "linear-gradient(135deg,#17b6cc,#7807c9)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>{s === "performance" ? "عملکرد" : s === "goals" ? "گلزنی" : s === "assists" ? "پاس گل" : s === "defense" ? "دفاع" : "انضباط"}</button>
+                <button key={s} onClick={() => setSubStat(s)} className="px-3 py-1.5 rounded-full text-xs border transition-colors" style={subStat === s ? { background: "linear-gradient(135deg,#005cfc,#bee503)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>{s === "performance" ? "عملکرد" : s === "goals" ? "گلزنی" : s === "assists" ? "پاس گل" : s === "defense" ? "دفاع" : "انضباط"}</button>
               ))}
             </div>
 
@@ -281,7 +281,7 @@ function LeaguePosition({ leagueId, teamId }: { leagueId: number; teamId: number
             return (
               <tr key={s.teamId} className={`border-t border-white/5 ${isMe ? "" : "opacity-70"}`} style={isMe ? { background: "rgba(23,182,204,0.1)" } : undefined}>
                 <td className="px-3 py-2.5 tabular font-black">{rank}</td>
-                <td className="px-3 py-2.5"><Link href={`/football/teams/${t.slug}`} className={`flex items-center gap-2 min-w-0 ${isMe ? "font-black" : "font-bold"} hover:underline decoration-[#17b6cc]`}><TeamBadge team={t} size={22} /><span className="truncate">{t.name}</span></Link></td>
+                <td className="px-3 py-2.5"><Link href={`/football/teams/${t.slug}`} className={`flex items-center gap-2 min-w-0 ${isMe ? "font-black" : "font-bold"} hover:underline decoration-[#005cfc]`}><TeamBadge team={t} size={22} /><span className="truncate">{t.name}</span></Link></td>
                 <td className="px-3 py-2.5 text-center tabular">{s.played}</td>
                 <td className="px-3 py-2.5 text-center tabular font-black" style={{ color: "var(--color-club-green)" }}>{s.pts}</td>
               </tr>

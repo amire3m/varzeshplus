@@ -22,7 +22,7 @@ export function StandingsTable() {
         <h2 className="headline text-lg">جدول لیگ برتر</h2>
         <div className="flex items-center gap-1.5 text-xs">
           {["2026/27", "2025/26", "2024/25"].map((s) => (
-            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors" style={season === s ? { background: "linear-gradient(135deg,#17b6cc,#7807c9)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>
+            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors" style={season === s ? { background: "linear-gradient(135deg,#005cfc,#bee503)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>
               {s}
             </button>
           ))}
@@ -46,7 +46,7 @@ export function StandingsTable() {
                 <tr key={r.teamId} className="transition-colors hover:bg-white/[0.045]" style={{ background: "transparent" }}>
                   <td className="px-2.5 py-2.5 text-center tabular">
                     <span className="inline-flex items-center gap-1.5">
-                      <span className={`w-1.5 h-6 rounded-full shrink-0 ${zone ? "" : "bg-transparent"}`} style={zone ? { background: zone === "ucl" ? "#17b6cc" : zone === "euro" ? "#7807c9" : "#E23B3B" } : undefined} />
+                      <span className={`w-1.5 h-6 rounded-full shrink-0 ${zone ? "" : "bg-transparent"}`} style={zone ? { background: zone === "ucl" ? "#005cfc" : zone === "euro" ? "#bee503" : "#E23B3B" } : undefined} />
                       <span className="font-black tabular">{idx + 1}</span>
                     </span>
                   </td>
@@ -67,8 +67,8 @@ export function StandingsTable() {
       </div>
 
       <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs" style={{ color: "var(--color-muted)" }}>
-        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#17b6cc" }} /> سهمیه لیگ قهرمانان</span>
-        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#7807c9" }} /> سهمیه اروپایی</span>
+        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#005cfc" }} /> سهمیه لیگ قهرمانان</span>
+        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#bee503" }} /> سهمیه اروپایی</span>
         <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#E23B3B" }} /> منطقه سقوط</span>
       </div>
     </div>

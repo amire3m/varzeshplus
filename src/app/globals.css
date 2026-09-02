@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  /* === پالت نئون — درخواست کاربر: #222222 و گرادینت #17b6cc → #7807c9 === */
-  --color-ink-pitch: #222222;
-  --color-background: #222222;
-  --color-surface: #222222;
-  --color-surface-dim: #222222;
-  --color-surface-bright: #2e2e2e;
-  --color-surface-container-lowest: #1a1a1a;
-  --color-surface-container-low: #1e1e1e;
-  --color-surface-container: #222222;
+  /* === پالت جدید — #252525 و گرادینت #005cfc → #bee503 === */
+  --color-ink-pitch: #252525;
+  --color-background: #252525;
+  --color-surface: #252525;
+  --color-surface-dim: #252525;
+  --color-surface-bright: #2a2a2a;
+  --color-surface-container-lowest: #1e1e1e;
+  --color-surface-container-low: #252525;
+  --color-surface-container: #252525;
   --color-surface-container-high: #2a2a2a;
   --color-surface-container-highest: #333333;
-  --color-surface-variant: #2e2e2e;
-  --color-panel-dark: #222222;
+  --color-surface-variant: #2a2a2a;
+  --color-panel-dark: #252525;
   --color-panel-raised: #2a2a2a;
-  --color-neon-start: #17b6cc;
-  --color-neon-end: #7807c9;
-  --color-neon-gradient: linear-gradient(135deg, #17b6cc 0%, #7807c9 100%);
+  --color-neon-start: #005cfc;
+  --color-neon-end: #bee503;
+  --color-neon-gradient: linear-gradient(135deg, #005cfc 0%, #bee503 100%);
 
   --color-on-surface: #dce3f1;
   --color-on-surface-variant: #bbcbbb;
@@ -31,13 +31,13 @@
   --color-outline-variant: #3d4a3e;
   --color-surface-tint: #4ae183;
 
-  --color-primary: #17b6cc;
-  --color-primary-container: #17b6cc;
-  --color-on-primary: #001f26;
-  --color-on-primary-container: #002a33;
-  --color-inverse-primary: #17b6cc;
+  --color-primary: #005cfc;
+  --color-primary-container: #005cfc;
+  --color-on-primary: #001a4d;
+  --color-on-primary-container: #002a80;
+  --color-inverse-primary: #005cfc;
   --color-primary-fixed: #5ce3f5;
-  --color-primary-fixed-dim: #17b6cc;
+  --color-primary-fixed-dim: #005cfc;
   --color-on-primary-fixed: #001f26;
   --color-on-primary-fixed-variant: #004e5c;
 
@@ -64,13 +64,13 @@
   --color-on-error: #690005;
   --color-on-error-container: #ffdad6;
 
-  --color-club-green: #17b6cc;
-  --color-club-green-dark: #1399ac;
+  --color-club-green: #005cfc;
+  --color-club-green-dark: #0042c7;
   --color-live-signal: #E23B3B;
-  --color-gold-medal: #E8B84B;
+  --color-gold-medal: #bee503;
   --color-silver-medal: #C9CDD3;
   --color-bronze-medal: #C97F4A;
-  --color-glow-electric: #7807c9;
+  --color-glow-electric: #bee503;
 
   --font-display: "Vazirmatn", system-ui, sans-serif;
   --font-body: "Vazirmatn", system-ui, sans-serif;
@@ -129,87 +129,87 @@ body {
   100% { background-position: 0% 50%; }
 }
 .neon-border {
-  background: linear-gradient(#222222, #222222) padding-box,
-              linear-gradient(135deg, #17b6cc 0%, #7807c9 100%) border-box;
+  background: linear-gradient(#252525, #252525) padding-box,
+              linear-gradient(135deg, #005cfc 0%, #bee503 100%) border-box;
   border: 1px solid transparent;
   border-radius: 16px;
-  box-shadow: 0 0 10px rgba(23, 182, 204, 0.25), 0 0 22px rgba(120, 7, 201, 0.18), 0 4px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px rgba(0, 92, 252, 0.25), 0 0 22px rgba(190, 229, 3, 0.18), 0 4px 30px rgba(0, 0, 0, 0.5);
   transition: box-shadow 0.35s ease, transform 0.2s ease;
   --mx: 50%;
   --my: 50%;
 }
 .neon-border:hover {
-  box-shadow: 0 0 16px rgba(23, 182, 204, 0.42), 0 0 32px rgba(120, 7, 201, 0.30), 0 8px 36px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 16px rgba(0, 92, 252, 0.42), 0 0 32px rgba(190, 229, 3, 0.30), 0 8px 36px rgba(0, 0, 0, 0.6);
   transform: translateY(-1px);
 }
 .neon-border.neon-follow {
-  background: linear-gradient(#222222, #222222) padding-box,
-              radial-gradient(520px circle at var(--mx) var(--my), #17b6cc 0%, #7807c9 38%, #17b6cc 72%, #17b6cc 100%) border-box;
+  background: linear-gradient(#252525, #252525) padding-box,
+              radial-gradient(520px circle at var(--mx) var(--my), #005cfc 0%, #bee503 38%, #005cfc 72%, #005cfc 100%) border-box;
 }
 .neon-border.neon-slow:hover {
-  background: linear-gradient(#222222, #222222) padding-box,
-              linear-gradient(270deg, #17b6cc 0%, #7807c9 50%, #17b6cc 100%) border-box;
+  background: linear-gradient(#252525, #252525) padding-box,
+              linear-gradient(270deg, #005cfc 0%, #bee503 50%, #005cfc 100%) border-box;
   background-size: 280% 280%;
   animation: neonShiftSlow 4.2s ease infinite;
 }
 .neon-border-strong {
-  background: linear-gradient(#222222, #222222) padding-box,
-              linear-gradient(135deg, #17b6cc 0%, #5a0bb5 45%, #7807c9 100%) border-box;
+  background: linear-gradient(#252525, #252525) padding-box,
+              linear-gradient(135deg, #005cfc 0%, #5a0bb5 45%, #bee503 100%) border-box;
   border: 1.5px solid transparent;
   border-radius: 16px;
-  box-shadow: 0 0 16px rgba(23, 182, 204, 0.35), 0 0 36px rgba(120, 7, 201, 0.25);
+  box-shadow: 0 0 16px rgba(0, 92, 252, 0.35), 0 0 36px rgba(190, 229, 3, 0.25);
 }
 
 /* === کامپوننت‌های پایه — کند + موس‌محور === */
 .panel {
-  background: linear-gradient(#222222, #222222) padding-box,
-              linear-gradient(135deg, #17b6cc 0%, #7807c9 100%) border-box;
+  background: linear-gradient(#252525, #252525) padding-box,
+              linear-gradient(135deg, #005cfc 0%, #bee503 100%) border-box;
   border: 1px solid transparent;
   border-radius: 16px;
-  box-shadow: 0 0 10px rgba(23, 182, 204, 0.20), 0 0 22px rgba(120, 7, 201, 0.14), 0 4px 24px rgba(0,0,0,0.45);
+  box-shadow: 0 0 10px rgba(0, 92, 252, 0.20), 0 0 22px rgba(190, 229, 3, 0.14), 0 4px 24px rgba(0,0,0,0.45);
   transition: box-shadow 0.35s ease, transform 0.22s ease;
   --mx: 50%; --my: 50%;
 }
 .panel:hover {
-  box-shadow: 0 0 18px rgba(23, 182, 204, 0.34), 0 0 34px rgba(120, 7, 201, 0.24);
+  box-shadow: 0 0 18px rgba(0, 92, 252, 0.34), 0 0 34px rgba(190, 229, 3, 0.24);
   transform: translateY(-2px);
 }
 .panel.neon-follow {
-  background: linear-gradient(#222222, #222222) padding-box,
-              radial-gradient(560px circle at var(--mx) var(--my), #17b6cc 0%, #7807c9 36%, #2a9db0 72%) border-box;
+  background: linear-gradient(#252525, #252525) padding-box,
+              radial-gradient(560px circle at var(--mx) var(--my), #005cfc 0%, #bee503 36%, #2a9db0 72%) border-box;
 }
 .panel.neon-slow:hover {
-  background: linear-gradient(#222222, #222222) padding-box,
-              linear-gradient(270deg, #17b6cc 0%, #7807c9 50%, #17b6cc 100%) border-box;
+  background: linear-gradient(#252525, #252525) padding-box,
+              linear-gradient(270deg, #005cfc 0%, #bee503 50%, #005cfc 100%) border-box;
   background-size: 300% 300%;
   animation: neonShiftSlow 4.5s ease infinite;
 }
 .glass-panel {
-  background: linear-gradient(#222222, #222222) padding-box,
-              linear-gradient(135deg, #17b6cc 0%, #7807c9 100%) border-box;
+  background: linear-gradient(#252525, #252525) padding-box,
+              linear-gradient(135deg, #005cfc 0%, #bee503 100%) border-box;
   border: 1px solid transparent;
   border-radius: 16px;
-  box-shadow: 0 0 12px rgba(23, 182, 204, 0.22), 0 0 28px rgba(120, 7, 201, 0.16), 0 8px 32px rgba(0,0,0,0.55);
+  box-shadow: 0 0 12px rgba(0, 92, 252, 0.22), 0 0 28px rgba(190, 229, 3, 0.16), 0 8px 32px rgba(0,0,0,0.55);
   transition: box-shadow 0.35s ease, transform 0.22s ease;
   --mx: 50%; --my: 50%;
 }
 .glass-panel:hover {
-  box-shadow: 0 0 20px rgba(23, 182, 204, 0.38), 0 0 38px rgba(120, 7, 201, 0.28);
+  box-shadow: 0 0 20px rgba(0, 92, 252, 0.38), 0 0 38px rgba(190, 229, 3, 0.28);
   transform: translateY(-2px);
 }
 .glass-panel.neon-follow {
-  background: linear-gradient(#222222, #222222) padding-box,
-              radial-gradient(600px circle at var(--mx) var(--my), #17b6cc 0%, #7807c9 38%, #17b6cc 78%) border-box;
+  background: linear-gradient(#252525, #252525) padding-box,
+              radial-gradient(600px circle at var(--mx) var(--my), #005cfc 0%, #bee503 38%, #005cfc 78%) border-box;
 }
 .glass-panel.neon-slow:hover {
-  background: linear-gradient(#222222, #222222) padding-box,
-              linear-gradient(270deg, #17b6cc 0%, #7807c9 50%, #17b6cc 100%) border-box;
+  background: linear-gradient(#252525, #252525) padding-box,
+              linear-gradient(270deg, #005cfc 0%, #bee503 50%, #005cfc 100%) border-box;
   background-size: 300% 300%;
   animation: neonShiftSlow 4.5s ease infinite;
 }
 
 .btn-green {
-  background: linear-gradient(135deg, #17b6cc 0%, #7807c9 100%);
+  background: linear-gradient(135deg, #005cfc 0%, #bee503 100%);
   color: #fff;
   font-weight: 800;
   border-radius: 10px;
@@ -228,7 +228,7 @@ body {
 }
 .btn-ghost:hover {
   border-color: transparent;
-  background: linear-gradient(#222222, #222222) padding-box, linear-gradient(135deg, #17b6cc 0%, #7807c9 100%) border-box;
+  background: linear-gradient(#252525, #252525) padding-box, linear-gradient(135deg, #005cfc 0%, #bee503 100%) border-box;
   box-shadow: 0 0 10px rgba(23,182,204,0.22), 0 0 18px rgba(120,7,201,0.16);
 }
 
@@ -252,19 +252,19 @@ button:focus-visible, a:focus-visible, [tabindex]:focus-visible {
 /* کارت‌ها — کند + موس‌محور */
 .game-card { transition: box-shadow 0.35s ease, transform 0.22s ease; --mx:50%; --my:50%; }
 .game-card:hover, .game-card:focus-within {
-  box-shadow: 0 0 18px rgba(23, 182, 204, 0.34), 0 0 34px rgba(120, 7, 201, 0.26);
+  box-shadow: 0 0 18px rgba(0, 92, 252, 0.34), 0 0 34px rgba(190, 229, 3, 0.26);
   transform: translateY(-2px);
 }
 .game-card.neon-follow {
-  background: linear-gradient(#222222, #222222) padding-box, radial-gradient(580px circle at var(--mx) var(--my), #17b6cc 0%, #7807c9 40%, #17b6cc 78%) border-box !important;
+  background: linear-gradient(#252525, #252525) padding-box, radial-gradient(580px circle at var(--mx) var(--my), #005cfc 0%, #bee503 40%, #005cfc 78%) border-box !important;
 }
 .game-card.neon-slow:hover {
-  background: linear-gradient(#222222, #222222) padding-box, linear-gradient(270deg, #17b6cc 0%, #7807c9 50%, #17b6cc 100%) border-box !important;
+  background: linear-gradient(#252525, #252525) padding-box, linear-gradient(270deg, #005cfc 0%, #bee503 50%, #005cfc 100%) border-box !important;
   background-size: 300% 300% !important;
   animation: neonShiftSlow 4.2s ease infinite;
 }
 .glow-effect {
-  background: linear-gradient(#222222, #222222) padding-box, linear-gradient(135deg, #17b6cc 0%, #7807c9 100%) border-box;
+  background: linear-gradient(#252525, #252525) padding-box, linear-gradient(135deg, #005cfc 0%, #bee503 100%) border-box;
   border: 1px solid transparent;
   box-shadow: 0 0 10px rgba(23,182,204,0.20), 0 0 22px rgba(120,7,201,0.14);
   transition: box-shadow 0.35s ease;
@@ -272,19 +272,19 @@ button:focus-visible, a:focus-visible, [tabindex]:focus-visible {
 }
 .glow-effect:hover { box-shadow: 0 0 18px rgba(23,182,204,0.36), 0 0 34px rgba(120,7,201,0.26); }
 .glow-effect.neon-follow {
-  background: linear-gradient(#222222, #222222) padding-box, radial-gradient(560px circle at var(--mx) var(--my), #17b6cc 0%, #7807c9 38%, #17b6cc 78%) border-box;
+  background: linear-gradient(#252525, #252525) padding-box, radial-gradient(560px circle at var(--mx) var(--my), #005cfc 0%, #bee503 38%, #005cfc 78%) border-box;
 }
 .hover-glow { --mx:50%; --my:50%; }
 .hover-glow:hover { box-shadow: 0 0 16px rgba(23,182,204,0.34), 0 0 32px rgba(120,7,201,0.24); border-color: transparent; }
 .hover-glow.neon-follow {
-  background: linear-gradient(#222222, #222222) padding-box, radial-gradient(560px circle at var(--mx) var(--my), #17b6cc 0%, #7807c9 40%, #17b6cc 78%) border-box;
+  background: linear-gradient(#252525, #252525) padding-box, radial-gradient(560px circle at var(--mx) var(--my), #005cfc 0%, #bee503 40%, #005cfc 78%) border-box;
   border: 1px solid transparent;
 }
 .neon-glow {
   box-shadow: 0 0 12px rgba(23,182,204,0.30), 0 0 28px rgba(120,7,201,0.20), inset 0 1px 0 rgba(255,255,255,0.04);
 }
 .neon-text {
-  background: linear-gradient(135deg, #17b6cc 0%, #7807c9 100%);
+  background: linear-gradient(135deg, #005cfc 0%, #bee503 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -299,16 +299,16 @@ button:focus-visible, a:focus-visible, [tabindex]:focus-visible {
 
 /* هدر/فوتر نئونی */
 .neon-header {
-  background: #222222;
+  background: #252525;
   border-bottom: 1px solid transparent;
-  border-image: linear-gradient(90deg, #17b6cc 0%, #7807c9 100%) 1;
+  border-image: linear-gradient(90deg, #005cfc 0%, #bee503 100%) 1;
   box-shadow: 0 2px 16px rgba(120,7,201,0.12), 0 1px 0 rgba(23,182,204,0.15);
 }
 
 /* اسکرول سفارشی */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #222222; }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #17b6cc, #7807c9); border-radius: 9999px; }
+::-webkit-scrollbar-track { background: #252525; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #005cfc, #bee503); border-radius: 9999px; }
 ::-webkit-scrollbar-thumb:hover { filter: brightness(1.15); }
 
 /* نوتیف آیفون ۱۷ — لیکویید گلس + بانس نرم */

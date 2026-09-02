@@ -119,18 +119,18 @@ export function FixedChrome() {
           <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
           <aside
             className="absolute top-0 bottom-0 right-0 w-[85%] max-w-[400px] overflow-y-auto border-l border-white/10 animate-[megaSlideIn_0.28s_cubic-bezier(0.22,1,0.36,1)]"
-            style={{ background: "#070b14" }}
+            style={{ background: "#252525" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 z-10 border-b border-white/5 px-5 py-4" style={{ background: "rgba(7,11,20,0.9)", backdropFilter: "blur(12px)" }}>
+            <div className="sticky top-0 z-10 border-b border-white/5 px-5 py-4" style={{ background: "rgba(37,37,37,0.9)", backdropFilter: "blur(12px)" }}>
               <div className="flex items-center justify-between mb-3">
-                <h3 className="headline text-lg" style={{ background: "linear-gradient(135deg,#00b4d8,#8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>ورزش‌ها</h3>
+                <h3 className="headline text-lg" style={{ background: "linear-gradient(135deg,#005cfc,#bee503)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>ورزش‌ها</h3>
                 <button onClick={() => setMenuOpen(false)} className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70"><X size={18} /></button>
               </div>
               <input
                 value={menuSearch} onChange={(e) => { setMenuSearch(e.target.value); setMenuView("root"); }}
                 placeholder="دنبال چه ورزشی هستی؟"
-                className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 px-3 text-sm placeholder-slate-500 focus:outline-none focus:border-[#00b4d8] text-white"
+                className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 px-3 text-sm placeholder-slate-500 focus:outline-none focus:border-[#005cfc] text-white"
               />
             </div>
             <div className="p-5">

@@ -21,12 +21,12 @@ export function MatchLineup({ match, homeTeam, awayTeam }: { match: Match; homeT
       {/* انتخاب تیم */}
       <div className="flex items-center justify-center gap-4">
         <button onClick={() => setSelected("home")} className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all border ${isHome ? "text-white" : "text-white/55 border-white/10 hover:bg-white/5"}`}
-          style={isHome ? { background: "linear-gradient(135deg, #17b6cc, #7807c9)", borderColor: "transparent" } : undefined}>
+          style={isHome ? { background: "linear-gradient(135deg, #005cfc, #bee503)", borderColor: "transparent" } : undefined}>
           <TeamBadge team={homeTeam} size={22} /> {homeTeam.name}
         </button>
         <span className="tabular font-black text-lg" style={{ color: "var(--color-muted)" }}>VS</span>
         <button onClick={() => setSelected("away")} className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all border ${!isHome ? "text-white" : "text-white/55 border-white/10 hover:bg-white/5"}`}
-          style={!isHome ? { background: "linear-gradient(135deg, #17b6cc, #7807c9)", borderColor: "transparent" } : undefined}>
+          style={!isHome ? { background: "linear-gradient(135deg, #005cfc, #bee503)", borderColor: "transparent" } : undefined}>
           <TeamBadge team={awayTeam} size={22} /> {awayTeam.name}
         </button>
       </div>

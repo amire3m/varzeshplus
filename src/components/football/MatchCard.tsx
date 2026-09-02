@@ -20,7 +20,7 @@ export function MatchCard({ match, getTeam }: { match: Match; getTeam: (id: numb
     <Link
       href={href}
       className={`group relative block rounded-[14px] overflow-hidden border transition-all duration-200 hover:-translate-y-0.5 ${isLive ? "" : ""}`}
-      style={{ background: "#0d1424", borderColor: "rgba(120,160,200,0.15)" }}
+      style={{ background: "#2a2a2a", borderColor: "rgba(255,255,255,0.1)" }}
       dir="rtl"
     >
       {/* Ambient Glow — سمت هر تیم */}

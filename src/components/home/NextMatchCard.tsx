@@ -10,13 +10,13 @@ export function NextMatchCard({ match, home, away, competition }: { match: Match
       className="w-full max-w-[350px] rounded-[16px] overflow-hidden border backdrop-blur-xl"
       style={{
         background: "rgba(13,25,41,0.78)",
-        borderColor: "rgba(120,160,200,0.18)",
+        borderColor: "rgba(255,255,255,0.12)",
         boxShadow: "0 24px 60px rgba(0,0,0,0.5)",
       }}
       dir="rtl"
     >
       {/* سربرگ: بازی بعدی */}
-      <div className="px-5 pt-4 pb-3 text-center border-b" style={{ borderColor: "rgba(120,160,200,0.12)" }}>
+      <div className="px-5 pt-4 pb-3 text-center border-b" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
         <span className="text-[13px] font-black text-white">بازی بعدی</span>
       </div>
 
@@ -52,7 +52,7 @@ export function NextMatchCard({ match, home, away, competition }: { match: Match
         <Link
           href={`/football/matches/${match.id}`}
           className="block w-full text-center py-2.5 rounded-xl text-[13px] font-bold text-white border transition-colors hover:bg-white/5"
-          style={{ borderColor: "rgba(120,160,200,0.25)" }}
+          style={{ borderColor: "rgba(255,255,255,0.15)" }}
         >
           مشاهده پیش بازی
         </Link>

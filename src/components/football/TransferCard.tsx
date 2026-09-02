@@ -21,7 +21,7 @@ export function TransferCard({ transfer, getTeam }: { transfer: Transfer; getTea
         <span className="flex items-center gap-1.5 min-w-0"><TeamBadge team={to} size={26} /><span className="text-xs font-bold truncate">{to.shortName}</span></span>
       </div>
       <div className="flex items-center gap-2 text-xs ml-auto">
-        <span className="px-2 py-1 rounded-full font-bold tabular" style={{ background: "rgba(0,180,216,0.12)", color: "#00b4d8" }}>{TYPE_LABEL[transfer.type]}</span>
+        <span className="px-2 py-1 rounded-full font-bold tabular" style={{ background: "rgba(0,92,252,0.12)", color: "#005cfc" }}>{TYPE_LABEL[transfer.type]}</span>
         {transfer.fee && <span className="px-2 py-1 rounded-full tabular font-bold" style={{ background: "var(--color-panel-raised)", color: "var(--color-floodlight)" }}>{transfer.fee}</span>}
         <span className={`px-2 py-1 rounded-full font-black ${transfer.official ? "" : "border border-dashed"}`} style={transfer.official ? { background: "var(--color-club-green)", color: "#08120B" } : { color: "#f9c759", borderColor: "#f9c759" }}>{transfer.official ? "رسمی" : "شایعه"}</span>
       </div>

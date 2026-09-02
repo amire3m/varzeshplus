@@ -47,7 +47,7 @@ export default function MatchPage() {
   if (!match) {
     if (dynamicMatch === null && !staticMatch) {
       return (
-        <div className="min-h-screen flex items-center justify-center" style={{ background: "#222" }}>
+        <div className="min-h-screen flex items-center justify-center" style={{ background: "#252525" }}>
           <p className="text-sm animate-pulse" style={{ color: "var(--color-muted)" }}>در حال بارگذاری مسابقه...</p>
         </div>
       );

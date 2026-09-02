@@ -75,7 +75,7 @@ export function MatchTimelineView({ match }: { match: Match }) {
           <div className="flex flex-col items-center px-2">
             <span className="headline text-2xl md:text-3xl tabular">{match.homeScore} - {match.awayScore}</span>
             {isPenaltyDecision && (
-              <span className="text-xs mt-1 px-2.5 py-0.5 rounded-full" style={{ background: "rgba(23,182,204,0.12)", color: "#17b6cc" }}>
+              <span className="text-xs mt-1 px-2.5 py-0.5 rounded-full" style={{ background: "rgba(0,92,252,0.12)", color: "#005cfc" }}>
                 پنالتی: <span className="tabular font-black">{tl.penaltyScoreHome} - {tl.penaltyScoreAway}</span>
               </span>
             )}
@@ -147,7 +147,7 @@ export function MatchTimelineView({ match }: { match: Match }) {
       {/* ===== ضربات پنالتی ===== */}
       {tl.hasPenaltyShootout && (
         <section className="glass-panel p-4">
-          <h3 className="headline text-base mb-3 flex items-center gap-2"><span className="material-symbols-outlined text-[18px]" style={{ color: "#17b6cc" }}>sports_soccer</span> ضربات پنالتی</h3>
+          <h3 className="headline text-base mb-3 flex items-center gap-2"><span className="material-symbols-outlined text-[18px]" style={{ color: "#005cfc" }}>sports_soccer</span> ضربات پنالتی</h3>
           {[1, 2, 3, 4, 5, 6].map((round) => {
             const shots = tl.penalties.filter((p) => p.round === round);
             if (!shots.length) return null;
