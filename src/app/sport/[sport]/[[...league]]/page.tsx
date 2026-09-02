@@ -60,19 +60,18 @@ export default function SportPage() {
   const color = sport.color;
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#252525" }}>
-      {/* هدر */}
-      <header className="sticky top-0 z-30 neon-header flex items-center justify-between px-3 h-16 w-full" style={{ background: "#252525" }}>
-        <div className="flex items-center gap-2">
-          <button onClick={() => router.back()} className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/80 hover:bg-white/10"><span className="material-symbols-outlined text-[20px]">arrow_right_alt</span></button>
-          <Link href="/" className="headline text-lg"><span className="text-primary">Varzesh</span>Plus</Link>
+    <div className="min-h-screen flex flex-col pt-16" style={{ background: "#252525" }}>
+      {/* نوار وضعیت ورزش (زیر هدر ثابت FixedChrome) */}
+      <div className="max-w-[1200px] mx-auto px-3 w-full pt-4">
+        <div className="flex items-center justify-between">
+          <button onClick={() => router.back()} className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white border border-white/10 px-3 py-1.5 rounded-full transition-colors"><span className="material-symbols-outlined text-[16px]">arrow_right_alt</span> بازگشت</button>
+          <span className="text-xs px-2.5 py-1 rounded-full" style={{ background: `${color}22`, color, border: `1px solid ${color}55` }}>{sport.name}</span>
         </div>
-        <span className="text-xs px-2.5 py-1 rounded-full" style={{ background: `${color}22`, color, border: `1px solid ${color}55` }}>{sport.name}</span>
-      </header>
+      </div>
 
       <main className="flex-1 w-full max-w-[1200px] mx-auto px-3 py-6 space-y-6">
         {/* هیرو ورزش */}
-        <section className="relative rounded-2xl overflow-hidden p-6 md:p-10 border" style={{ background: `linear-gradient(135deg, ${color}2e, #222222 55%)`, borderColor: `${color}44`, boxShadow: `0 0 30px ${color}22` }}>
+        <section className="relative rounded-2xl overflow-hidden p-6 md:p-10 border" style={{ background: `linear-gradient(135deg, ${color}2e, #252525 55%)`, borderColor: `${color}44`, boxShadow: `0 0 30px ${color}22` }}>
           <div className="absolute -left-10 -top-10 w-48 h-48 rounded-full blur-3xl pointer-events-none" style={{ background: `${color}33` }} />
           <div className="relative flex flex-wrap items-center gap-4">
             <span className="text-6xl drop-shadow-lg">{sport.emoji}</span>
