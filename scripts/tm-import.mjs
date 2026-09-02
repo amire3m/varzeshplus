@@ -83,7 +83,7 @@ async function main() {
   db.exec(`
     CREATE TABLE tm_clubs (club_id INTEGER PRIMARY KEY, name TEXT, club_code TEXT, competition_id TEXT);
     CREATE TABLE tm_players (player_id INTEGER PRIMARY KEY, pretty_name TEXT, club_id INTEGER, position TEXT, sub_position TEXT, date_of_birth TEXT, height_in_cm INTEGER, foot TEXT, market_value_in_eur INTEGER, highest_market_value_in_eur INTEGER, contract_expiration_date TEXT, country_of_citizenship TEXT, image_url TEXT);
-    CREATE TABLE tm_transfers (transfer_id INTEGER PRIMARY KEY, player_id INTEGER, player_name TEXT, transfer_date TEXT, from_club_id INTEGER, from_club_name TEXT, to_club_id INTEGER, to_club_name TEXT, transfer_fee TEXT, market_value_in_eur INTEGER, is_loan INTEGER);
+    CREATE TABLE tm_transfers (player_id INTEGER, transfer_date TEXT, from_club_id INTEGER, from_club_name TEXT, to_club_id INTEGER, to_club_name TEXT, transfer_fee TEXT, market_value_in_eur INTEGER, player_name TEXT);
     CREATE TABLE tm_valuations (player_id INTEGER, date TEXT, market_value_in_eur INTEGER, current_club_id INTEGER);
     CREATE INDEX idx_tm_players_club ON tm_players(club_id);
     CREATE INDEX idx_tm_transfers_to ON tm_transfers(to_club_id);
@@ -92,9 +92,9 @@ async function main() {
     CREATE INDEX idx_tm_val_player ON tm_valuations(player_id);
   `);
 
-  const insClub = db.prepare(`INSERT OR REPLACE INTO tm_clubs VALUES (?,?,?,?,?)`);
+  const insClub = db.prepare(`INSERT OR REPLACE INTO tm_clubs VALUES (?,?,?,?)`);
   const insPlayer = db.prepare(`INSERT OR REPLACE INTO tm_players VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`);
-  const insTransfer = db.prepare(`INSERT OR REPLACE INTO tm_transfers VALUES (?,?,?,?,?,?,?,?,?,?,?)`);
+  const insTransfer = db.prepare(`INSERT INTO tm_transfers VALUES (?,?,?,?,?,?,?,?,?)`);
   const insVal = db.prepare(`INSERT INTO tm_valuations VALUES (?,?,?,?)`);
 
   db.transaction(() => {
@@ -107,9 +107,9 @@ async function main() {
       p.country_of_citizenship ?? null, p.image_url ?? null
     );
     for (const t of ourTransfers) insTransfer.run(
-      num(t.transfer_id), num(t.player_id), t.player_name ?? null, t.transfer_date ?? null,
+      num(t.player_id), t.transfer_date ?? null,
       num(t.from_club_id), t.from_club_name ?? null, num(t.to_club_id), t.to_club_name ?? null,
-      t.transfer_fee ?? null, num(t.market_value_in_eur), t.is_loan ? 1 : 0
+      t.transfer_fee ?? null, num(t.market_value_in_eur), t.player_name ?? null
     );
     for (const v of ourValuations) insVal.run(num(v.player_id), v.date, num(v.market_value_in_eur), num(v.current_club_id ?? playerClub(v) ?? null));
   })();
