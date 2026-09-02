@@ -34,6 +34,8 @@ export default function PlayerProfilePage() {
   const playerId = Number(params.playerId);
   const [data, setData] = useState<{ player: any; team: any; league: any; teammates: any[] } | null>(null);
   const [missing, setMissing] = useState(false);
+  const [market, setMarket] = useState<MarketData | null>(null);
+  const [marketChecked, setMarketChecked] = useState(false);
 
   useEffect(() => {
     if (Number.isNaN(playerId)) { setMissing(true); return; }
@@ -49,26 +51,29 @@ export default function PlayerProfilePage() {
     setData({ player, team, league, teammates });
   }, [playerId]);
 
+  const playerName = data?.player?.name ?? null;
+
+  // جستجوی ارزش بازار — NAME_MAP برای انگلیسی‌سازی نام
+  useEffect(() => {
+    if (!playerName) return;
+    let alive = true;
+    import("@/lib/player-photo").then(({ PLAYER_NAME_MAP }) => {
+      const en = PLAYER_NAME_MAP[playerName];
+      if (!en || !alive) { if (alive) setMarketChecked(true); return; }
+      fetch(`/api/football/player-market?name=${encodeURIComponent(en)}`)
+        .then((r) => r.json())
+        .then((res) => { if (alive) { setMarket(res?.found ? res : null); setMarketChecked(true); } })
+        .catch(() => { if (alive) setMarketChecked(true); });
+    });
+    return () => { alive = false; };
+  }, [playerName]);
+
   if (missing) return notFound();
   if (!data) {
     return <div className="min-h-screen flex items-center justify-center" style={{ background: "#252525" }}><p className="text-sm animate-pulse" style={{ color: "#8FA1B5" }}>بارگذاری پروفایل بازیکن...</p></div>;
   }
 
   const { player, team, league } = data;
-  const [market, setMarket] = useState<MarketData | null>(null);
-  const [marketChecked, setMarketChecked] = useState(false);
-
-  useEffect(() => {
-    // جستجوی ارزش بازار — NAME_MAP در سمت کلاینت برای انگلیسی‌سازی نام
-    import("@/lib/player-photo").then(({ PLAYER_NAME_MAP }) => {
-      const en = PLAYER_NAME_MAP[player.name];
-      if (!en) { setMarketChecked(true); return; }
-      fetch(`/api/football/player-market?name=${encodeURIComponent(en)}`)
-        .then((r) => r.json())
-        .then((res) => { setMarket(res?.found ? res : null); setMarketChecked(true); })
-        .catch(() => setMarketChecked(true));
-    });
-  }, [player.name]);
   const stats = [
     { label: "بازی", value: player.appearances, color: "#005cfc" },
     { label: "ترکیب اصلی", value: player.starts, color: "#005cfc" },
