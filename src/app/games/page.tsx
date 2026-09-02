@@ -81,6 +81,16 @@ export default function GamesPage() {
           </span>
         </div>
 
+        {/* بنر فوتبالیست منیجر */}
+        <Link href="/games/manager" className="block rounded-2xl border border-white/10 p-4 mb-6 flex items-center gap-3 hover:border-[#005cfc]/30 transition-colors" style={{ background: "linear-gradient(135deg, rgba(0,92,252,0.14), rgba(190,229,3,0.08))" }}>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white" style={{ background: "linear-gradient(135deg, #005cfc, #bee503)" }}>FM</div>
+          <div className="min-w-0">
+            <div className="headline text-sm text-white">فوتبالیست منیجر — بومی OFM</div>
+            <div className="text-xs text-slate-400">تیم بردار، ترکیب بچین، ۱۴ هفته را شبیه‌سازی کن — کاملاً فارسی</div>
+          </div>
+          <span className="mr-auto text-xs font-black px-3 py-1.5 rounded-full text-white shrink-0" style={{ background: "#005cfc" }}>ورود →</span>
+        </Link>
+
         {/* فیلتر تب‌ها */}
         <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-1">
           <Filter size={14} className="text-slate-500 shrink-0" />

@@ -228,6 +228,59 @@ export const notifications = sqliteTable("notifications", {
   createdById: integer("created_by"),
 });
 
+/* ---------- فوتبالیست منیجر — بومی OFM ---------- */
+export const managerSaves = sqliteTable("manager_saves", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: integer("user_id").notNull(),
+  teamSlug: text("team_slug").notNull(),
+  teamName: text("team_name").notNull(),
+  season: integer("season").notNull().default(1),
+  week: integer("week").notNull().default(1),
+  budget: integer("budget").notNull().default(5000000),
+  points: integer("points").notNull().default(0),
+  wins: integer("wins").notNull().default(0),
+  draws: integer("draws").notNull().default(0),
+  losses: integer("losses").notNull().default(0),
+  goalsFor: integer("goals_for").notNull().default(0),
+  goalsAgainst: integer("goals_against").notNull().default(0),
+  createdAt: text("created_at").notNull().default(""),
+  updatedAt: text("updated_at").notNull().default(""),
+}, (t) => [index("idx_manager_user").on(t.userId), index("idx_manager_team").on(t.teamSlug)]);
+
+export const managerPlayers = sqliteTable("manager_players", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  saveId: integer("save_id").notNull(),
+  name: text("name").notNull(),
+  position: text("position").notNull(), // GK | DF | MF | FW
+  age: integer("age").notNull(),
+  rating: integer("rating").notNull(), // 60-90
+  value: integer("value").notNull(),
+  salary: integer("salary").notNull(),
+  isStarter: integer("is_starter", { mode: "boolean" }).notNull().default(false),
+}, (t) => [index("idx_mp_save").on(t.saveId)]);
+
+export const managerInbox = sqliteTable("manager_inbox", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  saveId: integer("save_id").notNull(),
+  title: text("title").notNull(),
+  body: text("body").notNull(),
+  category: text("category").notNull().default("news"), // news | result | transfer | training
+  isRead: integer("is_read", { mode: "boolean" }).notNull().default(false),
+  createdAt: text("created_at").notNull().default(""),
+}, (t) => [index("idx_inbox_save").on(t.saveId)]);
+
+export const managerMatches = sqliteTable("manager_matches", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  saveId: integer("save_id").notNull(),
+  week: integer("week").notNull(),
+  homeTeam: text("home_team").notNull(),
+  awayTeam: text("away_team").notNull(),
+  homeScore: integer("home_score"),
+  awayScore: integer("away_score"),
+  events: text("events"), // JSON commentary
+  status: text("status").notNull().default("upcoming"), // upcoming | played
+}, (t) => [index("idx_mm_save_week").on(t.saveId, t.week)]);
+
 /* ---------- لاگ ممیزی (Audit Trail) ---------- */
 
 export const auditLogs = sqliteTable("audit_logs", {
