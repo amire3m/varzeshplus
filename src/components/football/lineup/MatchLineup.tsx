@@ -53,9 +53,9 @@ export function MatchLineup({ match, homeTeam, awayTeam }: { match: Match; homeT
         </div>
       </div>
 
-      {/* زمین */}
+      {/* زمین — رنگ حلقه از رنگ تیم */}
       <FootballPitch>
-        <FormationRenderer lineup={lineup} home={isHome} />
+        <FormationRenderer lineup={lineup} home={isHome} color={team.color} />
       </FootballPitch>
 
       {/* تعویض‌ها */}

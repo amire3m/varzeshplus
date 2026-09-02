@@ -8,6 +8,7 @@ import { MatchNavigation, type MatchTab } from "@/components/football/lineup/Mat
 import { MatchLineup } from "@/components/football/lineup/MatchLineup";
 import { MatchTimelineView } from "@/components/football/lineup/MatchTimeline";
 import { MatchStatsView } from "@/components/football/MatchStatsView";
+import { MatchSideEvents } from "@/components/football/MatchSideEvents";
 import { TeamBadge } from "@/components/football/TeamBadge";
 import { PageShell } from "@/components/layout/PageShell";
 
@@ -105,11 +106,7 @@ export default function MatchPage() {
 
         {tab === "stats" && <MatchStatsView match={match} />}
 
-        {tab === "events" && (
-          <div className="glass-panel p-6 text-center text-sm" style={{ color: "var(--color-muted)" }}>
-            رویدادهای مسابقه در حال آماده‌سازی است.
-          </div>
-        )}
+        {tab === "events" && <MatchSideEvents match={match} />}
 
         {tab === "standings" && (
           <div className="glass-panel p-6 text-center text-sm" style={{ color: "var(--color-muted)" }}>

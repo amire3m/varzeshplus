@@ -97,13 +97,13 @@ const VIDEOS = {
   ],
 };
 
-/** بهترین گلزنان — دیتای واقعی از victoryapp */
+/** بهترین گلزنان — دیتای واقعی از victoryapp (slug برای پروفایل تیم) */
 const TOP_SCORERS = [
-  { rank: "۱", name: "مهدی ترابی", team: "پرسپولیس", goals: "۱۸", color: "#D50000" },
-  { rank: "۲", name: "شهریار مغانلو", team: "سپاهان", goals: "۱۵", color: "#F7B500" },
-  { rank: "۳", name: "محمد محبی", team: "استقلال", goals: "۱۲", color: "#0057B8" },
-  { rank: "۴", name: "امیرحسین حسین‌زاده", team: "تراکتور", goals: "۱۱", color: "#DC2626" },
-  { rank: "۵", name: "کاوه رضایی", team: "گل‌گهر", goals: "۱۰", color: "#1B4D8F" },
+  { rank: "۱", name: "مهدی ترابی", team: "پرسپولیس", teamSlug: "persepolis", goals: "۱۸", color: "#D50000" },
+  { rank: "۲", name: "شهریار مغانلو", team: "سپاهان", teamSlug: "sepahan", goals: "۱۵", color: "#F7B500" },
+  { rank: "۳", name: "محمد محبی", team: "استقلال", teamSlug: "esteghlal", goals: "۱۲", color: "#0057B8" },
+  { rank: "۴", name: "امیرحسین حسین‌زاده", team: "تراکتور", teamSlug: "tractor", goals: "۱۱", color: "#DC2626" },
+  { rank: "۵", name: "کاوه رضایی", team: "گل‌گهر", teamSlug: "golgohar", goals: "۱۰", color: "#1B4D8F" },
 ];
 
 /** ناوبری هدر */
@@ -428,11 +428,11 @@ export default function HomePage() {
                 {standings.map((row, i) => (
                   <tr key={row.name} className={`border-b border-white/5 transition-colors hover:bg-white/[0.03] ${i === 0 ? "bg-sky-500/5" : ""}`}>
                     <td className="px-3 py-2.5">
-                      <div className="flex items-center gap-2 min-w-0">
+                      <Link href="/football/leagues/persian-gulf" className="flex items-center gap-2 min-w-0 group">
                         <span className="tabular text-[11px] w-4 shrink-0" style={{ color: i === 0 ? "#005cfc" : "#64748b" }}>{["۱","۲","۳","۴","۵"][i]}</span>
                         <img src={row.logo} alt={row.name} className="w-5 h-5 object-contain shrink-0" loading="lazy" />
-                        <span className="font-bold truncate text-white">{row.name}</span>
-                      </div>
+                        <span className="font-bold truncate text-white group-hover:text-[#005cfc] transition-colors">{row.name}</span>
+                      </Link>
                     </td>
                     <td className="px-2 py-2.5 text-center tabular text-slate-400">{row.played}</td>
                     <td className="px-2 py-2.5 text-center tabular font-black" style={{ color: "#005cfc" }}>{row.pts}</td>
@@ -502,7 +502,7 @@ export default function HomePage() {
                   <span className="w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 border border-white/10" style={{ background: `${p.color}25`, color: p.color }}>{p.name.slice(0, 2)}</span>
                   <div className="min-w-0 flex-1">
                     <p className="text-[12px] font-bold truncate text-white">{p.name}</p>
-                    <span className="text-[10px] text-slate-500">{p.team}</span>
+                    <Link href={`/football/teams/${p.teamSlug}`} className="text-[10px] text-slate-500 hover:text-[#005cfc] transition-colors">{p.team}</Link>
                   </div>
                   <span className="font-black text-[14px] text-white shrink-0">{p.goals} <span className="text-[10px] font-normal text-slate-500">گل</span></span>
                 </div>

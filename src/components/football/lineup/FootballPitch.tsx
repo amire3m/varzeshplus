@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-/** زمین فوتبال افقی (Landscape) با تم تاریک و خطوط subtle */
+/** زمین فوتبال افقی (Landscape) — چمن راه‌راه + خطوط subtle */
 export function FootballPitch({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <div
@@ -9,11 +9,15 @@ export function FootballPitch({ children, className = "" }: { children: ReactNod
         aspectRatio: "16 / 9.6",
         borderRadius: 16,
         background:
-          "radial-gradient(120% 120% at 50% 0%, #1c2b20 0%, #16221a 45%, #101a14 100%)",
+          "radial-gradient(120% 120% at 50% 0%, #1e3324 0%, #16271c 45%, #0f1c15 100%)",
         border: "1px solid rgba(255,255,255,0.08)",
         boxShadow: "inset 0 0 60px rgba(0,0,0,0.55)",
       }}
     >
+      {/* چمن راه‌راه عمودی */}
+      <div className="absolute inset-0 opacity-60" aria-hidden style={{
+        background: "repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0 6.25%, transparent 6.25% 12.5%)",
+      }} />
       {/* خطوط زمین */}
       <div className="absolute inset-0" style={{ color: "rgba(255,255,255,0.14)" }} aria-hidden>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full" style={{ position: "absolute", inset: 0 }}>

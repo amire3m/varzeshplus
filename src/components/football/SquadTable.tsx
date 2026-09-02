@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import type { Player, Team } from "@/lib/football";
 import { squadFor } from "@/lib/football";
+import { PlayerAvatar } from "./PlayerAvatar";
 
 const POSITION_LABEL: Record<Player["position"], string> = { GK: "دروازه‌بان", DF: "مدافع", MF: "هافبک", FW: "مهاجم" };
 
@@ -41,13 +43,18 @@ export function SquadTable({ team }: { team: Team }) {
                   {players.map((p) => (
                     <tr key={p.id} className="border-t border-white/5 hover:bg-white/[0.04] transition-colors">
                       <td className="px-3 py-2.5 tabular font-black">{p.number}</td>
-                      <td className="px-3 py-2.5 font-bold whitespace-nowrap"><span dir="rtl" style={{ color: "#F5F7FA" }}>{p.name}</span></td>
+                      <td className="px-3 py-2.5 font-bold whitespace-nowrap">
+                        <Link href={`/football/players/${p.id}`} className="flex items-center gap-2 group">
+                          <PlayerAvatar name={p.name} size={30} color={team.color} />
+                          <span dir="rtl" className="group-hover:text-[#005cfc] transition-colors" style={{ color: "#F5F7FA" }}>{p.name}</span>
+                        </Link>
+                      </td>
                       <td className="px-3 py-2.5 text-center">{POSITION_LABEL[p.position]}</td>
                       <td className="px-3 py-2.5 text-center tabular">{p.age}</td>
                       <td className="px-3 py-2.5 text-center whitespace-nowrap">{p.nationality}</td>
                       <td className="px-3 py-2.5 text-center tabular">{p.appearances}</td>
                       <td className="px-3 py-2.5 text-center tabular">{p.starts}</td>
-                      <td className="px-3 py-2.5 text-center tabular font-bold" style={{ color: "#19C9E8" }}>{p.goals}</td>
+                      <td className="px-3 py-2.5 text-center tabular font-bold" style={{ color: "#005cfc" }}>{p.goals}</td>
                       <td className="px-3 py-2.5 text-center tabular">{p.assists}</td>
                       <td className="px-3 py-2.5 text-center tabular" style={{ color: "#f9c759" }}>{p.yellowCards}</td>
                       <td className="px-3 py-2.5 text-center tabular" style={{ color: "#ffb4ab" }}>{p.redCards}</td>

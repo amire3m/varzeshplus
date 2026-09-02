@@ -92,19 +92,17 @@ export default function GamePage() {
   const q = questions[current];
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="border-b border-white/5" style={{ background: "var(--color-panel-dark)" }}>
-        <div className="max-w-2xl mx-auto px-4 h-14 flex items-center gap-3">
-          <button onClick={() => router.push("/")} className="btn-ghost px-3 py-1.5 text-sm">بازگشت</button>
+    <div className="min-h-screen pt-4">
+      <main className="max-w-2xl mx-auto px-4 pb-24 space-y-5">
+        {/* کارت عنوان بازی */}
+        <div className="panel p-4 flex items-center gap-3">
+          <button onClick={() => router.push("/games")} className="btn-ghost px-3 py-1.5 text-sm shrink-0">بازگشت</button>
           <div className="min-w-0 flex-1">
             <div className="headline truncate">{game!.title}</div>
             {game!.programTitle && <div className="text-xs" style={{ color: "var(--color-muted)" }}>{game!.programTitle}</div>}
           </div>
           {game!.prize && <span className="text-xs px-2 py-1 rounded-full shrink-0" style={{ background: "rgba(232,184,75,0.12)", color: "var(--color-gold-medal)" }}>🏆 {game!.prize}</span>}
         </div>
-      </header>
-
-      <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-8">
         {result ? (
           <div className="panel p-8 text-center space-y-4">
             <h2 className="headline text-xl" style={{ color: "var(--color-club-green)" }}>بازی تمام شد!</h2>
