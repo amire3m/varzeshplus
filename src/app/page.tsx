@@ -351,7 +351,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ ۴. نوار افقی مسابقات زنده ============ */}
-      <section className="w-full py-4" style={{ background: "#070b14" }}>
+      <section id="games" className="w-full py-4" style={{ background: "#070b14" }}>
         <div className="max-w-[1320px] mx-auto px-4">
           {/* هدر بخش */}
           <div className="flex items-center justify-between mb-4">

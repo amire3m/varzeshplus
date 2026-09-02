@@ -62,17 +62,17 @@ export function FixedChrome() {
   return (
     <>
       {/* ============ هدر ثابت ============ */}
-      <header className="fixed top-0 z-50 w-full border-b border-white/10" style={{ background: "rgba(7,11,20,0.92)", backdropFilter: "blur(14px)" }}>
+      <header className="fixed top-0 z-50 w-full border-b border-white/10" style={{ background: "rgba(37,37,37,0.95)", backdropFilter: "blur(14px)" }}>
         <div className="max-w-[1320px] mx-auto px-4 h-16 flex items-center justify-between gap-3">
           {/* راست: منو + برند */}
           <div className="flex items-center gap-3">
-            <button onClick={() => setMenuOpen((v) => !v)} aria-label="منو" className="p-1 transition-colors" style={{ color: "#00b4d8" }}>
+            <button onClick={() => setMenuOpen((v) => !v)} aria-label="منو" className="p-1 transition-colors" style={{ color: "#005cfc" }}>
               {menuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
             <Link href="/" className="leading-none">
               <span className="headline text-[20px] block">
                 <span className="text-white">Varzesh</span>{" "}
-                <span className="drop-shadow-[0_0_10px_rgba(0,180,216,0.6)]" style={{ color: "#00b4d8" }}>Plus</span>
+                <span className="drop-shadow-[0_0_10px_rgba(0,92,252,0.6)]" style={{ color: "#005cfc" }}>Plus</span>
               </span>
               <span className="text-[10px] block mt-1 text-slate-400">شبکه ورزش</span>
             </Link>
@@ -98,16 +98,16 @@ export function FixedChrome() {
 
           {/* چپ: ساعت/تاریخ + حساب */}
           <div className="flex items-center gap-2">
-            <span className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 text-[12px] font-bold tabular text-white" style={{ background: "rgba(13,20,36,0.8)" }} dir="ltr">
-              <Clock3 size={14} style={{ color: "#00b4d8" }} />{timeStr}
+            <span className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 text-[12px] font-bold tabular text-white" style={{ background: "rgba(37,37,37,0.9)" }} dir="ltr">
+              <Clock3 size={14} style={{ color: "#005cfc" }} />{timeStr}
             </span>
-            <span className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 text-[11px] text-white" style={{ background: "rgba(13,20,36,0.8)" }}>
-              <CalendarDays size={14} style={{ color: "#00b4d8" }} />{dateStr}
+            <span className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 text-[11px] text-white" style={{ background: "rgba(37,37,37,0.9)" }}>
+              <CalendarDays size={14} style={{ color: "#005cfc" }} />{dateStr}
             </span>
             {user ? (
-              <Link href="/profile" className="hidden sm:flex items-center px-3 py-1.5 rounded-full border border-white/10 text-[12px] text-white" style={{ background: "rgba(13,20,36,0.8)" }}>{user.displayName}</Link>
+              <Link href="/profile" className="hidden sm:flex items-center px-3 py-1.5 rounded-full border border-white/10 text-[12px] text-white" style={{ background: "rgba(37,37,37,0.9)" }}>{user.displayName}</Link>
             ) : (
-              <Link href="/login" className="hidden sm:inline-flex px-4 py-1.5 rounded-full text-[12px] font-black text-white" style={{ background: "linear-gradient(135deg, #00b4d8, #8b5cf6)", boxShadow: "0 4px 16px rgba(0,180,216,0.3)" }}>ورود</Link>
+              <Link href="/login" className="hidden sm:inline-flex px-4 py-1.5 rounded-full text-[12px] font-black text-white" style={{ background: "linear-gradient(135deg, #005cfc, #bee503)", boxShadow: "0 4px 16px rgba(0,92,252,0.3)" }}>ورود</Link>
             )}
           </div>
         </div>
@@ -163,14 +163,21 @@ export function FixedChrome() {
       {/* ============ داک شناور ============ */}
       <nav
         className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-6 py-2.5 rounded-full border border-white/10 shadow-2xl flex items-center gap-6"
-        style={{ background: "rgba(15,23,42,0.9)", backdropFilter: "blur(20px)" }}
+        style={{ background: "rgba(37,37,37,0.92)", backdropFilter: "blur(20px)" }}
         dir="rtl"
       >
         {DOCK_ITEMS.map((item) => {
-          const isActive = item.key === "home" ? pathname === "/" : false;
+          // فعال‌سازی درست هر آیتم بر اساس pathname
+          const hrefPath = item.href.split("#")[0] || "/";
+          const isActive =
+            item.key === "home"
+              ? pathname === "/"
+              : item.href.includes("#")
+                ? pathname === "/" // هش‌ها روی صفحه اصلی فعال می‌شوند
+                : pathname === hrefPath || pathname.startsWith(hrefPath + "/");
           const Icon = item.icon;
           return isActive ? (
-            <Link key={item.key} href={item.href} className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-200" style={{ background: "rgba(0,180,216,0.15)", border: "1px solid rgba(0,180,216,0.3)", color: "#00b4d8" }}>
+            <Link key={item.key} href={item.href} className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-200" style={{ background: "rgba(0,92,252,0.15)", border: "1px solid rgba(0,92,252,0.3)", color: "#005cfc" }}>
               <Icon size={18} className="fill-current" />
               <span className="text-[12px] font-black">{item.label}</span>
             </Link>
