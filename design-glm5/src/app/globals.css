@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+@theme {
+  /* Custom colors from design spec */
+  --color-ink-pitch: #0B121C;
+  --color-panel-dark: #141C29;
+  --color-floodlight: #F4F7FA;
+  --color-club-green: #2ECC71;
+  --color-club-green-dark: #27AE60;
+  --color-live-signal: #E23B3B;
+  --color-gold-medal: #E8B84B;
+  --color-silver-medal: #C9CDD3;
+  --color-bronze-medal: #C97F4A;
+  --color-glow-electric: #5B7FFF;
+  --color-glow-electric-dim: rgba(91, 127, 255, 0.15);
+  --color-panel-border: rgba(244, 247, 250, 0.08);
+  --color-panel-border-hover: rgba(244, 247, 250, 0.15);
+
+  /* Font families */
+  --font-vazir: "Vazirmatn", system-ui, sans-serif;
+  --font-tabular: "Vazirmatn", system-ui, sans-serif;
+}
+
+/* Vazirmatn font import */
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0B121C;
+  color: #F4F7FA;
+  font-family: "Vazirmatn", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B121C;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(244, 247, 250, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5B7FFF;
+}
+
+/* Tabular numbers for score displays */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Live pulse animation */
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.animate-live-pulse {
+  animation: live-pulse 1.5s ease-in-out infinite;
+}
+
+/* Glow animation for active game cards */
+@keyframes glow-subtle {
+  0%, 100% { box-shadow: 0 0 0 rgba(91, 127, 255, 0); }
+  50% { box-shadow: 0 0 20px rgba(91, 127, 255, 0.3); }
+}
+
+/* Rank highlight animation */
+@keyframes rank-highlight {
+  0% { background-color: rgba(91, 127, 255, 0.3); }
+  100% { background-color: transparent; }
+}
+
+.animate-rank-highlight {
+  animation: rank-highlight 2s ease-out forwards;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-live-pulse {
+    animation: none;
+  }
+  .animate-rank-highlight {
+    animation: none;
+  }
+  .animate-ticker {
+    animation: none;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Focus visible styles */
+*:focus-visible {
+  outline: 2px solid #2ECC71;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Custom utility classes */
+.card-panel {
+  background-color: #141C29;
+  border: 1px solid rgba(244, 247, 250, 0.08);
+  border-radius: 12px;
+}
+
+.game-card-glow:hover {
+  box-shadow: 0 0 24px rgba(91, 127, 255, 0.25), 0 0 48px rgba(91, 127, 255, 0.1);
+  border-color: #5B7FFF;
+}
+
+/* Medal colors */
+.medal-gold {
+  color: #E8B84B;
+}
+.medal-silver {
+  color: #C9CDD3;
+}
+.medal-bronze {
+  color: #C97F4A;
+}
+
+/* Scoreboard ticker */
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  animation: ticker-scroll 30s linear infinite;
+}
+
+/* Hero gradient overlay */
+.hero-gradient {
+  background: linear-gradient(to top, #0B121C 0%, rgba(11, 18, 28, 0.85) 30%, rgba(11, 18, 28, 0.4) 60%, transparent 100%);
+}
+
+/* Shimmer effect for loading */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, #141C29 25%, rgba(244, 247, 250, 0.05) 50%, #141C29 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
