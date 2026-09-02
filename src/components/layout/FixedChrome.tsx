@@ -49,9 +49,8 @@ const HIDE_PREFIXES = ["/admin"];
 export function FixedChrome() {
   const pathname = usePathname() || "/";
   const router = useRouter();
-  if (HIDE_PREFIXES.some((p) => pathname.startsWith(p))) return null;
 
-  // ساعت و تاریخ شمسی زنده
+  // ساعت و تاریخ شمسی زنده — همه هوک‌ها قبل از هر return شرطی (رفع hydration #418/#310)
   const [now, setNow] = useState(() => new Date());
   const [user, setUser] = useState<{ id: number; displayName: string | null } | null>(null);
   useEffect(() => {
@@ -59,11 +58,18 @@ export function FixedChrome() {
     fetch("/api/home").then((r) => r.json()).then((res) => { if (res?.success) setUser(res.user ?? null); }).catch(() => {});
     return () => clearInterval(t);
   }, []);
-  const timeStr = new Intl.DateTimeFormat("fa-IR", { hour: "2-digit", minute: "2-digit" }).format(now);
-  const dateStr = new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", year: "numeric" }).format(now);
+  const [timeStr, setTimeStr] = useState("");
+  const [dateStr, setDateStr] = useState("");
+  useEffect(() => {
+    setTimeStr(new Intl.DateTimeFormat("fa-IR", { hour: "2-digit", minute: "2-digit" }).format(new Date()));
+    setDateStr(new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", year: "numeric" }).format(new Date()));
+  }, [now]);
 
   // Drawer
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // بعد از همه هوک‌ها: مخفی‌سازی برای صفحات ادمین
+  if (HIDE_PREFIXES.some((p) => pathname.startsWith(p))) return null;
 
   return (
     <>
