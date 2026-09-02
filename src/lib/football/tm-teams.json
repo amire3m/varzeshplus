@@ -1,0 +1,56 @@
+{
+  "comment": "slug پروژه → tmClubId (Transfermarkt). فقط تیم‌های با پوشش دیتاست (۹ لیگ). BR1/US1/IR1 ندارند.",
+  "premier-league": {
+    "arsenal": 11, "everton": 29, "liverpool": 31, "tottenham": 148, "southampton": 180,
+    "manchester-city": 281, "west-ham": 379, "aston-villa": 405, "wolves": 543,
+    "chelsea": 631, "ipswich": 677, "nottingham-forest": 703, "newcastle": 762,
+    "crystal-palace": 873, "fulham": 931, "manchester-united": 985, "bournemouth": 989,
+    "leicester": 1003, "luton": 1031, "burnley": 1132, "brentford": 1148, "brighton": 1237
+  },
+  "la-liga": {
+    "real-madrid": 418, "barcelona": 131, "atletico-madrid": 13, "athletic-club": 621,
+    "real-sociedad": 681, "villarreal": 1050, "real-betis": 150, "sevilla": 368,
+    "valencia": 1049, "girona": 12321, "osasuna": 331, "celta-vigo": 940,
+    "mallorca": 237, "rayo-vallecano": 367, "getafe": 3709, "alaves": 1108,
+    "espanyol": 714, "leganes": 1244, "valladolid": 366, "las-palmas": 472
+  },
+  "serie-a": {
+    "inter": 46, "milan": 5, "juventus": 506, "napoli": 6195, "atalanta": 800,
+    "roma": 127, "lazio": 398, "fiorentina": 988, "bologna": 1025, "torino": 416,
+    "udinese": 410, "genoa": 252, "como": 1047, "monza": 2815, "cagliari": 1390,
+    "lecce": 1005, "parma": 130, "verona": 276, "empoli": 749, "venezia": 607
+  },
+  "bundesliga": {
+    "bayern-munich": 27, "borussia-dortmund": 16, "bayer-leverkusen": 15, "rb-leipzig": 23826,
+    "eintracht-frankfurt": 24, "vfb-stuttgart": 79, "sc-freiburg": 60, "wolfsburg": 82,
+    "mainz": 39, "borussia-mgladbach": 18, "hoffenheim": 533, "werder-bremen": 86,
+    "augsburg": 167, "union-berlin": 89, "st-pauli": 35, "heidenheim": 2036,
+    "bochum": 80, "holstein-kiel": 269
+  },
+  "ligue-1": {
+    "psg": 583, "marseille": 244, "monaco": 162, "lille": 1082, "lyon": 1041,
+    "nice": 417, "lens": 826, "rennes": 273, "toulouse": 415, "strasbourg": 667,
+    "brest": 3911, "nantes": 995, "reims": 1421, "montpellier": 969, "le-havre": 738,
+    "auxerre": 290, "angers": 1420, "saint-etienne": 618
+  },
+  "eredivisie": {
+    "ajax": 610, "psv": 383, "feyenoord": 234, "az-alkmaar": 1090, "twente": 317,
+    "utrecht": 200, "heerenveen": 306, "groningen": 202, "vitesse": 499,
+    "go-ahead-eagles": 1435, "pec-zwolle": 1269, "fortuna-sittard": 385
+  },
+  "primeira-liga": {
+    "benfica": 294, "porto": 720, "sporting-lisbon": 336, "braga": 1075,
+    "vitoria-guimaraes": 2420, "boavista": 2503, "famalicao": 3329, "moreirense": 979,
+    "gil-vicente": 2424, "rio-ave": 2425, "estoril": 1465, "santa-clara": 2423
+  },
+  "super-lig": {
+    "galatasaray": 141, "fenerbahce": 36, "besiktas": 114, "trabzonspor": 449,
+    "basaksehir": 6890, "sivasspor": 2381, "konyaspor": 2293, "antalyaspor": 589,
+    "alanyaspor": 11282, "kasimpasa": 10484, "gaziantep": 2832, "hatayspor": 7775
+  },
+  "saudi-pro-league": {
+    "al-hilal": 1114, "al-nassr": 18544, "al-ittihad": 8023, "al-ahli": 18487,
+    "al-taawoun": 28844, "al-fateh": 27221, "damac": 50532,
+    "al-raed": 22381, "al-wehda": 17209, "al-khaleej": 6070, "al-riyadh": 31008
+  }
+}

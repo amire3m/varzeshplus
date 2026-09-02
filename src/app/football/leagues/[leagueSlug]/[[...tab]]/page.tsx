@@ -10,6 +10,7 @@ import { MatchGlowCard } from "@/components/home/MatchGlowCard";
 import { StandingsTable } from "@/components/football/StandingsTable";
 import { NewsCard } from "@/components/football/NewsCard";
 import { TransferCard } from "@/components/football/TransferCard";
+import { RealTransfersSection } from "@/components/football/TransferCard";
 import { PlayerStatsCard } from "@/components/football/PlayerStatsCard";
 import { TeamCard } from "@/components/football/TeamCard";
 import { PageShell } from "@/components/layout/PageShell";
@@ -134,7 +135,7 @@ export default function LeaguePage() {
         {tab === "transfers" && (
           <div className="space-y-4">
             <h2 className="headline text-lg text-white">نقل‌وانتقالات {league.name}</h2>
-            <div className="space-y-2.5">{transfers.map((t) => <TransferCard key={t.id} transfer={t} getTeam={getTeamById} />)}</div>
+            <RealTransfersSection leagueSlug={league.slug} leagueId={league.id} getTeam={getTeamById} />
           </div>
         )}
 

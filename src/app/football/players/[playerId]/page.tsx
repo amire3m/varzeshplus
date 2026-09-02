@@ -9,6 +9,22 @@ import { PlayerAvatar } from "@/components/football/PlayerAvatar";
 
 const POSITION_LABEL: Record<string, string> = { GK: "دروازه‌بان", DF: "مدافع", MF: "هافبک", FW: "مهاجم" };
 
+type MarketData = {
+  player: {
+    prettyName: string; position: string | null; dateOfBirth: string | null; height: number | null;
+    foot: string | null; marketValueEur: number | null; highestMarketValueEur: number | null;
+    contractUntil: string | null; citizenship: string | null; tmClubName: string | null;
+  };
+  history: Array<{ date: string; v: number | null }>;
+};
+
+function fmtEur(n: number | null): string {
+  if (n === null || n === undefined) return "—";
+  if (n >= 1_000_000) return `€${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M`;
+  if (n >= 1_000) return `€${Math.round(n / 1_000)}K`;
+  return `€${n}`;
+}
+
 /**
  * پروفایل بازیکن — id = teamId*100 + index (سازگار با squadFor)
  * مثال: id 120101 → تیم 1201 (پرسپولیس)، بازیکن شاخص ۱
@@ -39,6 +55,20 @@ export default function PlayerProfilePage() {
   }
 
   const { player, team, league } = data;
+  const [market, setMarket] = useState<MarketData | null>(null);
+  const [marketChecked, setMarketChecked] = useState(false);
+
+  useEffect(() => {
+    // جستجوی ارزش بازار — NAME_MAP در سمت کلاینت برای انگلیسی‌سازی نام
+    import("@/lib/player-photo").then(({ PLAYER_NAME_MAP }) => {
+      const en = PLAYER_NAME_MAP[player.name];
+      if (!en) { setMarketChecked(true); return; }
+      fetch(`/api/football/player-market?name=${encodeURIComponent(en)}`)
+        .then((r) => r.json())
+        .then((res) => { setMarket(res?.found ? res : null); setMarketChecked(true); })
+        .catch(() => setMarketChecked(true));
+    });
+  }, [player.name]);
   const stats = [
     { label: "بازی", value: player.appearances, color: "#005cfc" },
     { label: "ترکیب اصلی", value: player.starts, color: "#005cfc" },
@@ -83,6 +113,56 @@ export default function PlayerProfilePage() {
             ))}
           </div>
         </section>
+
+        {/* ارزش بازار — Transfermarkt */}
+        {marketChecked && market && (
+          <section className="rounded-2xl border p-4" style={{ background: "#2a2a2a", borderColor: "rgba(0,92,252,0.25)" }}>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="headline text-sm text-white">ارزش بازار</h3>
+              <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: "rgba(0,92,252,0.12)", color: "#005cfc" }}>دیتای واقعی Transfermarkt</span>
+            </div>
+            <div className="flex flex-wrap items-end gap-4 mb-4">
+              <div>
+                <div className="headline text-2xl tabular" style={{ color: "#005cfc" }}>{fmtEur(market.player.marketValueEur)}</div>
+                <div className="text-[10px] text-slate-500">ارزش فعلی</div>
+              </div>
+              <div>
+                <div className="headline text-sm tabular text-slate-300">{fmtEur(market.player.highestMarketValueEur)}</div>
+                <div className="text-[10px] text-slate-500">بیشترین سابقه</div>
+              </div>
+              <div className="flex gap-3 text-[11px] text-slate-400 mr-auto flex-wrap">
+                {market.player.foot && <span>پای غالب: <b className="text-slate-200">{market.player.foot === "right" ? "راست" : market.player.foot === "left" ? "چپ" : "دو پا"}</b></span>}
+                {market.player.height && <span>قد: <b className="text-slate-200 tabular">{market.player.height}cm</b></span>}
+                {market.player.contractUntil && <span>قرارداد تا: <b className="text-slate-200 tabular">{market.player.contractUntil.slice(0, 4)}</b></span>}
+                {market.player.tmClubName && <span>باشگاه TM: <b className="text-slate-200">{market.player.tmClubName}</b></span>}
+              </div>
+            </div>
+            {/* نمودار تاریخچه */}
+            {market.history.length > 2 && (
+              <div>
+                <div className="flex items-end gap-[3px] h-24">
+                  {market.history.map((h, i) => {
+                    const vals = market.history.map((x) => x.v ?? 0);
+                    const max = Math.max(...vals, 1);
+                    return (
+                      <div
+                        key={i}
+                        className="flex-1 rounded-t transition-all"
+                        style={{ height: `${Math.max(6, ((h.v ?? 0) / max) * 100)}%`, background: i === market.history.length - 1 ? "#bee503" : "#005cfc", opacity: 0.4 + (i / market.history.length) * 0.6 }}
+                        title={`${h.date}: ${fmtEur(h.v)}`}
+                      />
+                    );
+                  })}
+                </div>
+                <div className="flex justify-between text-[9px] text-slate-600 mt-1">
+                  <span>{market.history[0]?.date.slice(0, 7)}</span>
+                  <span>تاریخچه ارزش بازار</span>
+                  <span>{market.history[market.history.length - 1]?.date.slice(0, 7)}</span>
+                </div>
+              </div>
+            )}
+          </section>
+        )}
 
         {/* تیم و هم‌تیمی‌ها */}
         <section className="grid gap-4 md:grid-cols-2">
