@@ -76,13 +76,15 @@ export async function GET(req: Request) {
       };
     });
 
-    // جدول از نتایج واقعی — فقط تیم‌های ما
+    // جدول از نتایج واقعی (اهداف از club_games) — فقط تیم‌های ما
     const standings: Array<{ teamId: number; played: number; win: number; draw: number; loss: number; gf: number; ga: number; pts: number }> = [];
     const acc = new Map<number, { played: number; win: number; draw: number; loss: number; gf: number; ga: number; pts: number }>();
     for (const g of games) {
-      if (g.home_goals === null || g.away_goals === null) continue;
+      const homeGoals = g.cg_own !== null && g.cg_own !== undefined ? g.cg_own : g.home_goals;
+      const awayGoals = g.cg_opp !== null && g.cg_opp !== undefined ? g.cg_opp : g.away_goals;
+      if (homeGoals === null || awayGoals === null) continue;
       if (!tmIdToTeam.has(g.home_club_id) || !tmIdToTeam.has(g.away_club_id)) continue;
-      for (const [me, opp, gf, ga] of [[g.home_club_id, g.away_club_id, g.home_goals, g.away_goals], [g.away_club_id, g.home_club_id, g.away_goals, g.home_goals]] as const) {
+      for (const [me, opp, gf, ga] of [[g.home_club_id, g.away_club_id, homeGoals, awayGoals], [g.away_club_id, g.home_club_id, awayGoals, homeGoals]] as const) {
         const a = acc.get(me) ?? { played: 0, win: 0, draw: 0, loss: 0, gf: 0, ga: 0, pts: 0 };
         a.played++; a.gf += gf; a.ga += ga;
         if (gf > ga) { a.win++; a.pts += 3; } else if (gf === ga) { a.draw++; a.pts += 1; } else a.loss++;
