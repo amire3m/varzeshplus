@@ -1,8 +1,20 @@
 import { NextResponse } from "next/server";
 import Database from "better-sqlite3";
 import path from "path";
+import { TEAMS } from "@/lib/football/leagues";
+import mapping from "@/lib/football/tm-teams.json";
 
 /** پروفایل واقعی بازیکن با player_id واقعی TM — ?id=406635 */
+
+type MappingFile = Record<string, Record<string, number>>;
+const MAP = mapping as unknown as MappingFile;
+
+// tmClubId → teamSlug پروژه
+const tmClubToSlug = new Map<number, string>();
+for (const teams of Object.values(MAP)) {
+  for (const [slug, tmId] of Object.entries(teams)) tmClubToSlug.set(tmId, slug);
+}
+const teamBySlug = new Map(TEAMS.map((t) => [t.slug, t]));
 
 function getTmDb(): Database.Database {
   const g = globalThis as typeof globalThis & { __tmDb?: Database.Database };
@@ -32,6 +44,10 @@ export async function GET(req: Request) {
     const clubName = player.club_id
       ? (tm.prepare(`SELECT name FROM tm_clubs WHERE club_id = ?`).get(player.club_id) as { name: string } | undefined)?.name ?? null
       : null;
+
+    // تیم پروژه (برای لینک به صفحه تیم + هم‌تیمی‌ها)
+    const ourSlug = player.club_id !== null ? tmClubToSlug.get(player.club_id) ?? null : null;
+    const ourTeam = ourSlug ? teamBySlug.get(ourSlug) ?? null : null;
 
     const history = tm.prepare(`SELECT date, market_value_in_eur as v FROM tm_valuations WHERE player_id = ? ORDER BY date ASC`).all(id) as Array<{ date: string; v: number | null }>;
 
@@ -66,6 +82,8 @@ export async function GET(req: Request) {
         citizenship: player.country_of_citizenship,
         imageUrl: player.image_url,
         tmClubName: clubName,
+        clubId: player.club_id,
+        ourTeam: ourTeam ? { slug: ourTeam.slug, name: ourTeam.name, logo: ourTeam.logo, color: ourTeam.color } : null,
       },
       history: history.slice(-24),
       transfers,
