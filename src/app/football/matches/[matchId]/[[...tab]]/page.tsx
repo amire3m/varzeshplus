@@ -9,6 +9,7 @@ import { MatchLineup } from "@/components/football/lineup/MatchLineup";
 import { MatchTimelineView } from "@/components/football/lineup/MatchTimeline";
 import { MatchStatsView } from "@/components/football/MatchStatsView";
 import { MatchSideEvents } from "@/components/football/MatchSideEvents";
+import { RealMatchView, type MatchData } from "@/components/football/RealMatchView";
 import { TeamBadge } from "@/components/football/TeamBadge";
 import { PageShell } from "@/components/layout/PageShell";
 
@@ -20,51 +21,82 @@ export default function MatchPage() {
   const initial = (params.tab?.[0] as MatchTab) || "overview";
   const [tab, setTab] = useState<MatchTab>(initial);
   const [dynamicMatch, setDynamicMatch] = useState<ReturnType<typeof getMatchById> | null>(null);
+  const [realMatch, setRealMatch] = useState<MatchData | null>(null);
+  const [realChecked, setRealChecked] = useState(false);
 
   useEffect(() => setTab(initial), [initial]);
 
   const scrollToTop = useCallback(() => window.scrollTo({ top: 0, behavior: "smooth" }), []);
 
-  // fallback: اگر مسابقه در دادهٔ mock نبود (matches واقعی با id 10000+)، از API لیگ بگیر
+  // اول: تلاش برای بازی واقعی TM — بعد fallback به دیتای لیگ
   useEffect(() => {
-    if (staticMatch || Number.isNaN(matchId)) return;
-    const leagueId = Math.floor(matchId / 10000);
-    // نگاشت leagueId به slug بدون import اضافی
-    const slugMap: Record<number, string> = { 1: "premier-league", 2: "la-liga", 3: "serie-a", 4: "bundesliga", 5: "ligue-1", 6: "eredivisie", 7: "primeira-liga", 8: "super-lig", 9: "saudi-pro-league", 10: "brasileirao", 11: "mls", 12: "persian-gulf" };
-    const slug = slugMap[leagueId];
-    if (!slug) return;
-    fetch(`/api/football/leagues?league=${slug}`)
+    if (staticMatch || Number.isNaN(matchId) || matchId < 10000) return;
+    fetch(`/api/football/match-data?gameId=${matchId}`)
       .then((r) => r.json())
       .then((res) => {
-        if (res.success && Array.isArray(res.matches)) {
-          const found = res.matches.find((m: { id: number }) => m.id === matchId);
-          if (found) setDynamicMatch(found);
-        }
+        if (res?.success && res.covered) { setRealMatch(res); setRealChecked(true); return; }
+        const leagueId = Math.floor(matchId / 10000);
+        const slugMap: Record<number, string> = { 1: "premier-league", 2: "la-liga", 3: "serie-a", 4: "bundesliga", 5: "ligue-1", 6: "eredivisie", 7: "primeira-liga", 8: "super-lig", 9: "saudi-pro-league", 10: "brasileirao", 11: "mls", 12: "persian-gulf" };
+        const slug = slugMap[leagueId];
+        if (!slug) { setRealChecked(true); return; }
+        fetch(`/api/football/leagues?league=${slug}`)
+          .then((r) => r.json())
+          .then((res2) => {
+            if (res2.success && Array.isArray(res2.matches)) {
+              const found = res2.matches.find((m: { id: number }) => m.id === matchId);
+              if (found) setDynamicMatch(found);
+            }
+            setRealChecked(true);
+          })
+          .catch(() => setRealChecked(true));
       })
-      .catch(() => {});
+      .catch(() => setRealChecked(true));
   }, [matchId, staticMatch]);
+
+  // تب واقعی
+  const [realTab, setRealTab] = useState<"overview" | "lineup" | "stats" | "events" | "standings">("overview");
+  useEffect(() => setRealTab(initial as typeof realTab), [initial]);
+
+  const changeTab = (t: MatchTab) => {
+    setTab(t); setRealTab(t); scrollToTop();
+    router.push(`/football/matches/${params.matchId}${t === "overview" ? "" : `/${t}`}`);
+  };
+
+  // ===== بازی واقعی TM =====
+  if (realMatch) {
+    return (
+      <PageShell badge={realMatch.game.competitionId} activeDock="matches">
+        <main className="flex-1 w-full max-w-[1200px] mx-auto px-3 py-5 space-y-5">
+          <MatchNavigation active={realTab} onChange={changeTab} />
+          {realTab === "standings" ? (
+            <div className="glass-panel p-6 text-center text-sm" style={{ color: "var(--color-muted)" }}>
+              جدول لیگ در صفحه <Link href={`/football/leagues/${Object.entries({ GB1: "premier-league", ES1: "la-liga", IT1: "serie-a", L1: "bundesliga", FR1: "ligue-1", NL1: "eredivisie", PO1: "primeira-liga", TR1: "super-lig", SA1: "saudi-pro-league", BRA1: "brasileirao", MLS1: "mls" }).find(([code]) => code === realMatch.game.competitionId)?.[1] ?? ""}/standings`} className="hover:underline" style={{ color: "var(--color-club-green)" }}>لیگ</Link> قابل مشاهده است.
+            </div>
+          ) : (
+            <RealMatchView data={realMatch} tab={realTab} />
+          )}
+        </main>
+        <footer className="border-t border-white/5 py-5 text-center text-xs" style={{ color: "#8FA1B5" }}>
+          ورزش پلاس — {realMatch.game.competitionId} • دیتای واقعی Transfermarkt
+        </footer>
+      </PageShell>
+    );
+  }
 
   const match = staticMatch ?? dynamicMatch;
   if (!match) {
-    if (dynamicMatch === null && !staticMatch) {
-      return (
-        <div className="min-h-screen flex items-center justify-center" style={{ background: "#252525" }}>
-          <p className="text-sm animate-pulse" style={{ color: "var(--color-muted)" }}>در حال بارگذاری مسابقه...</p>
-        </div>
-      );
-    }
-    return notFound();
+    if (realChecked && dynamicMatch === null && !staticMatch) return notFound();
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#252525" }}>
+        <p className="text-sm animate-pulse" style={{ color: "var(--color-muted)" }}>در حال بارگذاری مسابقه...</p>
+      </div>
+    );
   }
 
   const home = getTeamById(match.homeTeamId);
   const away = getTeamById(match.awayTeamId);
   const league = getLeagueById(match.leagueId);
   const isLive = match.status === "live";
-
-  const changeTab = (t: MatchTab) => {
-    setTab(t); scrollToTop();
-    router.push(`/football/matches/${matchId}${t === "overview" ? "" : `/${t}`}`);
-  };
 
   return (
     <PageShell badge={match.competition} activeDock="matches">

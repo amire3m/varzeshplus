@@ -43,6 +43,8 @@ export function RealLeagueMatches({ leagueSlug, fallbackGames, getTeam }: {
   const [covered, setCovered] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
   const isIran = leagueSlug === "persian-gulf";
+  // فقط بازی‌های TM قابل کلیک به صفحه مسابقه هستند (ایران id اتحادیه دارد نه TM)
+  const linkable = !isIran;
 
   useEffect(() => {
     let alive = true;
@@ -91,25 +93,25 @@ export function RealLeagueMatches({ leagueSlug, fallbackGames, getTeam }: {
 
       <div>
         <h3 className="text-sm font-bold mb-2" style={{ color: "#ff8fab" }}>در جریان</h3>
-        <div className="grid gap-3 md:grid-cols-2">{(games ?? []).filter((g) => g.status === "live").map((g) => <GameRowCard key={g.gameId} g={g} />)}</div>
+        <div className="grid gap-3 md:grid-cols-2">{(games ?? []).filter((g) => g.status === "live").map((g) => <GameRowCard key={g.gameId} g={g} linkable={linkable} />)}</div>
         {(games ?? []).filter((g) => g.status === "live").length === 0 && <p className="text-xs text-slate-600">بازی زنده‌ای نیست.</p>}
       </div>
       <div>
         <h3 className="text-sm font-bold mb-2" style={{ color: "var(--color-muted)" }}>بازی‌های آینده</h3>
-        <div className="grid gap-3 md:grid-cols-2">{upcoming.map((g) => <GameRowCard key={g.gameId} g={g} />)}</div>
+        <div className="grid gap-3 md:grid-cols-2">{upcoming.map((g) => <GameRowCard key={g.gameId} g={g} linkable={linkable} />)}</div>
       </div>
       <div>
         <h3 className="text-sm font-bold mb-2" style={{ color: "var(--color-muted)" }}>نتایج اخیر</h3>
-        <div className="grid gap-3 md:grid-cols-2">{finished.slice(0, 20).map((g) => <GameRowCard key={g.gameId} g={g} />)}</div>
+        <div className="grid gap-3 md:grid-cols-2">{finished.slice(0, 20).map((g) => <GameRowCard key={g.gameId} g={g} linkable={linkable} />)}</div>
       </div>
       <div className="text-center text-[10px]" style={{ color: "#005cfc" }}>دیتای واقعی Transfermarkt</div>
     </div>
   );
 }
 
-export function GameRowCard({ g }: { g: GameItem }) {
-  return (
-    <div className="glass-panel p-3.5 flex items-center gap-3">
+export function GameRowCard({ g, linkable = true }: { g: GameItem; linkable?: boolean }) {
+  const inner = (
+    <div className="glass-panel p-3.5 flex items-center gap-3 h-full transition-colors hover:border-white/20">
       <span className="text-[10px] text-slate-500 tabular shrink-0 w-20">{g.date?.slice(5, 10) ?? "—"}</span>
       <div className="flex-1 min-w-0"><TeamChip t={g.home} /></div>
       <span className="tabular font-black text-sm shrink-0 px-2" style={{ color: g.homeGoals !== null ? "#fff" : "#8FA1B5" }}>
@@ -117,8 +119,12 @@ export function GameRowCard({ g }: { g: GameItem }) {
       </span>
       <div className="flex-1 min-w-0 justify-end"><TeamChip t={g.away} align="left" /></div>
       {g.round && <span className="text-[9px] text-slate-600 shrink-0 w-14 text-center">{g.round}</span>}
+      {linkable && <span className="material-symbols-outlined text-[14px] text-slate-600 shrink-0">chevron_left</span>}
     </div>
   );
+  return linkable ? (
+    <Link href={`/football/matches/${g.gameId}`} className="block">{inner}</Link>
+  ) : inner;
 }
 
 function FallbackCard({ m, getTeam }: { m: import("@/lib/football").Match; getTeam: (id: number) => import("@/lib/football").Team }) {
