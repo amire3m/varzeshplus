@@ -13,6 +13,22 @@ type Match = {
   homeScore: number | null; awayScore: number | null; stadium: string | null;
 } | null;
 
+type ScoreTeam = { name: string; abbr: string; logo: string; color: string; score: number | null; slug: string | null };
+type ScoreMatch = {
+  id: string; date: string; status: "live" | "upcoming" | "finished";
+  minute: string | null; detail: string | null;
+  home: ScoreTeam; away: ScoreTeam; venue: string | null;
+  goals: Array<{ minute: string; team: string; player: string; assist: string | null }>;
+};
+
+const SCORE_LEAGUES = [
+  { slug: "premier-league", label: "انگلیس" },
+  { slug: "la-liga", label: "اسپانیا" },
+  { slug: "bundesliga", label: "آلمان" },
+  { slug: "serie-a", label: "ایتالیا" },
+  { slug: "ligue-1", label: "فرانسه" },
+];
+
 export default function LivePage() {
   const [live, setLive] = useState<Live | null>(null);
   const [match, setMatch] = useState<Match>(null);
@@ -20,6 +36,10 @@ export default function LivePage() {
   const [tick, setTick] = useState(0);
   const [showAd, setShowAd] = useState(true);
   const [adCountdown, setAdCountdown] = useState(5);
+  const [scoreLeague, setScoreLeague] = useState("premier-league");
+  const [scoreMatches, setScoreMatches] = useState<ScoreMatch[]>([]);
+  const [scoreSource, setScoreSource] = useState<string | null>(null);
+  const [scoreLoading, setScoreLoading] = useState(true);
 
   const load = useCallback(async () => {
     const res = await fetch("/api/live").then((r) => r.json()).catch(() => null);
@@ -42,6 +62,23 @@ export default function LivePage() {
     const t = setInterval(() => { load(); setTick((v) => v + 1); }, 10_000);
     return () => clearInterval(t);
   }, [load]);
+
+  // اسکوربرد زنده لیگ‌های اروپا — هر ۶۰ ثانیه (هم‌گام با کش سرور)
+  const loadScores = useCallback(async () => {
+    setScoreLoading(true);
+    const res = await fetch(`/api/live-score?league=${scoreLeague}`).then((r) => r.json()).catch(() => null);
+    if (res?.success) {
+      setScoreMatches(res.matches ?? []);
+      setScoreSource(res.source ?? null);
+    }
+    setScoreLoading(false);
+  }, [scoreLeague]);
+
+  useEffect(() => { loadScores(); }, [loadScores]);
+  useEffect(() => {
+    const t = setInterval(loadScores, 60_000);
+    return () => clearInterval(t);
+  }, [loadScores]);
 
   const onAir = live?.status === "on_air";
   const censored = !!live?.censorActive;
@@ -113,6 +150,46 @@ export default function LivePage() {
           </div>
         )}
 
+        {/* نتایج زنده لیگ‌های اروپا */}
+        <div>
+          <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+            <h2 className="headline text-base text-white flex items-center gap-2">
+              نتایج زنده
+              <span className="flex items-center gap-1.5 text-[10px] font-black px-2.5 py-1 rounded-full animate-pulse" style={{ background: "rgba(232,56,93,0.16)", color: "#ff6b8a" }}>
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> زنده
+              </span>
+            </h2>
+            <div className="flex items-center gap-1.5">
+              {SCORE_LEAGUES.map((l) => (
+                <button
+                  key={l.slug} onClick={() => setScoreLeague(l.slug)}
+                  className={`px-3 py-1.5 rounded-full text-[11px] font-bold border transition-all ${scoreLeague === l.slug ? "text-white" : "text-slate-400 border-white/10 hover:text-white"}`}
+                  style={scoreLeague === l.slug ? { background: "linear-gradient(135deg, #005cfc, #bee503)", borderColor: "transparent" } : { background: "rgba(255,255,255,0.05)" }}
+                >
+                  {l.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {scoreLoading ? (
+            <div className="rounded-[14px] border p-8 text-center text-sm animate-pulse" style={{ background: "#2a2a2a", borderColor: "rgba(255,255,255,0.1)", color: "#8FA1B5" }}>
+              در حال دریافت نتایج زنده...
+            </div>
+          ) : scoreMatches.length === 0 ? (
+            <div className="rounded-[14px] border p-6 text-center text-sm" style={{ background: "#2a2a2a", borderColor: "rgba(255,255,255,0.1)", color: "#8FA1B5" }}>
+              فعلاً بازی‌ای در این لیگ ثبت نشده است.
+            </div>
+          ) : (
+            <div className="space-y-2.5">
+              {scoreMatches.map((m) => (
+                <ScoreMatchCard key={m.id} m={m} />
+              ))}
+              {scoreSource && <p className="text-center text-[10px] text-slate-600">منبع: {scoreSource === "worldcup26" ? "worldcup26.ir" : "ESPN"} • به‌روزرسانی هر دقیقه</p>}
+            </div>
+          )}
+        </div>
+
         {/* بازی مرتبط با رویداد زنده */}
         <div>
           <h2 className="headline text-base mb-3 text-white">بازی‌های مرتبط</h2>
@@ -122,5 +199,60 @@ export default function LivePage() {
         </div>
       </main>
     </PageShell>
+  );
+}
+
+function TeamChip({ t, align = "right" }: { t: ScoreTeam; align?: "right" | "left" }) {
+  const inner = (
+    <>
+      {t.logo ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={t.logo} alt={t.name} className="w-8 h-8 object-contain shrink-0" loading="lazy" />
+      ) : (
+        <span className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 border border-white/10" style={{ background: `${t.color}25`, color: t.color }}>{t.name.slice(0, 2)}</span>
+      )}
+      <span className="text-[13px] font-bold truncate text-white">{t.name}</span>
+    </>
+  );
+  const cls = `flex items-center gap-2 min-w-0 flex-1 ${align === "left" ? "flex-row-reverse text-left" : ""}`;
+  return t.slug ? <Link href={`/football/teams/${t.slug}`} className={`${cls} hover:opacity-80 transition-opacity`}>{inner}</Link> : <span className={cls}>{inner}</span>;
+}
+
+function ScoreMatchCard({ m }: { m: ScoreMatch }) {
+  const isLive = m.status === "live";
+  return (
+    <div className="rounded-[14px] border p-4" style={{ background: "#2a2a2a", borderColor: isLive ? "rgba(232,56,93,0.35)" : "rgba(255,255,255,0.1)" }}>
+      <div className="flex items-center justify-between gap-3">
+        <TeamChip t={m.home} />
+        <div className="text-center shrink-0 px-2">
+          {m.status === "upcoming" ? (
+            <span className="text-[11px] font-bold text-slate-400 tabular">
+              {m.date ? new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }).format(new Date(m.date)) : "به‌زودی"}
+            </span>
+          ) : (
+            <span className="tabular headline text-xl text-white">{m.home.score ?? 0} - {m.away.score ?? 0}</span>
+          )}
+          {isLive && m.minute && (
+            <span className="flex items-center justify-center gap-1 mt-1 text-[10px] font-black tabular" style={{ color: "#ff6b8a" }}>
+              <span className="live-dot" style={{ width: 6, height: 6 }} /> {m.minute}
+            </span>
+          )}
+          {m.status === "finished" && <span className="block mt-1 text-[10px] text-slate-500">پایان</span>}
+        </div>
+        <TeamChip t={m.away} align="left" />
+      </div>
+      {m.goals.length > 0 && (
+        <div className="mt-3 pt-3 border-t border-white/5 space-y-1">
+          {m.goals.slice(0, 6).map((g, i) => (
+            <div key={i} className="flex items-center gap-2 text-[11px] text-slate-400">
+              <span className="tabular font-black shrink-0" style={{ color: "#bee503" }}>{g.minute}</span>
+              <span className="font-bold text-slate-200 truncate">{g.player}</span>
+              {g.assist && <span className="truncate text-slate-500">(پاس: {g.assist})</span>}
+            </div>
+          ))}
+        </div>
+      )}
+      {m.venue && <p className="mt-2 text-[10px] text-slate-600">{m.venue}</p>}
+    </div>
   );
 }
