@@ -54,19 +54,27 @@ export async function GET(req: Request) {
   try {
     const tm = getTmDb();
     const games = tm.prepare(`
-      SELECT * FROM tm_games WHERE competition_id = ? AND season IN (?, ?) ORDER BY date ASC
-    `).all(comp, season, season + 1) as GameRow[];
+      SELECT g.*, cg.own_goals AS cg_own, cg.opponent_goals AS cg_opp
+      FROM tm_games g
+      LEFT JOIN tm_club_games cg ON cg.game_id = g.game_id AND cg.club_id = g.home_club_id
+      WHERE g.competition_id = ? AND g.season IN (?, ?) ORDER BY g.date ASC
+    `).all(comp, season, season + 1) as Array<GameRow & { cg_own: number | null; cg_opp: number | null }>;
 
-    const mapped = games.map((g) => ({
-      gameId: g.game_id,
-      date: g.date,
-      round: g.round,
-      home: teamOf(g.home_club_id) ?? { tmName: null, tmId: g.home_club_id },
-      away: teamOf(g.away_club_id) ?? { tmName: null, tmId: g.away_club_id },
-      homeGoals: g.home_goals,
-      awayGoals: g.away_goals,
-      status: g.home_goals !== null ? "finished" : "upcoming",
-    }));
+    // اهداف واقعی از club_games (games.csv اهداف ندارد)
+    const mapped = games.map((g) => {
+      const homeGoals = g.cg_own !== null && g.cg_own !== undefined ? g.cg_own : g.home_goals;
+      const awayGoals = g.cg_opp !== null && g.cg_opp !== undefined ? g.cg_opp : g.away_goals;
+      return {
+        gameId: g.game_id,
+        date: g.date,
+        round: g.round,
+        home: teamOf(g.home_club_id) ?? { tmName: null, tmId: g.home_club_id },
+        away: teamOf(g.away_club_id) ?? { tmName: null, tmId: g.away_club_id },
+        homeGoals,
+        awayGoals,
+        status: homeGoals !== null ? "finished" : "upcoming",
+      };
+    });
 
     // جدول از نتایج واقعی — فقط تیم‌های ما
     const standings: Array<{ teamId: number; played: number; win: number; draw: number; loss: number; gf: number; ga: number; pts: number }> = [];
