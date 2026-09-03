@@ -171,10 +171,9 @@ DROP TABLE IF EXISTS tm_games; DROP TABLE IF EXISTS tm_club_games; DROP TABLE IF
   });
   console.log(`tm_club_games imported: ${cgCount}`);
 
-  // appearances — فیلتر competition + date
+  // appearances — فیلتر competition + date (بهینه: insert مستقیم + WAL، بدون تراکنش دستی)
   const insAp = db.prepare(`INSERT OR REPLACE INTO tm_appearances VALUES (?,?,?,?,?,?,?,?,?,?,?)`);
   let apCount = 0;
-  db.transaction(() => {});
   await streamCsv("appearances.csv.gz", (a) => {
     if (!ourCodes.has(a.competition_id)) return;
     if (!(a.date >= MIN_DATE)) return;
@@ -182,7 +181,6 @@ DROP TABLE IF EXISTS tm_games; DROP TABLE IF EXISTS tm_club_games; DROP TABLE IF
       a.competition_id, a.date, num(a.goals), num(a.assists), num(a.minutes_played),
       num(a.yellow_cards), num(a.red_cards));
     apCount++;
-    if (apCount % 100000 === 0) { db.exec("COMMIT; BEGIN"); }
   });
   console.log(`tm_appearances imported: ${apCount}`);
 
