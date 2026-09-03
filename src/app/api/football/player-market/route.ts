@@ -18,8 +18,8 @@ export async function GET(req: Request) {
   }
 
   try {
-    const player = tm.prepare(`SELECT player_id, pretty_name, position, date_of_birth, height_in_cm, foot, market_value_in_eur, highest_market_value_in_eur, contract_expiration_date, country_of_citizenship, club_id FROM tm_players WHERE lower(pretty_name) = lower(?) LIMIT 1`).get(name) as {
-      player_id: number; pretty_name: string; position: string | null; date_of_birth: string | null;
+    const player = tm.prepare(`SELECT player_id, pretty_name, position, sub_position, date_of_birth, height_in_cm, foot, market_value_in_eur, highest_market_value_in_eur, contract_expiration_date, country_of_citizenship, club_id FROM tm_players WHERE lower(pretty_name) = lower(?) LIMIT 1`).get(name) as {
+      player_id: number; pretty_name: string; position: string | null; sub_position: string | null; date_of_birth: string | null;
       height_in_cm: number | null; foot: string | null; market_value_in_eur: number | null;
       highest_market_value_in_eur: number | null; contract_expiration_date: string | null; country_of_citizenship: string | null; club_id: number | null;
     } | undefined;
@@ -34,12 +34,22 @@ export async function GET(req: Request) {
       `SELECT date, market_value_in_eur as v FROM tm_valuations WHERE player_id = ? ORDER BY date ASC`
     ).all(player.player_id) as Array<{ date: string; v: number | null }>;
 
+    // تاریخچه انتقالات واقعی بازیکن — Transfermarkt
+    const transfers = tm.prepare(
+      `SELECT transfer_date, from_club_name, to_club_name, transfer_fee, market_value_in_eur
+       FROM tm_transfers WHERE player_id = ? ORDER BY transfer_date DESC LIMIT 10`
+    ).all(player.player_id) as Array<{
+      transfer_date: string; from_club_name: string; to_club_name: string; transfer_fee: string | null; market_value_in_eur: number | null;
+    }>;
+
+    // آمار جمعی از appearances — اگر جدول بود (فعلاً import نشده، آماده برای آینده)
     return NextResponse.json({
       success: true,
       found: true,
       player: {
         prettyName: player.pretty_name,
         position: player.position,
+        subPosition: player.sub_position,
         dateOfBirth: player.date_of_birth,
         height: player.height_in_cm,
         foot: player.foot,
@@ -50,6 +60,7 @@ export async function GET(req: Request) {
         tmClubName: clubName,
       },
       history: history.slice(-24),
+      transfers,
     });
   } catch (e) {
     return NextResponse.json({ success: true, found: false });

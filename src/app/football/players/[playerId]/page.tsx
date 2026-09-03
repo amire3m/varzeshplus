@@ -11,11 +11,12 @@ const POSITION_LABEL: Record<string, string> = { GK: "دروازه‌بان", DF
 
 type MarketData = {
   player: {
-    prettyName: string; position: string | null; dateOfBirth: string | null; height: number | null;
+    prettyName: string; position: string | null; subPosition: string | null; dateOfBirth: string | null; height: number | null;
     foot: string | null; marketValueEur: number | null; highestMarketValueEur: number | null;
     contractUntil: string | null; citizenship: string | null; tmClubName: string | null;
   };
   history: Array<{ date: string; v: number | null }>;
+  transfers: Array<{ transfer_date: string; from_club_name: string; to_club_name: string; transfer_fee: string | null; market_value_in_eur: number | null }>;
 };
 
 function fmtEur(n: number | null): string {
@@ -24,6 +25,30 @@ function fmtEur(n: number | null): string {
   if (n >= 1_000) return `€${Math.round(n / 1_000)}K`;
   return `€${n}`;
 }
+
+function fmtFee(fee: string | null): string {
+  if (!fee) return "انتقال آزاد";
+  const n = Number(fee);
+  if (Number.isNaN(n) || n === 0) return "انتقال آزاد";
+  if (n >= 1_000_000) return `€${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M`;
+  if (n >= 1_000) return `€${Math.round(n / 1_000)}K`;
+  return `€${n}`;
+}
+
+function age(birth: string | null): string {
+  if (!birth) return "—";
+  try {
+    const b = new Date(birth);
+    return String(Math.floor((Date.now() - b.getTime()) / (365.25 * 86400_000)));
+  } catch { return "—"; }
+}
+
+const POS_EN_FA: Record<string, string> = {
+  Goalkeeper: "دروازه‌بان", Defence: "مدافع", "Defender": "مدافع", Midfield: "هافبک", "Midfielder": "هافبک",
+  Attack: "مهاجم", "Attacker": "مهاجم", "Centre-Back": "مدافع میانی", "Left-Back": "مدافع چپ", "Right-Back": "مدافع راست",
+  "Defensive Midfield": "هافبک دفاعی", "Central Midfield": "هافبک مرکزی", "Attacking Midfield": "هافبک هجومی",
+  "Left Winger": "وینگر چپ", "Right Winger": "وینگر راست", "Centre-Forward": "مهاجم نوک", "Second Striker": "مهاجم دوم",
+};
 
 /**
  * پروفایل بازیکن — id = teamId*100 + index (سازگار با squadFor)
@@ -135,12 +160,6 @@ export default function PlayerProfilePage() {
                 <div className="headline text-sm tabular text-slate-300">{fmtEur(market.player.highestMarketValueEur)}</div>
                 <div className="text-[10px] text-slate-500">بیشترین سابقه</div>
               </div>
-              <div className="flex gap-3 text-[11px] text-slate-400 mr-auto flex-wrap">
-                {market.player.foot && <span>پای غالب: <b className="text-slate-200">{market.player.foot === "right" ? "راست" : market.player.foot === "left" ? "چپ" : "دو پا"}</b></span>}
-                {market.player.height && <span>قد: <b className="text-slate-200 tabular">{market.player.height}cm</b></span>}
-                {market.player.contractUntil && <span>قرارداد تا: <b className="text-slate-200 tabular">{market.player.contractUntil.slice(0, 4)}</b></span>}
-                {market.player.tmClubName && <span>باشگاه TM: <b className="text-slate-200">{market.player.tmClubName}</b></span>}
-              </div>
             </div>
             {/* نمودار تاریخچه */}
             {market.history.length > 2 && (
@@ -166,6 +185,49 @@ export default function PlayerProfilePage() {
                 </div>
               </div>
             )}
+          </section>
+        )}
+
+        {/* پروفایل کامل — Transfermarkt */}
+        {marketChecked && market && (
+          <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#2a2a2a" }}>
+            <h3 className="headline text-sm text-white mb-3">پروفایل بازیکن</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2.5 text-[11px]">
+              {[
+                ["نام کامل (TM)", market.player.prettyName],
+                ["پست", POS_EN_FA[market.player.position ?? ""] ?? market.player.position ?? "—"],
+                ["تاریخ تولد", market.player.dateOfBirth ? market.player.dateOfBirth.slice(0, 10) : "—"],
+                ["سن", age(market.player.dateOfBirth)],
+                ["قد", market.player.height ? `${market.player.height} cm` : "—"],
+                ["پای غالب", market.player.foot === "right" ? "راست" : market.player.foot === "left" ? "چپ" : market.player.foot === "both" ? "دو پا" : "—"],
+                ["ملیت", market.player.citizenship ?? "—"],
+                ["قرارداد تا", market.player.contractUntil ? market.player.contractUntil.slice(0, 10) : "—"],
+                ["باشگاه فعلی (TM)", market.player.tmClubName ?? "—"],
+              ].map(([k, v]) => (
+                <div key={k as string} className="flex flex-col gap-0.5 border-b border-white/5 pb-1.5">
+                  <span className="text-slate-500">{k}</span>
+                  <span className="text-slate-200 font-bold">{v}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* تاریخچه انتقالات واقعی */}
+        {marketChecked && market && market.transfers.length > 0 && (
+          <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#2a2a2a" }}>
+            <h3 className="headline text-sm text-white mb-3">سابقه انتقالات</h3>
+            <div className="space-y-1.5">
+              {market.transfers.map((t, i) => (
+                <div key={i} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-white/5" style={{ background: "rgba(255,255,255,0.03)" }}>
+                  <span className="text-[11px] tabular text-slate-500 shrink-0 w-16">{t.transfer_date?.slice(0, 10)}</span>
+                  <span className="text-xs font-bold text-slate-300 truncate">{t.from_club_name}</span>
+                  <span className="material-symbols-outlined text-[14px] shrink-0" style={{ color: "#005cfc" }}>arrow_forward</span>
+                  <span className="text-xs font-bold text-white truncate">{t.to_club_name}</span>
+                  <span className="mr-auto text-[10px] font-black tabular px-2 py-0.5 rounded-full shrink-0" style={{ background: "rgba(0,92,252,0.12)", color: "#005cfc" }}>{fmtFee(t.transfer_fee)}</span>
+                </div>
+              ))}
+            </div>
           </section>
         )}
 

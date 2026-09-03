@@ -1,23 +1,11 @@
 ﻿"use client";
 
-import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
 import type { League } from "@/lib/football";
 import { LEAGUES } from "@/lib/football";
+import Link from "next/link";
 
-/** هدر لیگ + سوییچر سریع بین ۱۲ لیگ */
+/** هدر لیگ — با ریل لوگوی ۱۲ لیگ برای سوییچ سریع */
 export function LeagueHeader({ league }: { league: League }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function onDoc(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    }
-    document.addEventListener("mousedown", onDoc);
-    return () => document.removeEventListener("mousedown", onDoc);
-  }, []);
-
   return (
     <section className="panel p-4 md:p-5">
       <div className="flex flex-wrap items-center gap-4">
@@ -32,43 +20,34 @@ export function LeagueHeader({ league }: { league: League }) {
           </div>
           <p className="text-sm" style={{ color: "var(--color-muted)" }}>{league.englishName}</p>
         </div>
-        {/* سوییچر لیگ */}
-        <div className="relative" ref={ref}>
-          <button onClick={() => setOpen((v) => !v)} className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 text-sm transition-colors hover:border-[#005cfc]/40" style={{ background: "#2a2a2a" }}>
-            <span className="material-symbols-outlined text-[18px]" style={{ color: "#005cfc" }}>swap_horiz</span>
-            تغییر لیگ
-            <span className={`material-symbols-outlined text-[16px] transition-transform ${open ? "rotate-180" : ""}`} style={{ color: "var(--color-muted)" }}>expand_more</span>
-          </button>
-          {open && (
-            <div className="absolute left-0 mt-2 w-64 max-h-[70vh] overflow-y-auto rounded-2xl border border-white/10 shadow-2xl z-40 p-1.5" style={{ background: "#2a2a2a" }}>
-              {LEAGUES.map((l) => {
-                const active = l.id === league.id;
-                return (
-                  <Link key={l.id} href={`/football/leagues/${l.slug}`} onClick={() => setOpen(false)}
-                    className={`flex items-center gap-2.5 px-3 py-2 rounded-xl transition-colors ${active ? "bg-white/[0.08]" : "hover:bg-white/5"}`}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={l.logo} alt={l.name} className="w-7 h-7 object-contain shrink-0" loading="lazy" />
-                    <span className={`text-xs truncate ${active ? "font-black text-white" : "text-slate-300"}`}>{l.name}</span>
-                    {active && <span className="mr-auto material-symbols-outlined text-[16px]" style={{ color: "#005cfc" }}>check_circle</span>}
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-        </div>
       </div>
-      {/* chips سریع لیگ‌های پرطرفدار */}
-      <div className="flex items-center gap-1.5 mt-3 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
-        {LEAGUES.slice(0, 6).map((l) => {
-          const active = l.id === league.id;
-          return (
-            <Link key={l.id} href={`/football/leagues/${l.slug}`}
-              className={`shrink-0 text-[11px] font-bold px-3 py-1 rounded-full border transition-all ${active ? "text-white" : "text-slate-400 border-white/10 hover:text-white"}`}
-              style={active ? { background: "linear-gradient(135deg,#005cfc,#bee503)", borderColor: "transparent" } : { background: "rgba(255,255,255,0.04)" }}>
-              {l.name}
-            </Link>
-          );
-        })}
+      {/* ریل لوگوهای ۱۲ لیگ — سوییچر سریع و جذاب */}
+      <div className="mt-3 -mx-1 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
+        <div className="flex items-center gap-1 px-1">
+          {LEAGUES.map((l) => {
+            const active = l.id === league.id;
+            return (
+              <Link
+                key={l.id}
+                href={`/football/leagues/${l.slug}`}
+                title={`${l.name} — ${l.englishName}`}
+                className="relative shrink-0 group"
+              >
+                <span
+                  className={`flex items-center justify-center rounded-2xl transition-all duration-200 overflow-hidden ${active ? "w-14 h-14" : "w-11 h-11 bg-white group-hover:w-12 group-hover:h-12 group-hover:-translate-y-0.5"}`}
+                  style={active ? {
+                    background: "#fff",
+                    boxShadow: `0 0 0 2px #005cfc, 0 0 16px rgba(0,92,252,0.45)`,
+                  } : undefined}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={l.logo} alt={l.name} className="w-full h-full object-contain p-1" loading="lazy" />
+                </span>
+                {active && <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full" style={{ background: "#bee503", boxShadow: "0 0 6px #bee503" }} />}
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
