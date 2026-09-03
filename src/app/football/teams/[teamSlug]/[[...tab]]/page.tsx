@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter, notFound } from "next/navigation";
 import Link from "next/link";
 import { getTeam, getTeamById, leagueOf, standingOf, matchesOfTeam, newsOfTeam, transfersOfTeam, squadFor, formFor, standingsOf, teamsOfLeague } from "@/lib/football";
+import { stadiumMapsUrl } from "@/lib/football/stadium-coords";
 import { TeamHeader } from "@/components/football/TeamHeader";
 import { TeamNavigation, type TeamTab } from "@/components/football/TeamNavigation";
 import { MatchCard } from "@/components/football/MatchCard";
@@ -119,6 +120,12 @@ export default function TeamPage() {
                   <div key={k} className="flex justify-between gap-3 border-b border-white/5 pb-2 last:border-0"><span className="text-xs" style={{ color: "var(--color-muted)" }}>{k}</span><span className="font-bold text-xs text-left">{v}</span></div>
                 ))}
                 {team.website && <a href={team.website} target="_blank" rel="noreferrer" className="text-xs hover:underline" style={{ color: "var(--color-club-green)" }}>وب‌سایت رسمی</a>}
+                {stadiumMapsUrl(team.slug) && (
+                  <a href={stadiumMapsUrl(team.slug)!} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-xs font-bold hover:underline" style={{ color: "#005cfc" }}>
+                    <span className="material-symbols-outlined text-[16px]">location_on</span>
+                    مشاهده {team.stadium} روی نقشه
+                  </a>
+                )}
               </div>
             </section>
 
