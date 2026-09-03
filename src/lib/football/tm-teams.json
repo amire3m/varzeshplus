@@ -52,5 +52,15 @@
     "al-hilal": 1114, "al-nassr": 18544, "al-ittihad": 8023, "al-ahli": 18487,
     "al-taawoun": 28844, "al-fateh": 27221, "damac": 50532,
     "al-raed": 22381, "al-wehda": 17209, "al-khaleej": 6070, "al-riyadh": 31008
+  },
+  "brasileirao": {
+    "flamengo": 614, "palmeiras": 1023, "corinthians": 199, "sao-paulo": 585,
+    "fluminense": 2462, "vasco-da-gama": 978, "botafogo": 537, "gremio": 210,
+    "internacional": 6600, "cruzeiro": 609, "atletico-mineiro": 330, "santos": 221
+  },
+  "mls": {
+    "inter-miami": 69261, "la-galaxy": 1061, "atlanta-united": 51663, "seattle-sounders": 9636,
+    "new-york-red-bulls": 623, "portland-timbers": 4291, "toronto-fc": 11141, "cf-montreal": 4078,
+    "minnesota-united": 56089, "austin-fc": 72309, "columbus-crew": 813, "sporting-kc": 4284
   }
 }
