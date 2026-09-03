@@ -11,6 +11,8 @@ import { StandingsTable } from "@/components/football/StandingsTable";
 import { NewsCard } from "@/components/football/NewsCard";
 import { TransferCard } from "@/components/football/TransferCard";
 import { RealTransfersSection } from "@/components/football/TransferCard";
+import { RealTopStats } from "@/components/football/RealTopStats";
+import { RealLeagueMatches, RealStandingsTable } from "@/components/football/RealLeagueData";
 import { PlayerStatsCard } from "@/components/football/PlayerStatsCard";
 import { TeamCard } from "@/components/football/TeamCard";
 import { PageShell } from "@/components/layout/PageShell";
@@ -108,19 +110,14 @@ export default function LeaguePage() {
           </div>
         )}
 
-        {tab === "matches" && (
-          <div className="space-y-6">
-            <h2 className="headline text-lg text-white">بازی‌های {league.name}</h2>
-            {[{ label: "در جریان", status: "live" }, { label: "بازی‌های آینده", status: "upcoming" }, { label: "نتایج", status: "finished" }].map(({ label, status }) => (
-              <div key={status}>
-                <h3 className="text-sm font-bold mb-2" style={{ color: status === "live" ? "#ff8fab" : "var(--color-muted)" }}>{label}</h3>
-                <div className="grid gap-3 md:grid-cols-2">{matches.filter((m) => m.status === status).map((m) => <MatchCard key={m.id} match={m} getTeam={getTeamById} />)}</div>
-              </div>
-            ))}
-          </div>
-        )}
+        {tab === "matches" && <RealLeagueMatches leagueSlug={league.slug} fallbackGames={matches} getTeam={getTeamById} />}
 
-        {tab === "standings" && <StandingsTable league={league} custom={{ standings, teams }} />}
+        {tab === "standings" && (
+          <RealStandingsTable
+            leagueSlug={league.slug}
+            fallback={<StandingsTable league={league} custom={{ standings, teams }} />}
+          />
+        )}
 
         {tab === "news" && (
           <div className="space-y-6">
@@ -139,19 +136,7 @@ export default function LeaguePage() {
           </div>
         )}
 
-        {tab === "stats" && (
-          <div className="space-y-6">
-            <h2 className="headline text-lg text-white">آمار {league.name}</h2>
-            <div className="grid gap-6 lg:grid-cols-3">
-              {[["برترین گلزنان", "گل", topStats(league.id, "goals")], ["بیشترین پاس گل", "پاس", topStats(league.id, "assists")], ["بیشترین کلین‌شیت", "کلین‌شیت", topStats(league.id, "clean")]].map(([title, label, list]) => (
-                <div key={String(title)}>
-                  <h3 className="text-sm font-bold mb-3 text-white">{String(title)}</h3>
-                  <div className="space-y-2">{(list as ReturnType<typeof topStats>).map((p) => <PlayerStatsCard key={p.player} stat={p} getTeam={getTeamById} label={String(label)} />)}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {tab === "stats" && <RealTopStats leagueSlug={league.slug} leagueId={league.id} getTeam={getTeamById} />}
 
         {tab === "teams" && (
           <div className="space-y-4">

@@ -39,72 +39,7 @@ const VICTORY_TEAMS: Record<number, { slug: string; name: string; color: string 
   10388: { slug: "mes-rafsanjan", name: "مس رفسنجان", color: "#EA580C" },
 };
 
-/** مسابقات زنده — رنگ glow هر سمت از رنگ اصلی لوگوی تیم */
-const LIVE_MATCHES_FALLBACK = [  {
-    league: "لالیگا اسپانیا", minute: "45", home: "بارسلونا", away: "رئال مادرید",
-    hs: "۱", as: "۱",
-    homeLogo: "https://media.api-sports.io/football/teams/529.png", awayLogo: "https://media.api-sports.io/football/teams/541.png",
-    glowHome: "#A50044", glowAway: "#FEBE10",
-    hot: true,
-  },
-  {
-    league: "لیگ برتر انگلیس", minute: "90+2", home: "منچسترسیتی", away: "لیورپول",
-    hs: "۲", as: "۳",
-    homeLogo: "https://media.api-sports.io/football/teams/50.png", awayLogo: "https://media.api-sports.io/football/teams/40.png",
-    glowHome: "#6CABDD", glowAway: "#C8102E",
-    hot: true,
-  },
-  {
-    league: "لیگ قهرمانان آسیا", minute: "75", home: "الهلال", away: "النصر",
-    hs: "۱", as: "۲",
-    homeLogo: "https://media.api-sports.io/football/teams/2932.png", awayLogo: "https://media.api-sports.io/football/teams/2939.png",
-    glowHome: "#00529F", glowAway: "#FDB913",
-    hot: true,
-  },
-  {
-    league: "لیگ برتر ایران", minute: "68", home: "سپاهان", away: "پرسپولیس",
-    hs: "۰", as: "۱",
-    homeLogo: "https://raw.githubusercontent.com/LordArma/Iran-Football-Leagues/master/Persian%20Gulf%20Pro%20League/Favicon/%D8%B3%D9%BE%D8%A7%D9%87%D8%A7%D9%86%20%D8%A7%D8%B5%D9%81%D9%87%D8%A7%D9%86.png",
-    awayLogo: "https://raw.githubusercontent.com/LordArma/Iran-Football-Leagues/master/Persian%20Gulf%20Pro%20League/Favicon/%D9%BE%D8%B1%D8%B3%D9%BE%D9%88%D9%84%DB%8C%D8%B3%20%D8%AA%D9%87%D8%B1%D8%A7%D9%86.png",
-    glowHome: "#F7B500", glowAway: "#D50000",
-    hot: false,
-  },
-];
-
-/** جدول لیگ برتر ایران — fallback (دیتای واقعی از real-data) */
-const STANDINGS_FALLBACK = [
-  { name: "تراکتور", logo: "https://media.api-sports.io/football/teams/2937.png", played: "۵", pts: "۱۳" },
-  { name: "فولاد خوزستان", logo: "https://media.api-sports.io/football/teams/2934.png", played: "۵", pts: "۱۱" },
-  { name: "استقلال", logo: "https://media.api-sports.io/football/teams/2933.png", played: "۴", pts: "۱۰" },
-  { name: "پرسپولیس", logo: "https://media.api-sports.io/football/teams/2942.png", played: "۴", pts: "۹" },
-  { name: "گل‌گهر سیرجان", logo: "https://media.api-sports.io/football/teams/2914.png", played: "۵", pts: "۷" },
-];
-
-/** آخرین اخبار */
-const NEWS = [
-  { title: "مصاحبه اختصاصی با گاریدو قبل از دربی", time: "۲ ساعت پیش", img: "https://picsum.photos/seed/n1/160/112" },
-  { title: "مصدومیت ستاره استقلال تایید شد", time: "۴ ساعت پیش", img: "https://picsum.photos/seed/n2/160/112" },
-  { title: "گزارش ویژه: نبرد تاکتیکی در دربی ۱۰۵", time: "۶ ساعت پیش", img: "https://picsum.photos/seed/n3/160/112" },
-];
-
-/** ویدیوهای برتر */
-const VIDEOS = {
-  featured: { title: "خلاصه بازی پرسپولیس ۱ - ۱ استقلال", duration: "08:45", img: "https://picsum.photos/seed/v1/720/400" },
-  small: [
-    { duration: "06:12", img: "https://picsum.photos/seed/v2/300/180" },
-    { duration: "07:33", img: "https://picsum.photos/seed/v3/300/180" },
-    { duration: "05:48", img: "https://picsum.photos/seed/v4/300/180" },
-  ],
-};
-
-/** بهترین گلزنان — دیتای واقعی از victoryapp (slug برای پروفایل تیم) */
-const TOP_SCORERS = [
-  { rank: "۱", name: "مهدی ترابی", team: "پرسپولیس", teamSlug: "persepolis", goals: "۱۸", color: "#D50000" },
-  { rank: "۲", name: "شهریار مغانلو", team: "سپاهان", teamSlug: "sepahan", goals: "۱۵", color: "#F7B500" },
-  { rank: "۳", name: "محمد محبی", team: "استقلال", teamSlug: "esteghlal", goals: "۱۲", color: "#0057B8" },
-  { rank: "۴", name: "امیرحسین حسین‌زاده", team: "تراکتور", teamSlug: "tractor", goals: "۱۱", color: "#DC2626" },
-  { rank: "۵", name: "کاوه رضایی", team: "گل‌گهر", teamSlug: "golgohar", goals: "۱۰", color: "#1B4D8F" },
-];
+/** مسابقات زنده — دیتای واقعی از API خلیج فارس (victoryapi) */
 
 /** ناوبری هدر */
 const NAV_ITEMS = [
@@ -130,60 +65,56 @@ const DERBY = {
 
 /* ================= انواع ================= */
 type User = { id: number; displayName: string | null; points: number; coins: number; level: number } | null;
+type LiveMatch = {
+  league: string; minute: string; home: string; away: string;
+  hs: string; as: string; homeLogo: string; awayLogo: string;
+  glowHome: string; glowAway: string; hot: boolean; time?: string;
+};
 export default function HomePage() {
   const router = useRouter();
   const [slide, setSlide] = useState(0);
-  const [liveData, setLiveData] = useState<{ persianGulfStandings: {rank: number; slug: string; name: string; played: number; pts: number}[]; leagueStandings: Record<string, any[]> } | null>(null);
-  const [liveMatches, setLiveMatches] = useState(LIVE_MATCHES_FALLBACK);
-  const [standings, setStandings] = useState(STANDINGS_FALLBACK);
+  const [liveMatches, setLiveMatches] = useState<LiveMatch[]>([]);
+  const [standings, setStandings] = useState<Array<{ name: string; logo: string; played: string; pts: string; slug?: string }>>([]);
+  const [topScorers, setTopScorers] = useState<Array<{ rank: number; playerId: number; name: string; goals: number; ourTeam: { slug: string; name: string; color: string } | null }>>([]);
   const [mixedNews, setMixedNews] = useState<Array<{ title: string; link: string; description: string; image: string | null; time: string; category: string; sport: { key: string; name: string; color: string }; internal: boolean }> | null>(null);
+  const [gameIds, setGameIds] = useState<number[]>([]);
 
   // ساعت و تاریخ زنده (تقویم شمسی)
   const [now, setNow] = useState(() => new Date());
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 1000);
-    fetch("/api/home").then((r) => r.json()).then((res) => { if (res?.success) setUser(res.user ?? null); }).catch(() => {});
+    fetch("/api/home").then((r) => r.json()).then((res) => { if (res?.success) { setUser(res.user ?? null); setGameIds((res.games ?? []).map((g: any) => g.id)); } }).catch(() => {});
     fetch("/api/news/mixed").then(r => r.json()).then(res => {
       if (res?.success && Array.isArray(res.items) && res.items.length) setMixedNews(res.items);
     }).catch(() => {});
-    // دیتای واقعی
-    fetch("/api/football/real-data").then(r => r.json()).then(res => {
-      if (res?.success) {
-        setLiveData(res);
-        // جدول واقعی خلیج فارس
-        if (res.persianGulf?.standings) {
-          const pg = res.persianGulf.standings.slice(0, 5).map((s: any) => ({
-            name: s.name,
-            logo: `https://www.victoryapi.ir/flags/png/teams/${s.teamId}.png`,
-            played: String(s.played),
-            pts: String(s.pts)
-          }));
-          if (pg.length) setStandings(pg);
-        }
-        // بازی‌های واقعی (fixtures) خلیج فارس — امروز
-        if (res.persianGulf?.fixtures?.length) {
-          const t = res.persianGulf.fixtures.filter((f: any) => f.time);
-          if (t.length) {
-            const mapped = t.slice(0, 4).map((f: any) => {
-              const h = VICTORY_TEAMS[f.homeId] || { name: f.homeName, color: "#bee503" };
-              const a = VICTORY_TEAMS[f.awayId] || { name: f.awayName, color: "#bee503" };
-              return {
-                league: "لیگ برتر ایران",
-                minute: f.time.replace(":", ""),
-                home: h.name, away: a.name,
-                hs: "", as: "",
-                homeLogo: `https://www.victoryapi.ir/flags/png/teams/${f.homeId}.png`,
-                awayLogo: `https://www.victoryapi.ir/flags/png/teams/${f.awayId}.png`,
-                glowHome: h.color, glowAway: a.color,
-                hot: false,
-                time: f.time,
-              };
-            });
-            if (mapped.length) setLiveMatches(mapped);
-          }
-        }
+    // دیتای واقعی خلیج فارس (victoryapi)
+    fetch("/api/football/persian-gulf").then(r => r.json()).then(res => {
+      if (!res?.success || !res.covered) return;
+      // جدول واقعی خلیج فارس
+      if (Array.isArray(res.standings) && res.standings.length) {
+        setStandings(res.standings.slice(0, 5).map((s: any) => ({
+          name: s.team?.name ?? s.name, logo: s.team?.logo ?? "",
+          played: String(s.played ?? 0), pts: String(s.pts ?? 0), slug: s.team?.slug,
+        })));
       }
+      // بازی‌های واقعی (fixtures)
+      if (Array.isArray(res.games) && res.games.length) {
+        const mapped = res.games.filter((g: any) => g.date).slice(0, 4).map((g: any) => ({
+          league: "لیگ برتر ایران",
+          minute: (g.date as string).replace(":", ""),
+          home: g.home?.name ?? "—", away: g.away?.name ?? "—",
+          hs: "", as: "",
+          homeLogo: g.home?.logo ?? "", awayLogo: g.away?.logo ?? "",
+          glowHome: g.home?.color ?? "#005cfc", glowAway: g.away?.color ?? "#bee503",
+          hot: false, time: g.date,
+        }));
+        if (mapped.length) setLiveMatches(mapped);
+      }
+    }).catch(() => {});
+    // بهترین گلزنان واقعی — بوندسلیگا (پوشش کامل TM) به‌عنوان نمونه جهانی + خلیج فارس ندارد
+    fetch("/api/football/players-top?league=bundesliga&key=goals&season=2025").then(r => r.json()).then(res => {
+      if (res?.success && res.covered && res.items?.length) setTopScorers(res.items.slice(0, 5));
     }).catch(() => {});
     return () => clearInterval(t);
   }, []);
@@ -432,7 +363,7 @@ export default function HomePage() {
                 {standings.map((row, i) => (
                   <tr key={row.name} className={`border-b border-white/5 transition-colors hover:bg-white/[0.03] ${i === 0 ? "bg-sky-500/5" : ""}`}>
                     <td className="px-3 py-2.5">
-                      <Link href="/football/leagues/persian-gulf" className="flex items-center gap-2 min-w-0 group">
+                      <Link href={row.slug ? `/football/teams/${row.slug}` : "/football/leagues/persian-gulf"} className="flex items-center gap-2 min-w-0 group">
                         <span className="tabular text-[11px] w-4 shrink-0" style={{ color: i === 0 ? "#005cfc" : "#64748b" }}>{["۱","۲","۳","۴","۵"][i]}</span>
                         <img src={row.logo} alt={row.name} className="w-5 h-5 object-contain shrink-0" loading="lazy" />
                         <span className="font-bold truncate text-white group-hover:text-[#005cfc] transition-colors">{row.name}</span>
@@ -442,6 +373,7 @@ export default function HomePage() {
                     <td className="px-2 py-2.5 text-center tabular font-black" style={{ color: "#005cfc" }}>{row.pts}</td>
                   </tr>
                 ))}
+                {!standings.length && <tr><td colSpan={3} className="text-center text-slate-500 py-4 text-[11px]">در حال بارگذاری جدول واقعی...</td></tr>}
               </tbody>
             </table>
             <Link href="/football/leagues/persian-gulf/standings" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#bee503" }}>مشاهده جدول کامل</Link>
@@ -451,10 +383,7 @@ export default function HomePage() {
           <div className="rounded-2xl border border-white/10 p-4 flex flex-col" style={{ background: "rgba(37,37,37,0.9)", backdropFilter: "blur(8px)" }}>
             <h3 className="headline text-[16px] text-white mb-3">آخرین اخبار</h3>
             <div className="flex-1 flex flex-col gap-2.5">
-              {(mixedNews ?? NEWS.map((n) => ({
-                title: n.title, link: "/news", description: "", image: n.img,
-                time: n.time, category: "فوتبال", sport: { key: "football", name: "فوتبال", color: "#005cfc" }, internal: true,
-              }))).map((n, idx) => (
+              {(mixedNews ? mixedNews.map((n, idx) => (
                 <a
                   key={`${n.link}-${idx}`}
                   href={n.link}
@@ -472,59 +401,51 @@ export default function HomePage() {
                     <span className="text-[10px] mt-1 block text-slate-500">{n.time}</span>
                   </div>
                 </a>
-              ))}
+              )) : <div className="text-[12px] text-slate-500 text-center py-6">در حال بارگذاری اخبار...</div>)}
             </div>
             <Link href="/news" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#bee503" }}>مشاهده همه اخبار</Link>
           </div>
 
-          {/* ستون ۳: ویدیوهای برتر */}
+          {/* ستون ۳: ویدیوهای برتر — اخبار ویدیویی واقعی از RSS (دسته ویدیو) */}
           <div className="rounded-2xl border border-white/10 p-4 flex flex-col" style={{ background: "rgba(37,37,37,0.9)", backdropFilter: "blur(8px)" }}>
             <h3 className="headline text-[16px] text-white mb-3">ویدیوهای برتر</h3>
-            {/* ویدیو شاخص */}
-            <div className="relative rounded-xl overflow-hidden group cursor-pointer mb-3" style={{ aspectRatio: "16/9" }}>
-              <img src={VIDEOS.featured.img} alt={VIDEOS.featured.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" loading="lazy" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
-              {/* دکمه Play شیشه‌ای */}
-              <span className="absolute inset-0 flex items-center justify-center">
-                <span className="w-12 h-12 rounded-full flex items-center justify-center border border-white/25 transition-transform duration-200 group-hover:scale-110" style={{ background: "rgba(37,37,37,0.65)", backdropFilter: "blur(6px)" }}>
-                  <Play size={20} className="text-white translate-x-[-1px]" />
+            {(mixedNews ?? []).filter((n) => n.category === "ویدیو").slice(0, 4).map((v, i) => (
+              <a key={i} href={v.link} target="_blank" rel="noreferrer" className="relative rounded-xl overflow-hidden group cursor-pointer mb-2.5" style={{ aspectRatio: "16/9" }}>
+                {v.image && <img src={v.image} alt={v.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" loading="lazy" />}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <span className="w-12 h-12 rounded-full flex items-center justify-center border border-white/25 transition-transform duration-200 group-hover:scale-110" style={{ background: "rgba(37,37,37,0.65)", backdropFilter: "blur(6px)" }}>
+                    <Play size={20} className="text-white translate-x-[-1px]" />
+                  </span>
                 </span>
-              </span>
-              <span className="absolute bottom-2 left-2 text-[9px] font-black px-1.5 py-0.5 rounded tabular" style={{ background: "rgba(7,11,20,0.8)", color: "#fff" }}>{VIDEOS.featured.duration}</span>
-              <p className="absolute bottom-2 right-2 text-[11px] font-bold text-white truncate max-w-[62%]">{VIDEOS.featured.title}</p>
-            </div>
-            {/* ۳ تامبنیل کوچک */}
-            <div className="grid grid-cols-3 gap-2 flex-1">
-              {VIDEOS.small.map((v, i) => (
-                <div key={i} className="relative rounded-lg overflow-hidden group cursor-pointer" style={{ aspectRatio: "16/10" }}>
-                  <img src={v.img} alt="" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                  <span className="absolute inset-0 flex items-center justify-center"><Play size={16} className="text-white/90" /></span>
-                  <span className="absolute bottom-1 left-1 text-[8px] font-black px-1 rounded tabular" style={{ background: "rgba(7,11,20,0.8)", color: "#fff" }}>{v.duration}</span>
-                </div>
-              ))}
-            </div>
+                <p className="absolute bottom-2 right-2 left-2 text-[11px] font-bold text-white line-clamp-2">{v.title}</p>
+              </a>
+            ))}
+            {!(mixedNews ?? []).some((n) => n.category === "ویدیو") && (
+              <div className="text-[12px] text-slate-500 text-center py-6">ویدیوهای این هفته به‌زودی از منابع رسمی بارگذاری می‌شود.</div>
+            )}
             <Link href="/live" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#bee503" }}>مشاهده همه ویدیوها</Link>
           </div>
 
-          {/* ستون ۴ (چپ‌ترین): بهترین گلزنان */}
+          {/* ستون ۴ (چپ‌ترین): بهترین گلزنان — واقعی از Transfermarkt */}
           <div className="rounded-2xl border border-white/10 p-4 flex flex-col" style={{ background: "rgba(37,37,37,0.9)", backdropFilter: "blur(8px)" }}>
             <h3 className="headline text-[16px] text-white mb-3">بهترین گلزنان</h3>
+            <p className="text-[10px] text-slate-500 mb-2">بوندسلیگا — فصل ۲۰۲۵/۲۶</p>
             <div className="flex-1 space-y-1.5">
-              {TOP_SCORERS.map((p) => (
-                <div key={p.name} className="flex items-center gap-2.5 px-2 py-2 rounded-xl transition-colors hover:bg-white/[0.04]" style={p.rank === "۱" ? { background: "rgba(0,92,252,0.07)" } : undefined}>
-                  <span className="tabular font-black text-[12px] w-5 text-center shrink-0" style={{ color: p.rank === "۱" ? "#005cfc" : "#64748b" }}>{p.rank}</span>
-                  {/* عکس دایره‌ای چهره — fallback حروف اول */}
-                  <span className="w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 border border-white/10" style={{ background: `${p.color}25`, color: p.color }}>{p.name.slice(0, 2)}</span>
+              {topScorers.map((p) => (
+                <Link key={p.playerId} href={`/football/players/${p.playerId}`} className="flex items-center gap-2.5 px-2 py-2 rounded-xl transition-colors hover:bg-white/[0.04]" style={p.rank === 1 ? { background: "rgba(0,92,252,0.07)" } : undefined}>
+                  <span className="tabular font-black text-[12px] w-5 text-center shrink-0" style={{ color: p.rank === 1 ? "#005cfc" : "#64748b" }}>{p.rank}</span>
+                  <span className="w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 border border-white/10" style={{ background: `${p.ourTeam?.color ?? "#005cfc"}25`, color: p.ourTeam?.color ?? "#005cfc" }}>{p.name.slice(0, 2)}</span>
                   <div className="min-w-0 flex-1">
                     <p className="text-[12px] font-bold truncate text-white">{p.name}</p>
-                    <Link href={`/football/teams/${p.teamSlug}`} className="text-[10px] text-slate-500 hover:text-[#005cfc] transition-colors">{p.team}</Link>
+                    <span className="text-[10px] text-slate-500">{p.ourTeam?.name ?? "—"}</span>
                   </div>
                   <span className="font-black text-[14px] text-white shrink-0">{p.goals} <span className="text-[10px] font-normal text-slate-500">گل</span></span>
-                </div>
+                </Link>
               ))}
+              {!topScorers.length && <div className="text-[12px] text-slate-500 text-center py-6">در حال بارگذاری...</div>}
             </div>
-            <Link href="/football/leagues/persian-gulf/standings" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#bee503" }}>مشاهده آمار کامل</Link>
+            <Link href="/football/leagues/bundesliga/stats" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#bee503" }}>مشاهده آمار کامل</Link>
           </div>
         </div>
       </main>
