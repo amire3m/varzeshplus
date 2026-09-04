@@ -66,9 +66,11 @@ const DERBY = {
 /* ================= انواع ================= */
 type User = { id: number; displayName: string | null; points: number; coins: number; level: number } | null;
 type LiveMatch = {
-  league: string; minute: string; home: string; away: string;
+  league: string; leagueSlug: string; status: "live" | "upcoming" | "finished";
+  minute: string; home: string; away: string;
   hs: string; as: string; homeLogo: string; awayLogo: string;
   glowHome: string; glowAway: string; hot: boolean; time?: string;
+  homeSlug?: string | null; awaySlug?: string | null;
 };
 export default function HomePage() {
   const router = useRouter();
@@ -98,20 +100,57 @@ export default function HomePage() {
           played: String(s.played ?? 0), pts: String(s.pts ?? 0), slug: s.team?.slug,
         })));
       }
-      // بازی‌های واقعی (fixtures)
+      // بازی‌های واقعی (fixtures) — به لیست زنده اضافه می‌شود
       if (Array.isArray(res.games) && res.games.length) {
-        const mapped = res.games.filter((g: any) => g.date).slice(0, 4).map((g: any) => ({
-          league: "لیگ برتر ایران",
-          minute: (g.date as string).replace(":", ""),
+        const mapped: LiveMatch[] = res.games.filter((g: any) => g.date).slice(0, 4).map((g: any) => ({
+          league: "لیگ برتر ایران", leagueSlug: "persian-gulf", status: "upcoming" as const,
+          minute: "",
           home: g.home?.name ?? "—", away: g.away?.name ?? "—",
           hs: "", as: "",
           homeLogo: g.home?.logo ?? "", awayLogo: g.away?.logo ?? "",
           glowHome: g.home?.color ?? "#005cfc", glowAway: g.away?.color ?? "#bee503",
           hot: false, time: g.date,
+          homeSlug: g.home?.slug ?? null, awaySlug: g.away?.slug ?? null,
         }));
-        if (mapped.length) setLiveMatches(mapped);
+        if (mapped.length) setLiveMatches((prev) => [...prev, ...mapped].slice(0, 4));
       }
     }).catch(() => {});
+    // اسکوربرد زنده واقعی — لیگ برتر + لالیگا
+    (async () => {
+      try {
+        const LEAGUE_FA: Record<string, { league: string; slug: string }> = {
+          "premier-league": { league: "لیگ برتر انگلیس", slug: "premier-league" },
+          "la-liga": { league: "لالیگا", slug: "la-liga" },
+        };
+        const all: LiveMatch[] = [];
+        for (const lg of ["premier-league", "la-liga"]) {
+          const r = await fetch(`/api/live-score?league=${lg}`).then((x) => x.json()).catch(() => null);
+          if (!r?.success || !Array.isArray(r.matches)) continue;
+          for (const m of r.matches) {
+            const hn = m.home?.faName ?? m.home?.name ?? "—";
+            const an = m.away?.faName ?? m.away?.name ?? "—";
+            all.push({
+              league: LEAGUE_FA[lg].league, leagueSlug: LEAGUE_FA[lg].slug,
+              status: m.status, minute: m.minute ?? "",
+              home: hn, away: an,
+              hs: m.home?.score !== null && m.home?.score !== undefined ? String(m.home.score) : "",
+              as: m.away?.score !== null && m.away?.score !== undefined ? String(m.away.score) : "",
+              homeLogo: m.home?.logo ?? "", awayLogo: m.away?.logo ?? "",
+              glowHome: m.home?.color ?? "#005cfc", glowAway: m.away?.color ?? "#bee503",
+              hot: m.status === "live",
+              time: m.status === "upcoming" ? m.date : undefined,
+              homeSlug: m.home?.slug ?? null, awaySlug: m.away?.slug ?? null,
+            });
+          }
+        }
+        if (all.length) {
+          const rank = (s: string) => (s === "live" ? 0 : s === "upcoming" ? 1 : 2);
+          all.sort((a, b) => rank(a.status) - rank(b.status));
+          // زنده‌ها اول، بعد بقیه؛ خلیج فارس (اگر بود) حفظ می‌شود
+          setLiveMatches((prev) => [...all.slice(0, 4), ...prev].slice(0, 4));
+        }
+      } catch { /* نادیده */ }
+    })();
     // بهترین گلزنان واقعی — بوندسلیگا (پوشش کامل TM) به‌عنوان نمونه جهانی + خلیج فارس ندارد
     fetch("/api/football/players-top?league=bundesliga&key=goals&season=2025").then(r => r.json()).then(res => {
       if (res?.success && res.covered && res.items?.length) setTopScorers(res.items.slice(0, 5));
@@ -291,10 +330,16 @@ export default function HomePage() {
           {/* هدر بخش */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2.5">
-              <h2 className="headline text-[17px] text-white">بازی های زنده</h2>
-              <span className="flex items-center gap-1.5 text-[10px] font-black px-2.5 py-1 rounded-full animate-pulse" style={{ background: "rgba(232,56,93,0.16)", color: "#ff6b8a" }}>
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> زنده
-              </span>
+              <h2 className="headline text-[17px] text-white">{liveMatches.some((m) => m.status === "live") ? "بازی های زنده" : "بازی‌های امروز و پیش رو"}</h2>
+              {liveMatches.some((m) => m.status === "live") ? (
+                <span className="flex items-center gap-1.5 text-[10px] font-black px-2.5 py-1 rounded-full animate-pulse" style={{ background: "rgba(232,56,93,0.16)", color: "#ff6b8a" }}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> زنده ({liveMatches.filter((m) => m.status === "live").length})
+                </span>
+              ) : (
+                <span className="text-[10px] font-bold px-2.5 py-1 rounded-full border border-white/10 text-slate-400">
+                  فعلاً بازی زنده‌ای نیست
+                </span>
+              )}
             </div>
             <Link href="/football/leagues/premier-league/matches" className="text-[11px] font-bold px-4 py-1.5 rounded-full border transition-colors hover:bg-white/5" style={{ borderColor: "rgba(0,92,252,0.35)", color: "#005cfc" }}>
               مشاهده همه
@@ -305,7 +350,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
             {liveMatches.map((m, i) => (
               <Link
-                key={i} href={`/football/leagues/${m.league.includes("لالیگا") ? "la-liga" : m.league.includes("انگلیس") ? "premier-league" : m.league.includes("آسیا") ? "super-lig" : "persian-gulf"}/matches`}
+                key={i} href={`/football/leagues/${m.leagueSlug}/matches`}
                 className="group relative block rounded-2xl border border-white/10 overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:border-white/20"
                 style={{ background: "#2a2a2a" }}
                 dir="rtl"
@@ -316,12 +361,22 @@ export default function HomePage() {
                 <span aria-hidden className="absolute top-1/2 -translate-y-1/2 -left-4 w-24 h-24 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-300 pointer-events-none" style={{ background: m.glowAway }} />
 
                 <div className="relative z-10 px-4 pt-3 pb-3.5">
-                  {/* نام لیگ وسط + دقیقه گوشه */}
+                  {/* نام لیگ وسط + وضعیت گوشه */}
                   <div className="relative mb-3">
                     <p className="text-[10px] font-bold text-center text-slate-400 truncate px-8">{m.league}</p>
-                    <span className={`absolute top-0 left-0 flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded-full tabular ${m.hot ? "animate-pulse" : ""}`} style={m.hot ? { background: "rgba(232,56,93,0.18)", color: "#ff6b8a" } : { background: "rgba(16,185,129,0.15)", color: "#34d399" }}>
-                      {m.hot && <span className="w-1 h-1 rounded-full bg-red-400" />}{m.minute}&apos;
-                    </span>
+                    {m.status === "live" ? (
+                      <span className="absolute top-0 left-0 flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded-full tabular animate-pulse" style={{ background: "rgba(232,56,93,0.18)", color: "#ff6b8a" }}>
+                        <span className="w-1 h-1 rounded-full bg-red-400" />{m.minute}&apos;
+                      </span>
+                    ) : m.status === "finished" ? (
+                      <span className="absolute top-0 left-0 text-[9px] font-black px-1.5 py-0.5 rounded-full tabular" style={{ background: "rgba(255,255,255,0.06)", color: "#8FA1B5" }}>
+                        پایان
+                      </span>
+                    ) : (
+                      <span className="absolute top-0 left-0 text-[9px] font-black px-1.5 py-0.5 rounded-full tabular" style={{ background: "rgba(16,185,129,0.15)", color: "#34d399" }}>
+                        پیش رو
+                      </span>
+                    )}
                   </div>
                   {/* تیم‌ها + نتیجه */}
                   <div className="flex items-center justify-between">
@@ -329,8 +384,14 @@ export default function HomePage() {
                       <img src={m.homeLogo} alt={m.home} className="w-8 h-8 object-contain shrink-0" loading="lazy" />
                       <span className="text-[12px] font-bold truncate" style={{ color: "#F5F7FA" }}>{m.home}</span>
                     </div>
-                    <span className="tabular text-[22px] font-black shrink-0 px-3 leading-none" style={{ color: (m as any).time ? "#005cfc" : "#fff" }}>
-                      {(m as any).time ? (m as any).time : <>{m.hs} <span className="text-slate-500">-</span> {m.as}</>}
+                    <span className="tabular shrink-0 px-3 leading-none text-center" style={{ color: m.status === "upcoming" ? "#005cfc" : "#fff" }}>
+                      {m.status === "upcoming" ? (
+                        <span className="block text-[11px] font-bold">
+                          {m.time ? new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }).format(new Date(m.time)) : "به‌زودی"}
+                        </span>
+                      ) : (
+                        <span className="text-[22px] font-black">{m.hs} <span className="text-slate-500">-</span> {m.as}</span>
+                      )}
                     </span>
                     <div className="flex items-center gap-2 min-w-0 flex-1 justify-end">
                       <span className="text-[12px] font-bold truncate text-left" style={{ color: "#F5F7FA" }}>{m.away}</span>
