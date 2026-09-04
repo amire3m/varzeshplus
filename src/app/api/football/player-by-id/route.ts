@@ -65,6 +65,28 @@ export async function GET(req: Request) {
       GROUP BY yr, competition_id ORDER BY yr DESC, competition_id LIMIT 12
     `).all(id) as Array<{ yr: string; competition_id: string; games: number; goals: number | null; assists: number | null; minutes: number | null; yellows: number | null; reds: number | null }>;
 
+    // تخمین مبلغ انتقال (Ball-On-lite — شفاف و ساده، نه جادو)
+    // پایه: ارزش بازار فعلی؛ اگر نبود از عملکرد فصل آخر تخمین زده می‌شود
+    const latest = seasonStats.find((s) => (s.minutes ?? 0) > 500) ?? seasonStats[0];
+    const mins = latest?.minutes ?? 0;
+    const ga = (latest?.goals ?? 0) + (latest?.assists ?? 0);
+    const per90 = mins > 0 ? ga / (mins / 90) : 0;
+    let birthYear: number | null = null;
+    try { birthYear = player.date_of_birth ? new Date(player.date_of_birth).getFullYear() : null; } catch { birthYear = null; }
+    const ageNow = birthYear ? new Date().getFullYear() - birthYear : null;
+    const pos = (player.position || "").toLowerCase();
+    const posFactor = /attack|forward|winger|striker/.test(pos) ? 1.15 : /midfield/.test(pos) ? 1.0 : /defen|back/.test(pos) ? 0.9 : /goalkeeper|keeper/.test(pos) ? 0.8 : 1.0;
+    const ageFactor = ageNow === null ? 1 : Math.min(1.1, Math.max(0.35, 1 - 0.07 * Math.abs(ageNow - 26)));
+    const perfFactor = Math.min(1.8, Math.max(0.6, 0.6 + per90 * 0.35));
+    const base = player.market_value_in_eur ?? (mins > 0 ? Math.round((ga * 1_500_000 + mins * 800)) : null);
+    const estimatedFee = base === null ? null : Math.round(base * ageFactor * perfFactor * posFactor);
+    const estimatedFactors = [
+      { label: "مبنای ارزش بازار", text: base === null ? "نامشخص" : `€${(base / 1_000_000).toFixed(1)}M` },
+      { label: "سن", text: ageNow === null ? "نامشخص" : `${ageNow} سال (ضریب ${ageFactor.toFixed(2)})` },
+      { label: "عملکرد فصل", text: mins > 0 ? `${ga} گل+پاس در ${mins} دقیقه (ضریب ${perfFactor.toFixed(2)})` : "بدون دقایق ثبت‌شده" },
+      { label: "پست", text: `${player.position ?? "—"} (ضریب ${posFactor})` },
+    ];
+
     return NextResponse.json({
       success: true,
       covered: true,
@@ -88,6 +110,7 @@ export async function GET(req: Request) {
       history: history.slice(-24),
       transfers,
       seasonStats,
+      estimatedFee: estimatedFee === null ? null : { value: estimatedFee, factors: estimatedFactors },
     });
   } catch (e) {
     console.error("player-by-id error:", e);

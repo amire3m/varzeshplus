@@ -27,6 +27,7 @@ type RealData = {
   history: Array<{ date: string; v: number | null }>;
   transfers: Array<{ transfer_date: string; from_club_name: string; to_club_name: string; transfer_fee: string | null; market_value_in_eur: number | null }>;
   seasonStats: Array<{ yr: string; competition_id: string; games: number; goals: number | null; assists: number | null; minutes: number | null; yellows: number | null; reds: number | null }>;
+  estimatedFee: { value: number; factors: Array<{ label: string; text: string }> } | null;
 };
 type Teammate = { playerId: number; name: string; position: string | null };
 
@@ -167,7 +168,7 @@ export default function PlayerProfilePage() {
 /* ================= نمای واقعی TM ================= */
 
 function RealProfileView({ real, teammates }: { real: RealData; teammates: Teammate[] }) {
-  const { player, history, transfers, seasonStats } = real;
+  const { player, history, transfers, seasonStats, estimatedFee } = real;
   const color = player.ourTeam?.color ?? "#005cfc";
   const latest = seasonStats[0];
 
@@ -258,6 +259,25 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
             </div>
           )}
         </section>
+
+        {/* تخمین مبلغ انتقال */}
+        {estimatedFee && (
+          <section className="rounded-2xl border p-4" style={{ background: "linear-gradient(135deg, rgba(190,229,3,0.08), rgba(0,92,252,0.08))", borderColor: "rgba(190,229,3,0.3)" }}>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="headline text-sm text-white">تخمین مبلغ انتقال</h3>
+              <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: "rgba(190,229,3,0.12)", color: "#bee503" }}>مدل شفاف</span>
+            </div>
+            <div className="headline text-2xl tabular mb-2" style={{ color: "#bee503" }}>{fmtEur(estimatedFee.value)}</div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px]">
+              {estimatedFee.factors.map((f) => (
+                <div key={f.label} className="flex justify-between gap-2 border-b border-white/5 pb-1">
+                  <span className="text-slate-500">{f.label}</span>
+                  <span className="text-slate-300 font-bold text-left">{f.text}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* پروفایل کامل */}
         <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#2a2a2a" }}>

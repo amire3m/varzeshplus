@@ -300,6 +300,16 @@ export const scorePredictions = sqliteTable("score_predictions", {
   index("idx_pred_user").on(t.userId),
 ]);
 
+/* ---------- فانتزی لیگ برتر (FPL API رایگان) ---------- */
+
+export const fantasyTeams = sqliteTable("fantasy_teams", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: integer("user_id").notNull().unique(),
+  players: text("players").notNull(), // JSON آرایه ۱۵تایی از FPL element id
+  createdAt: text("created_at").notNull().default(""),
+  updatedAt: text("updated_at").notNull().default(""),
+}, (t) => [index("idx_fantasy_user").on(t.userId)]);
+
 /* ---------- لاگ ممیزی (Audit Trail) ---------- */
 
 export const auditLogs = sqliteTable("audit_logs", {
