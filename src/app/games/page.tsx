@@ -82,7 +82,7 @@ export default function GamesPage() {
         </div>
 
         {/* بنر فوتبالیست منیجر */}
-        <Link href="/games/manager" className="block rounded-2xl border border-white/10 p-4 mb-6 flex items-center gap-3 hover:border-[#005cfc]/30 transition-colors" style={{ background: "linear-gradient(135deg, rgba(0,92,252,0.14), rgba(190,229,3,0.08))" }}>
+        <Link href="/games/manager" className="block rounded-2xl border border-white/10 p-4 mb-4 flex items-center gap-3 hover:border-[#005cfc]/30 transition-colors" style={{ background: "linear-gradient(135deg, rgba(0,92,252,0.14), rgba(190,229,3,0.08))" }}>
           <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white" style={{ background: "linear-gradient(135deg, #005cfc, #bee503)" }}>FM</div>
           <div className="min-w-0">
             <div className="headline text-sm text-white">فوتبالیست منیجر — بومی OFM</div>
@@ -90,6 +90,31 @@ export default function GamesPage() {
           </div>
           <span className="mr-auto text-xs font-black px-3 py-1.5 rounded-full text-white shrink-0" style={{ background: "#005cfc" }}>ورود →</span>
         </Link>
+
+        {/* آرکید روزانه */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+          <Link href="/games/footle" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#bee503]/40 transition-colors" style={{ background: "#2a2a2a" }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-white" style={{ background: "linear-gradient(135deg, #bee503, #005cfc)" }}>F</div>
+            <div className="min-w-0">
+              <div className="headline text-sm text-white">فوتل</div>
+              <div className="text-[11px] text-slate-400">بازیکن مرموز امروز را حدس بزن</div>
+            </div>
+          </Link>
+          <Link href="/games/higher-lower" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#005cfc]/40 transition-colors" style={{ background: "#2a2a2a" }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-white" style={{ background: "linear-gradient(135deg, #005cfc, #E8385D)" }}>↕</div>
+            <div className="min-w-0">
+              <div className="headline text-sm text-white">بیشتر یا کمتر</div>
+              <div className="text-[11px] text-slate-400">ارزش بازار کدام بازیکن بیشتر است؟</div>
+            </div>
+          </Link>
+          <Link href="/games/predictor" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#bee503]/40 transition-colors" style={{ background: "#2a2a2a" }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-white" style={{ background: "linear-gradient(135deg, #bee503, #E8385D)" }}>◎</div>
+            <div className="min-w-0">
+              <div className="headline text-sm text-white">پیش‌بینی نتیجه</div>
+              <div className="text-[11px] text-slate-400">نتیجه دقیق ۳ امتیاز • جدول هفتگی</div>
+            </div>
+          </Link>
+        </div>
 
         {/* فیلتر تب‌ها */}
         <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-1">

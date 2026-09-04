@@ -281,6 +281,25 @@ export const managerMatches = sqliteTable("manager_matches", {
   status: text("status").notNull().default("upcoming"), // upcoming | played
 }, (t) => [index("idx_mm_save_week").on(t.saveId, t.week)]);
 
+/* ---------- پیش‌بینی نتیجه (Score Predictor) ---------- */
+
+export const scorePredictions = sqliteTable("score_predictions", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: integer("user_id").notNull(),
+  fixtureKey: text("fixture_key").notNull(), // شناسه یکتای بازی در منبع (worldcup26/espn id)
+  league: text("league").notNull(), // premier-league | la-liga
+  home: text("home").notNull(),
+  away: text("away").notNull(),
+  matchDate: text("match_date"),
+  predHome: integer("pred_home").notNull(),
+  predAway: integer("pred_away").notNull(),
+  points: integer("points").notNull().default(0), // 3 = نتیجه دقیق، 1 = سمت درست، 0 = غلط
+  createdAt: text("created_at").notNull().default(""),
+}, (t) => [
+  uniqueIndex("uq_prediction").on(t.userId, t.fixtureKey),
+  index("idx_pred_user").on(t.userId),
+]);
+
 /* ---------- لاگ ممیزی (Audit Trail) ---------- */
 
 export const auditLogs = sqliteTable("audit_logs", {

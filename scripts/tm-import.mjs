@@ -15,7 +15,7 @@ import Database from "better-sqlite3";
 const BASE = "https://pub-e682421888d945d684bcae8890b0ec20.r2.dev/data/";
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)";
 const OUR_COMPETITIONS = ["GB1", "ES1", "IT1", "L1", "FR1", "NL1", "PO1", "TR1", "SA1", "BRA1", "MLS1"];
-const TMP = "/tmp/tm-data";
+const TMP = process.platform === "win32" ? "C:\\tmp\\tm-data" : "/tmp/tm-data";
 const DB_PATH = path.join(process.cwd(), "local.db");
 const MIN_DATE = "2021-07-01"; // پنجره داده: ۵ فصل اخیر
 
@@ -103,10 +103,10 @@ DROP TABLE IF EXISTS tm_games; DROP TABLE IF EXISTS tm_club_games; DROP TABLE IF
     CREATE TABLE tm_transfers (player_id INTEGER, transfer_date TEXT, from_club_id INTEGER, from_club_name TEXT, to_club_id INTEGER, to_club_name TEXT, transfer_fee TEXT, market_value_in_eur INTEGER, player_name TEXT);
     CREATE TABLE tm_valuations (player_id INTEGER, date TEXT, market_value_in_eur INTEGER, current_club_id INTEGER);
     CREATE TABLE tm_games (game_id INTEGER PRIMARY KEY, competition_id TEXT, season INTEGER, round TEXT, date TEXT, home_club_id INTEGER, away_club_id INTEGER, home_goals INTEGER, away_goals INTEGER, stadium TEXT, attendance INTEGER, status TEXT);
-    CREATE TABLE tm_club_games (game_id INTEGER, club_id INTEGER, opponent_id INTEGER, home INTEGER, own_goals INTEGER, opponent_goals INTEGER, points INTEGER);
+    CREATE TABLE tm_club_games (game_id INTEGER, club_id INTEGER, opponent_id INTEGER, home INTEGER, own_goals INTEGER, opponent_goals INTEGER, points INTEGER, UNIQUE(game_id, club_id));
     CREATE TABLE tm_appearances (appearance_id TEXT PRIMARY KEY, game_id INTEGER, player_id INTEGER, player_club_id INTEGER, competition_id TEXT, date TEXT, goals INTEGER, assists INTEGER, minutes_played INTEGER, yellow_cards INTEGER, red_cards INTEGER);
     CREATE TABLE tm_events (game_id INTEGER, date TEXT, minute TEXT, type TEXT, player_id INTEGER, player_name TEXT, assist_id INTEGER, assist_name TEXT, description TEXT);
-    CREATE TABLE tm_lineups (game_id INTEGER, date TEXT, club_id INTEGER, player_id INTEGER, player_name TEXT, is_starting INTEGER, position TEXT, jersey_number INTEGER);
+    CREATE TABLE tm_lineups (game_id INTEGER, date TEXT, club_id INTEGER, player_id INTEGER, player_name TEXT, is_starting INTEGER, position TEXT, jersey_number INTEGER, UNIQUE(game_id, player_id));
     CREATE INDEX idx_tm_players_club ON tm_players(club_id);
     CREATE INDEX idx_tm_transfers_to ON tm_transfers(to_club_id);
     CREATE INDEX idx_tm_transfers_from ON tm_transfers(from_club_id);
@@ -161,7 +161,7 @@ DROP TABLE IF EXISTS tm_games; DROP TABLE IF EXISTS tm_club_games; DROP TABLE IF
   console.log(`tm_games imported: ${ourGameIds.size}`);
 
   // club_games — فیلتر با بازی‌های ما
-  const insCG = db.prepare(`INSERT INTO tm_club_games VALUES (?,?,?,?,?,?,?)`);
+  const insCG = db.prepare(`INSERT OR IGNORE INTO tm_club_games VALUES (?,?,?,?,?,?,?)`);
   let cgCount = 0;
   await streamCsv("club_games.csv.gz", (cg) => {
     if (!ourGameIds.has(String(cg.game_id))) return;
@@ -197,7 +197,7 @@ DROP TABLE IF EXISTS tm_games; DROP TABLE IF EXISTS tm_club_games; DROP TABLE IF
   console.log(`tm_events imported: ${evCount}`);
 
   // game_lineups — فیلتر با game_ids ما
-  const insLu = db.prepare(`INSERT INTO tm_lineups VALUES (?,?,?,?,?,?,?,?)`);
+  const insLu = db.prepare(`INSERT OR IGNORE INTO tm_lineups VALUES (?,?,?,?,?,?,?,?)`);
   let luCount = 0;
   await streamCsv("game_lineups.csv.gz", (l) => {
     if (!ourGameIds.has(String(l.game_id))) return;
