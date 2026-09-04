@@ -4,9 +4,27 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Target, Medal } from "lucide-react";
 
+function ProbsHint({ homeSlug, awaySlug, league }: { homeSlug: string; awaySlug: string; league: string }) {
+  const [txt, setTxt] = useState<string | null>(null);
+  useEffect(() => {
+    let alive = true;
+    fetch(`/api/football/probs?homeSlug=${homeSlug}&awaySlug=${awaySlug}&league=${league}`)
+      .then((r) => r.json())
+      .then((res) => {
+        if (alive && res?.success && res.covered) {
+          setTxt(`مدل: ${res.home}٪ برد میزبان • ${res.draw}٪ مساوی • ${res.away}٪ برد میهمان (محتمل: ${res.likely})`);
+        }
+      })
+      .catch(() => {});
+    return () => { alive = false; };
+  }, [homeSlug, awaySlug, league]);
+  if (!txt) return null;
+  return <div className="mt-2 pt-2 border-t border-white/5 text-[10px] text-slate-500">📊 {txt}</div>;
+}
+
 type Fx = {
   id: string; date: string; status: string;
-  home: { name: string; logo: string }; away: { name: string; logo: string };
+  home: { name: string; logo: string; slug: string | null }; away: { name: string; logo: string; slug: string | null };
 };
 type Mine = {
   fixtureKey: string; league: string; home: string; away: string; date: string | null;
@@ -36,7 +54,8 @@ export default function PredictorPage() {
     const res = await fetch(`/api/live-score?league=${league}`).then((r) => r.json()).catch(() => null);
     const all: Fx[] = (res?.matches ?? []).map((m: any) => ({
       id: m.id, date: m.date, status: m.status,
-      home: { name: m.home.name, logo: m.home.logo }, away: { name: m.away.name, logo: m.away.logo },
+      home: { name: m.home.name, logo: m.home.logo, slug: m.home.slug ?? null },
+      away: { name: m.away.name, logo: m.away.logo, slug: m.away.slug ?? null },
     }));
     setFixtures(all.filter((m) => m.status === "upcoming").slice(0, 10));
     setFxLoading(false);
@@ -155,6 +174,9 @@ export default function PredictorPage() {
                       {" • "}
                       <b style={{ color: (mineRow.points ?? 0) > 0 ? "#bee503" : "#E8385D" }}>+{mineRow.points} امتیاز</b>
                     </div>
+                  )}
+                  {fx.home.slug && fx.away.slug && (
+                    <ProbsHint homeSlug={fx.home.slug} awaySlug={fx.away.slug} league={league} />
                   )}
                 </div>
               );

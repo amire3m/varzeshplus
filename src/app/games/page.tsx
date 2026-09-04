@@ -92,7 +92,7 @@ export default function GamesPage() {
         </Link>
 
         {/* آرکید روزانه */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-6">
           <Link href="/games/footle" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#bee503]/40 transition-colors" style={{ background: "#2a2a2a" }}>
             <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-white" style={{ background: "linear-gradient(135deg, #bee503, #005cfc)" }}>F</div>
             <div className="min-w-0">
@@ -112,6 +112,13 @@ export default function GamesPage() {
             <div className="min-w-0">
               <div className="headline text-sm text-white">پیش‌بینی نتیجه</div>
               <div className="text-[11px] text-slate-400">نتیجه دقیق ۳ امتیاز • جدول هفتگی</div>
+            </div>
+          </Link>
+          <Link href="/games/tactics" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#005cfc]/40 transition-colors" style={{ background: "#2a2a2a" }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-white text-lg" style={{ background: "linear-gradient(135deg, #005cfc, #bee503)" }}>♟</div>
+            <div className="min-w-0">
+              <div className="headline text-sm text-white">تخته تاکتیک</div>
+              <div className="text-[11px] text-slate-400">ترکیب بچین و PNG بگیر</div>
             </div>
           </Link>
         </div>

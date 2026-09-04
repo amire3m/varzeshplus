@@ -9,6 +9,7 @@ import { MatchLineup } from "@/components/football/lineup/MatchLineup";
 import { MatchTimelineView } from "@/components/football/lineup/MatchTimeline";
 import { MatchStatsView } from "@/components/football/MatchStatsView";
 import { MatchSideEvents } from "@/components/football/MatchSideEvents";
+import { MatchProbs } from "@/components/football/MatchProbs";
 import { RealMatchView, type MatchData } from "@/components/football/RealMatchView";
 import { TeamBadge } from "@/components/football/TeamBadge";
 import { PageShell } from "@/components/layout/PageShell";
@@ -73,7 +74,12 @@ export default function MatchPage() {
               جدول لیگ در صفحه <Link href={`/football/leagues/${Object.entries({ GB1: "premier-league", ES1: "la-liga", IT1: "serie-a", L1: "bundesliga", FR1: "ligue-1", NL1: "eredivisie", PO1: "primeira-liga", TR1: "super-lig", SA1: "saudi-pro-league", BRA1: "brasileirao", MLS1: "mls" }).find(([code]) => code === realMatch.game.competitionId)?.[1] ?? ""}/standings`} className="hover:underline" style={{ color: "var(--color-club-green)" }}>لیگ</Link> قابل مشاهده است.
             </div>
           ) : (
-            <RealMatchView data={realMatch} tab={realTab} />
+            <>
+              {realTab === "overview" && realMatch.game.home.tmId && realMatch.game.away.tmId && (
+                <MatchProbs homeTmId={realMatch.game.home.tmId} awayTmId={realMatch.game.away.tmId} comp={realMatch.game.competitionId} />
+              )}
+              <RealMatchView data={realMatch} tab={realTab} />
+            </>
           )}
         </main>
         <footer className="border-t border-white/5 py-5 text-center text-xs" style={{ color: "#8FA1B5" }}>
