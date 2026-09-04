@@ -72,6 +72,18 @@ type LiveMatch = {
   glowHome: string; glowAway: string; hot: boolean; time?: string;
   homeSlug?: string | null; awaySlug?: string | null;
 };
+
+/** فرمت امن تاریخ فارسی — ورودی نامعتبر را خراب نمی‌کند (جلوگیری از کرش رندر) */
+function fmtFaDateTime(v: string | undefined): string | null {
+  if (!v) return null;
+  try {
+    const d = new Date(v);
+    if (Number.isNaN(d.getTime())) return v; // مثل "19:30" — همان متن خام
+    return new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }).format(d);
+  } catch {
+    return v;
+  }
+}
 export default function HomePage() {
   const router = useRouter();
   const [slide, setSlide] = useState(0);
@@ -387,7 +399,7 @@ export default function HomePage() {
                     <span className="tabular shrink-0 px-3 leading-none text-center" style={{ color: m.status === "upcoming" ? "#005cfc" : "#fff" }}>
                       {m.status === "upcoming" ? (
                         <span className="block text-[11px] font-bold">
-                          {m.time ? new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }).format(new Date(m.time)) : "به‌زودی"}
+                          {fmtFaDateTime(m.time) ?? "به‌زودی"}
                         </span>
                       ) : (
                         <span className="text-[22px] font-black">{m.hs} <span className="text-slate-500">-</span> {m.as}</span>

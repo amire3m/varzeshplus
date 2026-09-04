@@ -208,6 +208,17 @@ export default function LivePage() {
   );
 }
 
+function fmtFaDateTime(v: string | undefined): string | null {
+  if (!v) return null;
+  try {
+    const d = new Date(v);
+    if (Number.isNaN(d.getTime())) return v;
+    return new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }).format(d);
+  } catch {
+    return v;
+  }
+}
+
 function TeamChip({ t, align = "right" }: { t: ScoreTeam; align?: "right" | "left" }) {
   const display = t.faName ?? t.name;
   const inner = (
@@ -234,7 +245,7 @@ function ScoreMatchCard({ m }: { m: ScoreMatch }) {
         <div className="text-center shrink-0 px-2">
           {m.status === "upcoming" ? (
             <span className="text-[11px] font-bold text-slate-400 tabular">
-              {m.date ? new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }).format(new Date(m.date)) : "به‌زودی"}
+              {m.date ? fmtFaDateTime(m.date) ?? "به‌زودی" : "به‌زودی"}
             </span>
           ) : (
             <span className="tabular headline text-xl text-white">{m.home.score ?? 0} - {m.away.score ?? 0}</span>
