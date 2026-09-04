@@ -127,21 +127,22 @@ export default function HomePage() {
         if (mapped.length) setLiveMatches((prev) => [...prev, ...mapped].slice(0, 4));
       }
     }).catch(() => {});
-    // اسکوربرد زنده واقعی — لیگ برتر + لالیگا
+    // اسکوربرد زنده واقعی — لیگ برتر + لالیگا (به‌صورت چرخشی تا هر دو لیگ دیده شوند)
     (async () => {
       try {
         const LEAGUE_FA: Record<string, { league: string; slug: string }> = {
           "premier-league": { league: "لیگ برتر انگلیس", slug: "premier-league" },
           "la-liga": { league: "لالیگا", slug: "la-liga" },
         };
-        const all: LiveMatch[] = [];
+        const perLeague: LiveMatch[][] = [];
         for (const lg of ["premier-league", "la-liga"]) {
           const r = await fetch(`/api/live-score?league=${lg}`).then((x) => x.json()).catch(() => null);
-          if (!r?.success || !Array.isArray(r.matches)) continue;
+          if (!r?.success || !Array.isArray(r.matches)) { perLeague.push([]); continue; }
+          const list: LiveMatch[] = [];
           for (const m of r.matches) {
             const hn = m.home?.faName ?? m.home?.name ?? "—";
             const an = m.away?.faName ?? m.away?.name ?? "—";
-            all.push({
+            list.push({
               league: LEAGUE_FA[lg].league, leagueSlug: LEAGUE_FA[lg].slug,
               status: m.status, minute: m.minute ?? "",
               home: hn, away: an,
@@ -154,12 +155,27 @@ export default function HomePage() {
               homeSlug: m.home?.slug ?? null, awaySlug: m.away?.slug ?? null,
             });
           }
+          perLeague.push(list);
         }
-        if (all.length) {
-          const rank = (s: string) => (s === "live" ? 0 : s === "upcoming" ? 1 : 2);
-          all.sort((a, b) => rank(a.status) - rank(b.status));
-          // زنده‌ها اول، بعد بقیه؛ خلیج فارس (اگر بود) حفظ می‌شود
-          setLiveMatches((prev) => [...all.slice(0, 4), ...prev].slice(0, 4));
+        // چرخشی: اول زنده‌ها، بعد یکی‌یکی از هر لیگ
+        const rank = (s: string) => (s === "live" ? 0 : s === "upcoming" ? 1 : 2);
+        for (const list of perLeague) list.sort((a, b) => rank(a.status) - rank(b.status));
+        const merged: LiveMatch[] = [];
+        const lives = perLeague.flat().filter((m) => m.status === "live").slice(0, 2);
+        merged.push(...lives);
+        let i = 0;
+        while (merged.length < 4) {
+          let added = false;
+          for (const list of perLeague) {
+            const next = list.filter((m) => m.status !== "live")[i];
+            if (next && merged.length < 4 && !merged.includes(next)) { merged.push(next); added = true; }
+          }
+          if (!added) break;
+          i++;
+        }
+        if (merged.length) {
+          // خلیج فارس (اگر بود) در انتها حفظ می‌شود
+          setLiveMatches((prev) => [...merged, ...prev.filter((p) => !merged.some((m) => m.home === p.home && m.away === p.away))].slice(0, 4));
         }
       } catch { /* نادیده */ }
     })();
