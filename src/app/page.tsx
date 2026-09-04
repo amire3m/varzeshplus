@@ -73,15 +73,21 @@ type LiveMatch = {
   homeSlug?: string | null; awaySlug?: string | null;
 };
 
-/** فرمت امن تاریخ فارسی — ورودی نامعتبر را خراب نمی‌کند (جلوگیری از کرش رندر) */
-function fmtFaDateTime(v: string | undefined): string | null {
+/** تاریخ نسبی فارسی برای بازی‌های پیش رو: امروز/فردا/پس‌فردا + ساعت درشت */
+function faRelativeDay(v: string | undefined): { day: string; time: string } | null {
   if (!v) return null;
   try {
     const d = new Date(v);
-    if (Number.isNaN(d.getTime())) return v; // مثل "19:30" — همان متن خام
-    return new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }).format(d);
+    if (Number.isNaN(d.getTime())) return { day: v, time: "" };
+    const startOf = (x: Date) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+    const diff = Math.round((startOf(d) - startOf(new Date())) / 86400000);
+    const time = new Intl.DateTimeFormat("fa-IR", { hour: "2-digit", minute: "2-digit" }).format(d);
+    if (diff <= 0) return { day: "امروز", time };
+    if (diff === 1) return { day: "فردا", time };
+    if (diff === 2) return { day: "پس‌فردا", time };
+    return { day: new Intl.DateTimeFormat("fa-IR", { weekday: "long", day: "numeric", month: "long" }).format(d), time };
   } catch {
-    return v;
+    return { day: v, time: "" };
   }
 }
 export default function HomePage() {
@@ -376,7 +382,9 @@ export default function HomePage() {
 
           {/* کارت‌های زنده — ۴ ستون دسکتاپ */}
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-            {liveMatches.map((m, i) => (
+            {liveMatches.map((m, i) => {
+              const rel = m.status === "upcoming" ? faRelativeDay(m.time) : null;
+              return (
               <Link
                 key={i} href={`/football/leagues/${m.leagueSlug}/matches`}
                 className="group relative block rounded-2xl border border-white/10 overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:border-white/20"
@@ -406,29 +414,38 @@ export default function HomePage() {
                       </span>
                     )}
                   </div>
-                  {/* تیم‌ها + نتیجه */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 min-w-0 flex-1">
-                      <img src={m.homeLogo} alt={m.home} className="w-8 h-8 object-contain shrink-0" loading="lazy" />
-                      <span className="text-[12px] font-bold truncate" style={{ color: "#F5F7FA" }}>{m.home}</span>
+                  {/* تیم‌ها + نتیجه — نام کامل بدون برش */}
+                  <div className="flex items-start justify-between gap-1">
+                    <div className="flex flex-col items-center gap-1.5 flex-1 min-w-0 pt-1">
+                      <img src={m.homeLogo} alt={m.home} className="w-10 h-10 object-contain shrink-0" loading="lazy" />
+                      <span className="text-[11px] font-bold text-center leading-4" style={{ color: "#F5F7FA" }}>{m.home}</span>
                     </div>
-                    <span className="tabular shrink-0 px-3 leading-none text-center" style={{ color: m.status === "upcoming" ? "#005cfc" : "#fff" }}>
+                    <div className="shrink-0 px-1 pt-2 text-center min-w-[76px]">
                       {m.status === "upcoming" ? (
-                        <span className="block text-[11px] font-bold">
-                          {fmtFaDateTime(m.time) ?? "به‌زودی"}
-                        </span>
+                        rel ? (
+                          <>
+                            <span className="block tabular text-[19px] font-black leading-none" style={{ color: "#005cfc" }} dir="ltr">{rel.time}</span>
+                            <span className="block text-[10px] font-bold text-slate-400 mt-1">{rel.day}</span>
+                          </>
+                        ) : (
+                          <span className="block text-[11px] font-bold text-slate-400">به‌زودی</span>
+                        )
                       ) : (
-                        <span className="text-[22px] font-black">{m.hs} <span className="text-slate-500">-</span> {m.as}</span>
+                        <>
+                          <span className="tabular text-[22px] font-black leading-none text-white">{m.hs} <span className="text-slate-500">-</span> {m.as}</span>
+                          {m.status === "live" && <span className="block text-[9px] font-black tabular mt-1 animate-pulse" style={{ color: "#ff6b8a" }}>{m.minute}&apos;</span>}
+                        </>
                       )}
-                    </span>
-                    <div className="flex items-center gap-2 min-w-0 flex-1 justify-end">
-                      <span className="text-[12px] font-bold truncate text-left" style={{ color: "#F5F7FA" }}>{m.away}</span>
-                      <img src={m.awayLogo} alt={m.away} className="w-8 h-8 object-contain shrink-0" loading="lazy" />
+                    </div>
+                    <div className="flex flex-col items-center gap-1.5 flex-1 min-w-0 pt-1">
+                      <img src={m.awayLogo} alt={m.away} className="w-10 h-10 object-contain shrink-0" loading="lazy" />
+                      <span className="text-[11px] font-bold text-center leading-4" style={{ color: "#F5F7FA" }}>{m.away}</span>
                     </div>
                   </div>
                 </div>
               </Link>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

@@ -219,34 +219,57 @@ function fmtFaDateTime(v: string | undefined): string | null {
   }
 }
 
-function TeamChip({ t, align = "right" }: { t: ScoreTeam; align?: "right" | "left" }) {
+/** تاریخ نسبی فارسی: امروز/فردا/پس‌فردا + ساعت */
+function faRelativeDay(v: string | undefined): { day: string; time: string } | null {
+  if (!v) return null;
+  try {
+    const d = new Date(v);
+    if (Number.isNaN(d.getTime())) return { day: v, time: "" };
+    const startOf = (x: Date) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+    const diff = Math.round((startOf(d) - startOf(new Date())) / 86400000);
+    const time = new Intl.DateTimeFormat("fa-IR", { hour: "2-digit", minute: "2-digit" }).format(d);
+    if (diff <= 0) return { day: "امروز", time };
+    if (diff === 1) return { day: "فردا", time };
+    if (diff === 2) return { day: "پس‌فردا", time };
+    return { day: new Intl.DateTimeFormat("fa-IR", { weekday: "long", day: "numeric", month: "long" }).format(d), time };
+  } catch {
+    return { day: v, time: "" };
+  }
+}
+
+function TeamChip({ t }: { t: ScoreTeam }) {
   const display = t.faName ?? t.name;
   const inner = (
-    <>
+    <div className="flex flex-col items-center gap-1.5 min-w-0">
       {t.logo ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={t.logo} alt={display} className="w-8 h-8 object-contain shrink-0" loading="lazy" />
+        <img src={t.logo} alt={display} className="w-9 h-9 object-contain shrink-0" loading="lazy" />
       ) : (
-        <span className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 border border-white/10" style={{ background: `${t.color}25`, color: t.color }}>{display.slice(0, 2)}</span>
+        <span className="w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-black shrink-0 border border-white/10" style={{ background: `${t.color}25`, color: t.color }}>{display.slice(0, 2)}</span>
       )}
-      <span className="text-[13px] font-bold truncate text-white">{display}</span>
-    </>
+      <span className="text-[12px] font-bold text-center leading-4 text-white">{display}</span>
+    </div>
   );
-  const cls = `flex items-center gap-2 min-w-0 flex-1 ${align === "left" ? "flex-row-reverse text-left" : ""}`;
-  return t.slug ? <Link href={`/football/teams/${t.slug}`} className={`${cls} hover:opacity-80 transition-opacity`}>{inner}</Link> : <span className={cls}>{inner}</span>;
+  return t.slug ? <Link href={`/football/teams/${t.slug}`} className="flex-1 min-w-0 hover:opacity-80 transition-opacity">{inner}</Link> : <span className="flex-1 min-w-0">{inner}</span>;
 }
 
 function ScoreMatchCard({ m }: { m: ScoreMatch }) {
   const isLive = m.status === "live";
+  const rel = m.status === "upcoming" ? faRelativeDay(m.date) : null;
   return (
     <div className="rounded-[14px] border p-4" style={{ background: "#2a2a2a", borderColor: isLive ? "rgba(232,56,93,0.35)" : "rgba(255,255,255,0.1)" }}>
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex items-start justify-between gap-1">
         <TeamChip t={m.home} />
-        <div className="text-center shrink-0 px-2">
+        <div className="text-center shrink-0 px-1 pt-2 min-w-[76px]">
           {m.status === "upcoming" ? (
-            <span className="text-[11px] font-bold text-slate-400 tabular">
-              {m.date ? fmtFaDateTime(m.date) ?? "به‌زودی" : "به‌زودی"}
-            </span>
+            rel ? (
+              <>
+                <span className="block tabular text-[19px] font-black leading-none" style={{ color: "#005cfc" }} dir="ltr">{rel.time}</span>
+                <span className="block text-[10px] font-bold text-slate-400 mt-1">{rel.day}</span>
+              </>
+            ) : (
+              <span className="block text-[11px] font-bold text-slate-400">به‌زودی</span>
+            )
           ) : (
             <span className="tabular headline text-xl text-white">{m.home.score ?? 0} - {m.away.score ?? 0}</span>
           )}
@@ -257,7 +280,7 @@ function ScoreMatchCard({ m }: { m: ScoreMatch }) {
           )}
           {m.status === "finished" && <span className="block mt-1 text-[10px] text-slate-500">پایان</span>}
         </div>
-        <TeamChip t={m.away} align="left" />
+        <TeamChip t={m.away} />
       </div>
       {m.goals.length > 0 && (
         <div className="mt-3 pt-3 border-t border-white/5 space-y-1">
