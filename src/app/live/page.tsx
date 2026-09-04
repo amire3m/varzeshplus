@@ -13,7 +13,7 @@ type Match = {
   homeScore: number | null; awayScore: number | null; stadium: string | null;
 } | null;
 
-type ScoreTeam = { name: string; abbr: string; logo: string; color: string; score: number | null; slug: string | null };
+type ScoreTeam = { name: string; faName: string | null; abbr: string; logo: string; color: string; score: number | null; slug: string | null };
 type ScoreMatch = {
   id: string; date: string; status: "live" | "upcoming" | "finished";
   minute: string | null; detail: string | null;
@@ -154,10 +154,16 @@ export default function LivePage() {
         <div>
           <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
             <h2 className="headline text-base text-white flex items-center gap-2">
-              نتایج زنده
-              <span className="flex items-center gap-1.5 text-[10px] font-black px-2.5 py-1 rounded-full animate-pulse" style={{ background: "rgba(232,56,93,0.16)", color: "#ff6b8a" }}>
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> زنده
-              </span>
+              {scoreMatches.some((m) => m.status === "live") ? "بازی‌های زنده" : "بازی‌های امروز و پیش رو"}
+              {scoreMatches.some((m) => m.status === "live") ? (
+                <span className="flex items-center gap-1.5 text-[10px] font-black px-2.5 py-1 rounded-full animate-pulse" style={{ background: "rgba(232,56,93,0.16)", color: "#ff6b8a" }}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> زنده ({scoreMatches.filter((m) => m.status === "live").length})
+                </span>
+              ) : (
+                <span className="text-[10px] font-bold px-2.5 py-1 rounded-full border border-white/10 text-slate-400">
+                  فعلاً بازی زنده‌ای نیست
+                </span>
+              )}
             </h2>
             <div className="flex items-center gap-1.5">
               {SCORE_LEAGUES.map((l) => (
@@ -203,15 +209,16 @@ export default function LivePage() {
 }
 
 function TeamChip({ t, align = "right" }: { t: ScoreTeam; align?: "right" | "left" }) {
+  const display = t.faName ?? t.name;
   const inner = (
     <>
       {t.logo ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={t.logo} alt={t.name} className="w-8 h-8 object-contain shrink-0" loading="lazy" />
+        <img src={t.logo} alt={display} className="w-8 h-8 object-contain shrink-0" loading="lazy" />
       ) : (
-        <span className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 border border-white/10" style={{ background: `${t.color}25`, color: t.color }}>{t.name.slice(0, 2)}</span>
+        <span className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 border border-white/10" style={{ background: `${t.color}25`, color: t.color }}>{display.slice(0, 2)}</span>
       )}
-      <span className="text-[13px] font-bold truncate text-white">{t.name}</span>
+      <span className="text-[13px] font-bold truncate text-white">{display}</span>
     </>
   );
   const cls = `flex items-center gap-2 min-w-0 flex-1 ${align === "left" ? "flex-row-reverse text-left" : ""}`;

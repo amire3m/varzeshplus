@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
+import { TEAMS } from "@/lib/football/leagues";
 
 /**
  * اسکوربرد زنده — worldcup26.ir (اول) + ESPN (فالبک)
  * ?league=premier-league|la-liga|bundesliga|serie-a|ligue-1
+ * خروجی مرتب: زنده ← پیش رو (نزدیک‌ترین) ← نتایج اخیر — حداکثر ۱۲ بازی
  * کش ماژول‌سطح ۶۰ ثانیه
  */
 
@@ -43,7 +45,7 @@ const TEAM_SLUG: Record<string, string> = {
   "Real Valladolid": "valladolid", "Valladolid": "valladolid", "Las Palmas": "las-palmas", "UD Las Palmas": "las-palmas",
 };
 
-type NormTeam = { name: string; abbr: string; logo: string; color: string; score: number | null; slug: string | null };
+type NormTeam = { name: string; faName: string | null; abbr: string; logo: string; color: string; score: number | null; slug: string | null };
 type NormMatch = {
   id: string; date: string; status: "live" | "upcoming" | "finished";
   minute: string | null; detail: string | null;
@@ -54,13 +56,16 @@ type NormMatch = {
 function normTeam(c: any): NormTeam {
   const t = c?.team ?? {};
   const name = t.displayName || t.name || "—";
+  const slug = TEAM_SLUG[name] ?? null;
+  const ours = slug ? TEAMS.find((x) => x.slug === slug) : undefined;
   return {
     name,
+    faName: ours?.name ?? null,
     abbr: t.abbreviation || t.shortDisplayName || "",
-    logo: t.logo || "",
+    logo: t.logo || ours?.logo || "",
     color: t.color ? `#${t.color}` : "#8FA1B5",
     score: c?.score !== undefined && c?.score !== null && c?.score !== "" ? Number(c.score) : null,
-    slug: TEAM_SLUG[name] ?? null,
+    slug,
   };
 }
 
@@ -116,21 +121,46 @@ export async function GET(req: Request) {
   }
 
   const errors: string[] = [];
-  // ۱) worldcup26.ir
+  const now = Date.now();
+  const from = now - 3 * 86400_000;
+  const to = now + 14 * 86400_000;
+
+  function inWindow(m: NormMatch) {
+    const t = new Date(m.date).getTime();
+    return !Number.isNaN(t) && t >= from && t <= to;
+  }
+  function sortMatches(list: NormMatch[]) {
+    const rank = (m: NormMatch) => (m.status === "live" ? 0 : m.status === "upcoming" ? 1 : 2);
+    return list.sort((a, b) => {
+      const r = rank(a) - rank(b);
+      if (r !== 0) return r;
+      const ta = new Date(a.date).getTime();
+      const tb = new Date(b.date).getTime();
+      // پیش رو: نزدیک‌ترین اول؛ تمام‌شده: تازه‌ترین اول
+      return a.status === "finished" ? tb - ta : ta - tb;
+    });
+  }
+
+  // ۱) worldcup26.ir — اسکوربرد امروز + همه صفحات فیکسچر
   if (map.wc26) {
     try {
-      const sb = await fetchJson(`${WC26}/get/soccer/${map.wc26}/scoreboard`);
-      const events = (sb?.events ?? []).map(normEvent).filter(Boolean) as NormMatch[];
-      // اگر اسکوربرد امروز خالی بود، فیکسچرهای نزدیک را هم بگیر
-      let extra: NormMatch[] = [];
-      if (!events.some((m) => m.status === "live" || m.status === "upcoming")) {
-        try {
-          const fx = await fetchJson(`${WC26}/get/soccer/${map.wc26}/fixtures?pageSize=20`);
-          extra = ((fx?.events ?? []).map(normEvent).filter(Boolean) as NormMatch[]).slice(0, 8);
-        } catch { /* نادیده */ }
+      const [sb, ...pages] = await Promise.all([
+        fetchJson(`${WC26}/get/soccer/${map.wc26}/scoreboard`),
+        fetchJson(`${WC26}/get/soccer/${map.wc26}/fixtures?page=1`),
+        fetchJson(`${WC26}/get/soccer/${map.wc26}/fixtures?page=2`),
+        fetchJson(`${WC26}/get/soccer/${map.wc26}/fixtures?page=3`),
+        fetchJson(`${WC26}/get/soccer/${map.wc26}/fixtures?page=4`),
+      ]);
+      const seen = new Set<string>();
+      const all: NormMatch[] = [];
+      for (const src of [sb, ...pages]) {
+        for (const e of src?.events ?? []) {
+          const m = normEvent(e);
+          if (m && !seen.has(m.id)) { seen.add(m.id); all.push(m); }
+        }
       }
-      const all = [...events, ...extra.filter((m) => !events.some((e) => e.id === m.id))];
-      const data = { success: true, source: "worldcup26", league, updatedAt: new Date().toISOString(), matches: all };
+      const matches = sortMatches(all.filter(inWindow)).slice(0, 12);
+      const data = { success: true, source: "worldcup26", league, updatedAt: new Date().toISOString(), matches };
       cache.set(league, { at: Date.now(), data });
       return NextResponse.json(data);
     } catch (e) {
