@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { SkeletonMatchRow, SkeletonTableRow } from "../ui/Skeleton";
 
 type GameItem = {
   gameId: number; date: string | null; round: string | null;
@@ -59,7 +60,7 @@ export function RealLeagueMatches({ leagueSlug, fallbackGames, getTeam }: {
     return () => { alive = false; };
   }, [leagueSlug, season, isIran]);
 
-  if (loading) return <div className="glass-panel p-8 text-center text-sm" style={{ color: "var(--color-muted)" }}>در حال بارگذاری بازی‌های واقعی...</div>;
+  if (loading) return <div className="grid gap-3 md:grid-cols-2"><SkeletonMatchRow /><SkeletonMatchRow /><SkeletonMatchRow /><SkeletonMatchRow /></div>;
   if (covered === false) {
     // fallback به mock — همان رندر قبلی
     return (
@@ -153,7 +154,7 @@ export function RealStandingsTable({ leagueSlug, fallback }: { leagueSlug: strin
     return () => { alive = false; };
   }, [leagueSlug, season, isIran]);
 
-  if (loading) return <div className="glass-panel p-8 text-center text-sm" style={{ color: "var(--color-muted)" }}>در حال بارگذاری جدول واقعی...</div>;
+  if (loading) return <div className="glass-panel overflow-hidden rounded-[14px]"><SkeletonTableRow /><SkeletonTableRow /><SkeletonTableRow /><SkeletonTableRow /><SkeletonTableRow /></div>;
   if (covered === false) return <>{fallback}</>;
 
   return (

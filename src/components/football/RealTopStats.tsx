@@ -89,7 +89,25 @@ export function RealTopStats({ leagueSlug, leagueId, getTeam }: { leagueSlug: st
   }, [leagueSlug, season, isIran]);
 
   if (loading) {
-    return <div className="glass-panel p-8 text-center text-sm" style={{ color: "var(--color-muted)" }}>در حال بارگذاری آمار واقعی...</div>;
+    return (
+      <div className="grid gap-6 lg:grid-cols-3">
+        {[1, 2, 3].map((col) => (
+          <div key={col} className="space-y-2">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="glass-panel p-3.5 flex items-center gap-3 animate-pulse">
+                <div className="w-5 h-3 rounded bg-white/10 shrink-0" />
+                <div className="w-9 h-9 rounded-full bg-white/10 shrink-0" />
+                <div className="flex-1 space-y-1.5">
+                  <div className="h-3 rounded bg-white/10 w-3/4" />
+                  <div className="h-2.5 rounded bg-white/5 w-1/2" />
+                </div>
+                <div className="w-8 h-4 rounded bg-white/10 shrink-0" />
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    );
   }
   if (covered === false) {
     return (

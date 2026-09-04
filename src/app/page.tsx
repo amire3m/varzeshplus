@@ -14,6 +14,8 @@ import {
   Menu, X, Clock3, CalendarDays, ChevronLeft, ChevronRight,
   Home, Trophy, Video, Heart, User, Play,
 } from "lucide-react";
+import { NewsRow } from "@/components/ui/NewsRow";
+import { SkeletonNewsRow } from "@/components/ui/Skeleton";
 
 /* ================= Mock Data (فقط fallback — دیتای واقعی از real-data.json) ================= */
 
@@ -489,25 +491,18 @@ export default function HomePage() {
           <div className="rounded-2xl border border-white/10 p-4 flex flex-col" style={{ background: "rgba(37,37,37,0.9)", backdropFilter: "blur(8px)" }}>
             <h3 className="headline text-[16px] text-white mb-3">آخرین اخبار</h3>
             <div className="flex-1 flex flex-col gap-2.5">
-              {(mixedNews ? mixedNews.map((n, idx) => (
-                <a
+              {mixedNews ? mixedNews.map((n, idx) => (
+                <NewsRow
                   key={`${n.link}-${idx}`}
-                  href={n.link}
-                  {...(n.internal ? {} : { target: "_blank", rel: "noreferrer" })}
-                  className="flex items-start gap-3 p-2 rounded-xl bg-white/[0.03] border border-white/5 transition-colors hover:bg-white/[0.06]"
-                >
-                  {/* تصویر — سمت راست (اول در RTL) */}
-                  {n.image && <img src={n.image} alt={n.title} className="w-[84px] h-[58px] rounded-lg object-cover shrink-0" loading="lazy" />}
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
-                      <span className="text-[9px] font-black px-1.5 py-0.5 rounded" style={{ background: `${n.sport.color}22`, color: n.sport.color }}>{n.sport.name}</span>
-                      {n.category && n.category !== n.sport.name && <span className="text-[9px] text-slate-600 truncate max-w-[100px]">{n.category}</span>}
-                    </div>
-                    <p className="text-[12px] font-bold leading-5 line-clamp-2 text-white">{n.title}</p>
-                    <span className="text-[10px] mt-1 block text-slate-500">{n.time}</span>
-                  </div>
-                </a>
-              )) : <div className="text-[12px] text-slate-500 text-center py-6">در حال بارگذاری اخبار...</div>)}
+                  title={n.title} href={n.link} external={!n.internal}
+                  image={n.image} time={n.time}
+                  badge={{ label: n.sport.name, color: n.sport.color }}
+                />
+              )) : (
+                <>
+                  <SkeletonNewsRow /><SkeletonNewsRow /><SkeletonNewsRow />
+                </>
+              )}
             </div>
             <Link href="/news" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#bee503" }}>مشاهده همه اخبار</Link>
           </div>
@@ -549,7 +544,18 @@ export default function HomePage() {
                   <span className="font-black text-[14px] text-white shrink-0">{p.goals} <span className="text-[10px] font-normal text-slate-500">گل</span></span>
                 </Link>
               ))}
-              {!topScorers.length && <div className="text-[12px] text-slate-500 text-center py-6">در حال بارگذاری...</div>}
+              {!topScorers.length && (
+                <div className="space-y-1.5">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <div key={i} className="flex items-center gap-2.5 px-2 py-2">
+                      <div className="rounded bg-white/10 animate-pulse tabular w-5 h-3 shrink-0" />
+                      <div className="rounded-full bg-white/10 animate-pulse w-9 h-9 shrink-0" />
+                      <div className="flex-1 space-y-1.5"><div className="rounded bg-white/10 animate-pulse h-3 w-3/4" /><div className="rounded bg-white/5 animate-pulse h-2.5 w-1/3" /></div>
+                      <div className="rounded bg-white/10 animate-pulse h-4 w-8 shrink-0" />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             <Link href="/football/leagues/bundesliga/stats" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#bee503" }}>مشاهده آمار کامل</Link>
           </div>

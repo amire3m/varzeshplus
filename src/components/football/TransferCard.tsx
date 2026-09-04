@@ -100,7 +100,17 @@ export function RealTransfersSection({ leagueSlug, leagueId, getTeam }: { league
     return <MockTransfers leagueId={leagueId} getTeam={getTeam} />;
   }
 
-  if (!items) return <div className="glass-panel p-6 text-center text-sm" style={{ color: "var(--color-muted)" }}>در حال بارگذاری نقل‌وانتقالات...</div>;
+  if (!items) return (
+    <div className="space-y-2.5">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="rounded-[14px] border border-white/5 p-4 flex items-center gap-3 animate-pulse" style={{ background: "rgba(255,255,255,0.02)" }}>
+          <div className="w-10 h-10 rounded-xl bg-white/10" />
+          <div className="flex-1 space-y-2"><div className="h-3 rounded bg-white/10 w-1/3" /><div className="h-2.5 rounded bg-white/5 w-2/3" /></div>
+          <div className="w-12 h-6 rounded-full bg-white/10" />
+        </div>
+      ))}
+    </div>
+  );
   if (!items.length) return <div className="glass-panel p-6 text-center text-sm" style={{ color: "var(--color-muted)" }}>نقل‌وانتقالی در پنجره اخیر ثبت نشده است.</div>;
 
   return (

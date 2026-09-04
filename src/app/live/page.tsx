@@ -179,8 +179,14 @@ export default function LivePage() {
           </div>
 
           {scoreLoading ? (
-            <div className="rounded-[14px] border p-8 text-center text-sm animate-pulse" style={{ background: "#2a2a2a", borderColor: "rgba(255,255,255,0.1)", color: "#8FA1B5" }}>
-              در حال دریافت نتایج زنده...
+            <div className="grid gap-2.5 md:grid-cols-2">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="rounded-[14px] border p-4 flex items-center gap-3 animate-pulse" style={{ background: "#2a2a2a", borderColor: "rgba(255,255,255,0.1)" }}>
+                  <div className="w-8 h-8 rounded-full bg-white/10" />
+                  <div className="flex-1 space-y-2"><div className="h-3 rounded bg-white/10 w-3/4" /><div className="h-2.5 rounded bg-white/5 w-1/2" /></div>
+                  <div className="w-16 h-6 rounded bg-white/10" />
+                </div>
+              ))}
             </div>
           ) : scoreMatches.length === 0 ? (
             <div className="rounded-[14px] border p-6 text-center text-sm" style={{ background: "#2a2a2a", borderColor: "rgba(255,255,255,0.1)", color: "#8FA1B5" }}>

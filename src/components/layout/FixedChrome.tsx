@@ -67,6 +67,35 @@ export function FixedChrome() {
 
   // Drawer
   const [menuOpen, setMenuOpen] = useState(false);
+  // Search
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQ, setSearchQ] = useState("");
+  const [searchData, setSearchData] = useState<{ teams: Array<{ slug: string; name: string; englishName: string; logo: string; color: string }>; leagues: Array<{ slug: string; name: string; englishName: string; logo: string }>; players: Array<{ id: number; name: string; position: string | null; club: string | null; mv: number | null }> } | null>(null);
+  const [searchLoading, setSearchLoading] = useState(false);
+
+  useEffect(() => {
+    if (searchQ.trim().length < 2) { setSearchData(null); return; }
+    const t = setTimeout(async () => {
+      setSearchLoading(true);
+      const res = await fetch(`/api/search?q=${encodeURIComponent(searchQ.trim())}`).then((r) => r.json()).catch(() => null);
+      if (res?.success) setSearchData(res);
+      setSearchLoading(false);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [searchQ]);
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if ((e.key === "k" && (e.ctrlKey || e.metaKey)) || e.key === "/") {
+        if ((e.target as HTMLElement)?.tagName === "INPUT") return;
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+      if (e.key === "Escape") { setSearchOpen(false); setMenuOpen(false); }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   // بعد از همه هوک‌ها: مخفی‌سازی برای صفحات ادمین
   if (HIDE_PREFIXES.some((p) => pathname.startsWith(p))) return null;
@@ -103,7 +132,7 @@ export function FixedChrome() {
                 </Link>
               );
             })}
-            <button aria-label="جستجو" className="mr-1.5 w-8 h-8 rounded-full bg-sky-500/15 flex items-center justify-center text-white transition-colors hover:bg-sky-500/30">
+            <button aria-label="جستجو" onClick={() => setSearchOpen(true)} className="mr-1.5 w-8 h-8 rounded-full bg-sky-500/15 flex items-center justify-center text-white transition-colors hover:bg-sky-500/30">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.35-4.35" /></svg>
             </button>
           </nav>
@@ -191,6 +220,77 @@ export function FixedChrome() {
 
             <p className="text-center text-[10px] text-slate-600 pb-6">ورزش‌های بیشتر به‌زودی اضافه می‌شوند</p>
           </aside>
+        </div>
+      )}
+
+      {/* ============ Search Overlay ============ */}
+      {searchOpen && (
+        <div className="fixed inset-0 z-[70]" onClick={() => setSearchOpen(false)}>
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-[4px]" />
+          <div className="absolute top-[72px] left-1/2 -translate-x-1/2 w-[92%] max-w-[600px] max-h-[70vh] overflow-hidden rounded-2xl border border-white/10 shadow-2xl flex flex-col" style={{ background: "#1e1e1e" }} onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-slate-500 shrink-0"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.35-4.35" /></svg>
+              <input
+                autoFocus
+                value={searchQ} onChange={(e) => setSearchQ(e.target.value)}
+                placeholder="جستجوی تیم، لیگ یا بازیکن..."
+                className="flex-1 bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none"
+                dir="rtl"
+              />
+              <button onClick={() => setSearchOpen(false)} className="text-xs text-slate-500 hover:text-white border border-white/10 rounded-full px-2.5 py-1">ESC</button>
+            </div>
+            <div className="overflow-y-auto flex-1 p-2 space-y-3">
+              {searchQ.trim().length < 2 ? (
+                <p className="text-xs text-slate-500 text-center py-6">حداقل ۲ حرف تایپ کنید — یا <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-slate-300 border border-white/10">/</kbd> بزنید</p>
+              ) : searchLoading ? (
+                <div className="space-y-2 p-2">
+                  {[1, 2, 3].map((i) => <div key={i} className="h-10 rounded-xl bg-white/5 animate-pulse" />)}
+                </div>
+              ) : (
+                <>
+                  {(!searchData || (searchData.leagues.length === 0 && searchData.teams.length === 0 && searchData.players.length === 0)) && (
+                    <p className="text-xs text-slate-500 text-center py-6">نتیجه‌ای پیدا نشد.</p>
+                  )}
+                  {searchData && searchData.leagues.length > 0 && (
+                    <div>
+                      <p className="text-[11px] font-bold text-slate-500 px-2 mb-1">لیگ‌ها</p>
+                      {searchData.leagues.map((l) => (
+                        <Link key={l.slug} href={`/football/leagues/${l.slug}`} onClick={() => { setSearchOpen(false); setSearchQ(""); }} className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition-colors">
+                          <img src={l.logo} alt={l.name} className="w-6 h-6 object-contain shrink-0" loading="lazy" />
+                          <span className="text-sm font-bold text-white">{l.name}</span>
+                          <span className="text-[11px] text-slate-500">{l.englishName}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                  {searchData && searchData.teams.length > 0 && (
+                    <div>
+                      <p className="text-[11px] font-bold text-slate-500 px-2 mb-1">تیم‌ها</p>
+                      {searchData.teams.map((t) => (
+                        <Link key={t.slug} href={`/football/teams/${t.slug}`} onClick={() => { setSearchOpen(false); setSearchQ(""); }} className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition-colors">
+                          <img src={t.logo} alt={t.name} className="w-6 h-6 object-contain shrink-0" loading="lazy" />
+                          <span className="text-sm font-bold text-white">{t.name}</span>
+                          <span className="text-[11px] text-slate-500">{t.englishName}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                  {searchData && searchData.players.length > 0 && (
+                    <div>
+                      <p className="text-[11px] font-bold text-slate-500 px-2 mb-1">بازیکنان</p>
+                      {searchData.players.map((p) => (
+                        <Link key={p.id} href={`/football/players/${p.id}`} onClick={() => { setSearchOpen(false); setSearchQ(""); }} className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition-colors">
+                          <span className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 border border-white/10" style={{ background: "rgba(0,92,252,0.15)", color: "#005cfc" }}>{p.name.slice(0, 2)}</span>
+                          <span className="text-sm font-bold text-white">{p.name}</span>
+                          <span className="text-[11px] text-slate-500">{p.position ?? ""} {p.club ? `• ${p.club}` : ""}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
         </div>
       )}
 

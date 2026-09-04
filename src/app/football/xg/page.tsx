@@ -108,7 +108,11 @@ export default function XgPage() {
         </div>
 
         {loading || !data ? (
-          <div className="rounded-2xl border border-white/10 p-10 text-center text-sm text-slate-500 animate-pulse">در حال بارگذاری آنالیز...</div>
+          <div className="space-y-4">
+            <div className="h-10 w-48 rounded-full bg-white/10 animate-pulse" />
+            <div className="rounded-2xl border border-white/10 h-[280px] animate-pulse" style={{ background: "#2a2a2a" }} />
+            <div className="h-24 rounded-xl bg-white/10 animate-pulse" />
+          </div>
         ) : (
           <div className="space-y-4">
             <div className="rounded-2xl border border-white/10 p-4 text-center" style={{ background: "#2a2a2a" }}>

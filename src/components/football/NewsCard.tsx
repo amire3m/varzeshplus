@@ -1,12 +1,13 @@
 ﻿import type { NewsItem, Team } from "@/lib/football";
 import { TeamBadge } from "./TeamBadge";
+import { SafeImage } from "../ui/SafeImage";
 
 export function NewsCard({ news, getTeam, big = false }: { news: NewsItem; getTeam: (id: number) => Team | undefined; big?: boolean }) {
   const team = news.teamId ? getTeam(news.teamId) : undefined;
   return (
     <article className={`rounded-[14px] border overflow-hidden group flex flex-col ${big ? "" : "sm:flex-row"}`}>
       <div className={`relative overflow-hidden ${big ? "h-48" : "h-32 sm:h-auto sm:w-32 sm:shrink-0"}`}>
-        <img src={news.image} alt={news.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+        <SafeImage src={news.image} alt={news.title} fallbackText={news.title} className="absolute inset-0 w-full h-full group-hover:scale-105 transition-transform duration-500" />
       </div>
       <div className="p-4 flex flex-col flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-2 flex-wrap">
