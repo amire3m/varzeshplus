@@ -61,51 +61,43 @@ export default function LeaguePage() {
         <LeagueNavigation active={tab} onChange={changeTab} />
 
         {tab === "home" && (
-          <div className="space-y-8">
+          <div className="space-y-6">
+            {/* جدول واقعی لیگ — صدر صفحه */}
             <section>
               <div className="flex items-center justify-between mb-3">
-                <h2 className="headline text-lg text-white">بازی‌های مهم</h2>
-                <button onClick={() => changeTab("matches")} className="text-sm hover:underline" style={{ color: "#FFD34D" }}>همه بازی‌ها</button>
+                <h2 className="headline text-lg text-white">جدول {league.name}</h2>
+                <button onClick={() => changeTab("standings")} className="text-sm font-bold hover:underline" style={{ color: "#4AE183" }}>جدول کامل ←</button>
               </div>
-              <div className="grid gap-3 md:grid-cols-3">
-                {(liveMatches.length ? liveMatches : matches.filter((m) => m.status !== "upcoming")).slice(0, 3).map((m) => <MatchGlowCard key={m.id} match={m} home={getTeamById(m.homeTeamId)} away={getTeamById(m.awayTeamId)} />)}
-              </div>
+              <RealStandingsTable
+                leagueSlug={league.slug}
+                fallback={<StandingsTable league={league} custom={{ standings: standings.slice(0, 8), teams }} />}
+              />
             </section>
 
+            {/* بازی‌های مهم + اخبار کنار هم */}
             <section className="grid gap-5 lg:grid-cols-[1fr_360px]">
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <h2 className="headline text-lg text-white">جدول {league.name}</h2>
-                  <button onClick={() => changeTab("standings")} className="text-sm hover:underline" style={{ color: "#FFD34D" }}>مشاهده جدول کامل</button>
+                  <h2 className="headline text-lg text-white">بازی‌های مهم</h2>
+                  <button onClick={() => changeTab("matches")} className="text-sm font-bold hover:underline" style={{ color: "#4AE183" }}>همه بازی‌ها ←</button>
                 </div>
-                <StandingsTable league={league} custom={{ standings: standings.slice(0, 6), teams }} />
-                <button onClick={() => changeTab("standings")} className="w-full py-2.5 text-sm mt-3 rounded-xl border font-bold transition-colors hover:bg-white/5" style={{ borderColor: "rgba(74,225,131,0.35)", color: "#4AE183" }}>مشاهده جدول کامل</button>
+                <div className="grid gap-3 md:grid-cols-2">
+                  {(liveMatches.length ? liveMatches : matches.filter((m) => m.status !== "upcoming")).slice(0, 4).map((m) => <MatchGlowCard key={m.id} match={m} home={getTeamById(m.homeTeamId)} away={getTeamById(m.awayTeamId)} />)}
+                </div>
               </div>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <h2 className="headline text-lg text-white">اخبار داغ</h2>
-                    <button onClick={() => changeTab("news")} className="text-sm hover:underline" style={{ color: "#FFD34D" }}>همه اخبار</button>
-                  </div>
-                  <div className="space-y-3">{hotNews.slice(0, 3).map((n) => <NewsCard key={n.id} news={n} getTeam={getTeamById} />)}</div>
-                </div>
+              <div className="space-y-3">
+                <h2 className="headline text-lg text-white">اخبار داغ</h2>
+                {hotNews.slice(0, 3).map((n) => <NewsCard key={n.id} news={n} getTeam={getTeamById} />)}
               </div>
             </section>
 
-            <section>
-              <div className="flex items-center justify-between mb-3">
-                <h2 className="headline text-lg text-white">تازه‌ترین اخبار</h2>
-                <button onClick={() => changeTab("news")} className="text-sm hover:underline" style={{ color: "#FFD34D" }}>همه اخبار</button>
-              </div>
-              <div className="grid gap-3 md:grid-cols-3">{news.slice(0, 3).map((n) => <NewsCard key={n.id} news={n} getTeam={getTeamById} />)}</div>
-            </section>
-
+            {/* نقل‌وانتقالات */}
             <section>
               <div className="flex items-center justify-between mb-3">
                 <h2 className="headline text-lg text-white">آخرین نقل‌وانتقالات</h2>
-                <button onClick={() => changeTab("transfers")} className="text-sm hover:underline" style={{ color: "#FFD34D" }}>مشاهده همه</button>
+                <button onClick={() => changeTab("transfers")} className="text-sm font-bold hover:underline" style={{ color: "#4AE183" }}>مشاهده همه ←</button>
               </div>
-              <div className="space-y-2.5">{transfers.slice(0, 3).map((t) => <TransferCard key={t.id} transfer={t} getTeam={getTeamById} />)}</div>
+              <div className="grid gap-3 md:grid-cols-2">{transfers.slice(0, 4).map((t) => <TransferCard key={t.id} transfer={t} getTeam={getTeamById} />)}</div>
             </section>
           </div>
         )}

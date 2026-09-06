@@ -46,18 +46,18 @@ export function StandingsTable({ league, custom }: { league: League; custom?: { 
                 <tr key={r.teamId} className="transition-colors hover:bg-white/[0.045]">
                   <td className="px-2.5 py-2.5 text-center tabular">
                     <span className="inline-flex items-center gap-1.5">
-                      <span className={`w-1.5 h-6 rounded-full shrink-0 ${zone ? "" : "bg-transparent"}`} style={zone ? { background: zone === "ucl" ? "#19C9E8" : zone === "euro" ? "#7B2FF7" : "#E8385D" } : undefined} />
+                      <span className={`w-1.5 h-6 rounded-full shrink-0 ${zone ? "" : "bg-transparent"}`} style={zone ? { background: zone === "ucl" ? "#4AE183" : zone === "euro" ? "#FFD34D" : "#E8385D" } : undefined} />
                       <span className="font-black tabular">{idx + 1}</span>
                     </span>
                   </td>
                   <td className="px-2.5 py-2.5">
-                    <a href={`/football/teams/${t.slug}`} className="flex items-center gap-2 min-w-0 hover:underline decoration-[#19C9E8] underline-offset-2">
+                    <a href={`/football/teams/${t.slug}`} className="flex items-center gap-2 min-w-0 hover:underline decoration-[#4AE183] underline-offset-2">
                       <img src={t.logo} alt={t.name} className="w-7 h-7 object-contain shrink-0" loading="lazy" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
                       <span dir="rtl" className="font-bold truncate" style={{ color: "#F5F7FA" }}>{t.name}</span>
                     </a>
                   </td>
                   {[r.played, r.win, r.draw, r.loss, r.gf, r.ga, r.gf - r.ga, r.pts].map((v, j) => (
-                    <td key={j} className={`px-2.5 py-2.5 text-center tabular ${j === 7 ? "font-black" : ""}`} style={j === 7 ? { color: "#19C9E8" } : undefined}>{v}</td>
+                    <td key={j} className={`px-2.5 py-2.5 text-center tabular ${j === 7 ? "font-black" : ""}`} style={j === 7 ? { color: "#4AE183" } : undefined}>{v}</td>
                   ))}
                 </tr>
               );
@@ -66,8 +66,8 @@ export function StandingsTable({ league, custom }: { league: League; custom?: { 
         </table>
       </div>
       <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs" style={{ color: "#8FA1B5" }}>
-        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#19C9E8" }} /> سهمیه لیگ قهرمانان</span>
-        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#7B2FF7" }} /> سهمیه اروپایی</span>
+        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#4AE183" }} /> سهمیه لیگ قهرمانان</span>
+        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#FFD34D" }} /> سهمیه اروپایی</span>
         <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#E8385D" }} /> منطقه سقوط</span>
       </div>
     </div>
