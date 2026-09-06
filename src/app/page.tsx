@@ -15,7 +15,8 @@ import {
   Home, Trophy, Video, Heart, User, Play,
 } from "lucide-react";
 import { NewsRow } from "@/components/ui/NewsRow";
-import { SkeletonNewsRow } from "@/components/ui/Skeleton";
+import { SkeletonNewsRow, SkeletonTableRow } from "@/components/ui/Skeleton";
+import { SectionHeader } from "@/components/ui/Card";
 
 /* ================= Mock Data (فقط fallback — دیتای واقعی از real-data.json) ================= */
 
@@ -52,13 +53,6 @@ const NAV_ITEMS = [
   { label: "بازیکنان", href: "/football/teams/arsenal/squad" },
   { label: "آمار", href: "/football/leagues/premier-league/stats" },
 ];
-/** اسلایدهای پس‌زمینه هیرو */
-const HERO_SLIDES = [
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuDmHbtbXJ30Oaa-RKqdd8UIaVKJzlrDADiddlV7G80jcHouHJuABxYH6RYmkCQoNJs61Ua1RcnYPDLEYo02NAx7h114EBYxuP3QfK0k6SWJRjzDyWYubnVOUGx0vdFe1noucqUmqly6M8H9nAdQzSORGEklYnMEcZXX52J4H6IV6WQvVN55bOAx6hFpGVMueX0odi5lBXM8KSgDh3T-vK3OMWs-zBVHU6r3mVeFZHwSEdfiEnj32LmQwg",
-  "https://picsum.photos/seed/hero2/1600/700",
-  "https://picsum.photos/seed/hero3/1600/700",
-];
-
 /** لوگوهای تیم دربی */
 const DERBY = {
   esteghlal: { name: "استقلال", logo: "https://raw.githubusercontent.com/LordArma/Iran-Football-Leagues/master/Persian%20Gulf%20Pro%20League/Favicon/%D8%A7%D8%B3%D8%AA%D9%82%D9%84%D8%A7%D9%84%20%D8%AA%D9%87%D8%B1%D8%A7%D9%86.png", glow: "#0057B8" },
@@ -94,7 +88,6 @@ function faRelativeDay(v: string | undefined): { day: string; time: string } | n
 }
 export default function HomePage() {
   const router = useRouter();
-  const [slide, setSlide] = useState(0);
   const [liveMatches, setLiveMatches] = useState<LiveMatch[]>([]);
   const [standings, setStandings] = useState<Array<{ name: string; logo: string; played: string; pts: string; slug?: string }>>([]);
   const [topScorers, setTopScorers] = useState<Array<{ rank: number; playerId: number; name: string; goals: number; ourTeam: { slug: string; name: string; color: string } | null }>>([]);
@@ -104,6 +97,14 @@ export default function HomePage() {
   // ساعت و تاریخ زنده (تقویم شمسی)
   const [now, setNow] = useState(() => new Date());
   const [user, setUser] = useState<User | null>(null);
+  const [heroSlide, setHeroSlide] = useState(0);
+  // هیرو از اخبار واقعی RSS — با تصویر واقعی
+  const heroSlides = (mixedNews ?? []).filter((n) => n.image).slice(0, 4);
+  useEffect(() => {
+    if (heroSlides.length < 2) return;
+    const t = setInterval(() => setHeroSlide((s) => (s + 1) % heroSlides.length), 6000);
+    return () => clearInterval(t);
+  }, [heroSlides.length]);
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 1000);
     fetch("/api/home").then((r) => r.json()).then((res) => { if (res?.success) { setUser(res.user ?? null); setGameIds((res.games ?? []).map((g: any) => g.id)); } }).catch(() => {});
@@ -196,11 +197,7 @@ export default function HomePage() {
   const timeStr = new Intl.DateTimeFormat("fa-IR", { hour: "2-digit", minute: "2-digit" }).format(now);
   const dateStr = new Intl.DateTimeFormat("fa-IR", { day: "numeric", month: "long", year: "numeric" }).format(now);
 
-  // اسلایدر خودکار هیرو
-  useEffect(() => {
-    const t = setInterval(() => setSlide((s) => (s + 1) % HERO_SLIDES.length), 7000);
-    return () => clearInterval(t);
-  }, []);
+  // اسلایدر خودکار هیرو (قبلی) — حذف شد چون هیرو از RSS است
 
   // Drawer ورزش‌ها
   const [menuOpen, setMenuOpen] = useState(false);
@@ -262,101 +259,56 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* ============ ۳. هیرو دوتکه ============ */}
+      {/* ============ ۳. هیرو — محتوای واقعی RSS ============ */}
       <section className="w-full px-4 pt-4">
-        <div className="relative max-w-[1320px] mx-auto rounded-3xl overflow-hidden border border-white/10" style={{ minHeight: 380 }}>
-          {/* اسلایدهای پس‌زمینه */}
-          {HERO_SLIDES.map((img, i) => (
-            <div key={i} className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700 ${i === slide ? "opacity-100" : "opacity-0"}`} style={{ backgroundImage: `url('${img}')` }} />
-          ))}
-          {/* Overlay تیره + blue tint */}
-          <div className="absolute inset-0" style={{ background: "linear-gradient(270deg, rgba(7,11,20,0.96) 0%, rgba(7,11,20,0.75) 45%, rgba(7,11,20,0.3) 72%, rgba(16,22,16,0.95) 100%)" }} />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(16,22,16,0.9), transparent 45%, rgba(7,11,20,0.45))" }} />
-
-          <div className="relative z-10 h-full flex flex-col lg:flex-row items-center justify-between gap-8 px-6 md:px-10 py-10">
-            {/* الف) معرفی و اسلایدر — راست (~۶۰٪) */}
-            <div className="max-w-xl text-right w-full">
-              <h1 className="headline text-[32px] md:text-[42px] leading-[1.3] text-white">
-                هیجان فوتبال ، لحظه به لحظه
-              </h1>
-              <p className="headline text-[22px] md:text-[26px] mt-2">
-                همراه با{" "}
-                <span style={{ background: "linear-gradient(90deg, #4AE183, #FFD34D)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                  پلاس ورزش
-                </span>
-              </p>
-              <p className="text-[13px] md:text-[14px] leading-7 mt-4 max-w-md text-white/60">
-                جدیدترین اخبار، نتایج زنده، ویدیوها و تحلیل‌های اختصاصی فوتبال ایران و جهان را از دست ندهید.
-              </p>
-              <Link
-                href="/news"
-                className="inline-flex items-center gap-2 mt-6 px-7 h-[46px] rounded-full text-sm font-black text-white transition-all duration-200 hover:brightness-110 hover:scale-[1.02]"
-                style={{ background: "linear-gradient(135deg, #4AE183, #FFD34D)", boxShadow: "0 6px 26px rgba(74,225,131,0.35)" }}
-              >
-                مشاهده آخرین اخبار <ArrowLeftInline />
-              </Link>
-
-              {/* Dots */}
-              <div className="flex items-center justify-start gap-2 mt-8">
-                {HERO_SLIDES.map((_, i) => (
-                  <button key={i} onClick={() => setSlide(i)} aria-label={`اسلاید ${i + 1}`} className={`h-1.5 rounded-full transition-all duration-300 ${i === slide ? "w-7" : "w-2 bg-white/25 hover:bg-white/50"}`} style={i === slide ? { background: "linear-gradient(90deg, #4AE183, #FFD34D)", boxShadow: "0 0 10px rgba(74,225,131,0.5)" } : undefined} />
-                ))}
+        <div className="relative max-w-[1320px] mx-auto rounded-3xl overflow-hidden border border-white/10" style={{ minHeight: 420 }}>
+          {heroSlides.length > 0 ? heroSlides.map((n, i) => (
+            <a
+              key={n.link}
+              href={n.link}
+              {...(n.internal ? {} : { target: "_blank", rel: "noreferrer" })}
+              className={`absolute inset-0 transition-opacity duration-700 ${i === heroSlide ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+            >
+              {n.image && <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${n.image}')` }} />}
+              <div className="absolute inset-0" style={{ background: "linear-gradient(270deg, rgba(10,15,11,0.96) 0%, rgba(10,15,11,0.7) 45%, rgba(10,15,11,0.25) 75%, rgba(16,22,16,0.9) 100%)" }} />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(10,15,11,0.9), transparent 50%)" }} />
+              <div className="absolute bottom-0 right-0 left-0 p-6 md:p-10">
+                <div className="max-w-xl text-right">
+                  <div className="flex items-center gap-2 mb-3 flex-wrap">
+                    <span className="text-[10px] font-black px-2.5 py-1 rounded-full" style={{ background: "#4AE183", color: "#04160A" }}>{n.sport.name}</span>
+                    {n.category && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/20 text-white/70">{n.category}</span>}
+                    {n.time && <span className="text-[10px] text-white/60">{n.time}</span>}
+                  </div>
+                  <h2 className="headline text-[22px] md:text-[34px] leading-[1.35] text-white line-clamp-2">{n.title}</h2>
+                  {n.description && <p className="hidden md:block text-[13px] leading-6 text-white/60 mt-3 max-w-md line-clamp-2">{n.description}</p>}
+                </div>
               </div>
-            </div>
-
-            {/* ب) کارت مسابقه پیش‌رو — چپ (~۴۰٪) */}
-            <div className="relative w-full max-w-[360px] shrink-0">
-              {/* Ambient Glow — آبی استقلال چپ، قرمز پرسپولیس راست */}
-              <span aria-hidden className="absolute top-1/3 -right-8 w-36 h-36 rounded-full blur-2xl opacity-40 pointer-events-none" style={{ background: DERBY.persepolis.glow }} />
-              <span aria-hidden className="absolute top-1/3 -left-8 w-36 h-36 rounded-full blur-2xl opacity-40 pointer-events-none" style={{ background: DERBY.esteghlal.glow }} />
-
-              <div className="relative rounded-2xl border border-white/12 backdrop-blur-md overflow-hidden" style={{ background: "rgba(16,22,16,0.9)" }}>
-                {/* بج بازی بعدی — وسط بالا */}
-                <div className="flex justify-center pt-4">
-                  <span className="text-[10px] font-black px-3 py-1 rounded-full border border-white/15 text-white/85" style={{ background: "rgba(255,255,255,0.06)" }}>بازی بعدی</span>
-                </div>
-                {/* تورنمنت و تاریخ */}
-                <div className="text-center mt-3 pb-3 border-b border-white/8">
-                  <p className="text-[12px] font-bold" style={{ color: "#4AE183" }}>لیگ برتر ایران</p>
-                  <p className="text-[11px] mt-1 text-slate-400">جمعه، ۲۴ اردیبهشت ۱۴۰۳</p>
-                </div>
-                {/* تقابل دو تیم — پرسپولیس راست، استقلال چپ */}
-                <div className="px-5 py-6 flex items-center justify-between">
-                  {/* پرسپولیس — راست */}
-                  <div className="flex flex-col items-center gap-2 w-[90px]">
-                    <img src={DERBY.persepolis.logo} alt="پرسپولیس" className="w-14 h-14 object-contain" />
-                    <span className="text-[12px] font-bold text-white">پرسپولیس</span>
-                  </div>
-                  {/* ساعت */}
-                  <div className="text-center shrink-0">
-                    <span className="tabular text-[30px] font-black block leading-none" style={{ color: "#4AE183", textShadow: "0 0 20px rgba(74,225,131,0.45)" }}>19:30</span>
-                  </div>
-                  {/* استقلال — چپ (با ۲ ستاره طلایی) */}
-                  <div className="flex flex-col items-center gap-2 w-[90px]">
-                    <div className="flex items-center gap-0.5 h-3">
-                      <StarSVG /><StarSVG />
-                    </div>
-                    <img src={DERBY.esteghlal.logo} alt="استقلال" className="w-14 h-14 object-contain" />
-                    <span className="text-[12px] font-bold text-white">استقلال</span>
-                  </div>
-                </div>
-                {/* دکمه مشاهده پیش بازی */}
-                <div className="px-5 pb-5">
-                  <button onClick={() => router.push("/football/leagues/persian-gulf")} className="w-full py-2.5 rounded-full text-[13px] font-bold text-white border border-white/15 transition-all duration-200 hover:bg-white/8" style={{ background: "rgba(255,255,255,0.05)" }}>
-                    مشاهده پیش بازی
-                  </button>
+            </a>
+          )) : (
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "linear-gradient(135deg, #101610 0%, #1D2718 50%, #0A0F0B 100%)" }}>
+              <div className="absolute bottom-0 right-0 left-0 p-6 md:p-10">
+                <div className="max-w-xl text-right">
+                  <h1 className="headline text-[32px] md:text-[48px] leading-[1.25] text-white">
+                    هیجان فوتبال، لحظه به لحظه
+                  </h1>
+                  <p className="headline text-[22px] md:text-[28px] mt-2">
+                    همراه با{" "}
+                    <span className="neon-text">پلاس ورزش</span>
+                  </p>
+                  <p className="text-[13px] md:text-[14px] leading-7 mt-4 max-w-md text-white/60">
+                    نتایج زنده، جدول لیگ‌ها، اخبار، مینی‌گیم‌ها و تحلیل‌های اختصاصی فوتبال ایران و جهان
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* فلش‌های ناوبری دو طرف هیرو */}
-          <button onClick={() => setSlide((s) => (s - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)} aria-label="اسلاید قبلی" className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-white transition-colors hover:bg-white/10" style={{ background: "rgba(16,22,16,0.65)", backdropFilter: "blur(8px)" }}>
-            <ChevronLeft size={20} />
-          </button>
-          <button onClick={() => setSlide((s) => (s + 1) % HERO_SLIDES.length)} aria-label="اسلاید بعدی" className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-white transition-colors hover:bg-white/10" style={{ background: "rgba(16,22,16,0.65)", backdropFilter: "blur(8px)" }}>
-            <ChevronRight size={20} />
-          </button>
+          )}
+          {heroSlides.length > 1 && (
+            <div className="absolute bottom-4 left-4 z-20 flex items-center gap-2">
+              {heroSlides.map((_, i) => (
+                <button key={i} onClick={() => setHeroSlide(i)} aria-label={`اسلاید ${i + 1}`} className={`h-1.5 rounded-full transition-all duration-300 ${i === heroSlide ? "w-7" : "w-2 bg-white/25 hover:bg-white/50"}`} style={i === heroSlide ? { background: "linear-gradient(90deg, #4AE183, #FFD34D)" } : undefined} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -469,112 +421,158 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ============ ۵. گرید ۴ ستونه محتوای اصلی ============ */}
-      <main id="videos" className="flex-1 w-full max-w-[1320px] mx-auto px-4 py-5 pb-28">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-
-          {/* ستون ۱ (راست‌ترین): جدول لیگ برتر ایران */}
-          <div className="rounded-2xl border border-white/10 p-4 flex flex-col" style={{ background: "rgba(16,22,16,0.9)", backdropFilter: "blur(8px)" }}>
-            <h3 className="headline text-[16px] text-white mb-3">جدول لیگ برتر ایران</h3>
-            <table className="w-full text-[12px]">
-              <thead>
-                <tr className="text-slate-300" style={{ background: "rgba(255,255,255,0.04)" }}>
-                  <th className="px-3 py-2 text-right font-bold rounded-r-lg">تیم</th>
-                  <th className="px-2 py-2 text-center font-bold">بازی</th>
-                  <th className="px-2 py-2 text-center font-bold rounded-l-lg">امتیاز</th>
-                </tr>
-              </thead>
-              <tbody>
-                {standings.map((row, i) => (
-                  <tr key={row.name} className={`border-b border-white/5 transition-colors hover:bg-white/[0.03] ${i === 0 ? "bg-sky-500/5" : ""}`}>
-                    <td className="px-3 py-2.5">
-                      <Link href={row.slug ? `/football/teams/${row.slug}` : "/football/leagues/persian-gulf"} className="flex items-center gap-2 min-w-0 group">
-                        <span className="tabular text-[11px] w-4 shrink-0" style={{ color: i === 0 ? "#4AE183" : "#64748b" }}>{["۱","۲","۳","۴","۵"][i]}</span>
-                        <img src={row.logo} alt={row.name} className="w-5 h-5 object-contain shrink-0" loading="lazy" />
-                        <span className="font-bold truncate text-white group-hover:text-[#4AE183] transition-colors">{row.name}</span>
-                      </Link>
-                    </td>
-                    <td className="px-2 py-2.5 text-center tabular text-slate-400">{row.played}</td>
-                    <td className="px-2 py-2.5 text-center tabular font-black" style={{ color: "#4AE183" }}>{row.pts}</td>
-                  </tr>
-                ))}
-                {!standings.length && <tr><td colSpan={3} className="text-center text-slate-300 py-4 text-[11px]">در حال بارگذاری جدول واقعی...</td></tr>}
-              </tbody>
-            </table>
-            <Link href="/football/leagues/persian-gulf/standings" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#FFD34D" }}>مشاهده جدول کامل</Link>
-          </div>
-
-          {/* ستون ۲: آخرین اخبار — ترکیبی فوتبال + سایر ورزش‌ها */}
-          <div className="rounded-2xl border border-white/10 p-4 flex flex-col" style={{ background: "rgba(16,22,16,0.9)", backdropFilter: "blur(8px)" }}>
-            <h3 className="headline text-[16px] text-white mb-3">آخرین اخبار</h3>
-            <div className="flex-1 flex flex-col gap-2.5">
-              {mixedNews ? mixedNews.map((n, idx) => (
-                <NewsRow
-                  key={`${n.link}-${idx}`}
-                  title={n.title} href={n.link} external={!n.internal}
-                  image={n.image} time={n.time}
-                  badge={{ label: n.sport.name, color: n.sport.color }}
-                />
-              )) : (
-                <>
-                  <SkeletonNewsRow /><SkeletonNewsRow /><SkeletonNewsRow />
-                </>
-              )}
-            </div>
-            <Link href="/news" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#FFD34D" }}>مشاهده همه اخبار</Link>
-          </div>
-
-          {/* ستون ۳: ویدیوهای برتر — اخبار ویدیویی واقعی از RSS (دسته ویدیو) */}
-          <div className="rounded-2xl border border-white/10 p-4 flex flex-col" style={{ background: "rgba(16,22,16,0.9)", backdropFilter: "blur(8px)" }}>
-            <h3 className="headline text-[16px] text-white mb-3">ویدیوهای برتر</h3>
-            {(mixedNews ?? []).filter((n) => n.category === "ویدیو").slice(0, 4).map((v, i) => (
-              <a key={i} href={v.link} target="_blank" rel="noreferrer" className="relative rounded-xl overflow-hidden group cursor-pointer mb-2.5" style={{ aspectRatio: "16/9" }}>
-                {v.image && <img src={v.image} alt={v.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" loading="lazy" />}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+      {/* ============ ۵. ویدیوهای برتر — صدر صفحه ============ */}
+      <section className="w-full max-w-[1320px] mx-auto px-4 pt-5 pb-2">
+        <SectionHeader title="ویدیوهای برتر" href="/live" linkLabel="همه ویدیوها" />
+        {(mixedNews ?? []).filter((n) => n.category === "ویدیو").length >= 2 ? (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {(mixedNews ?? []).filter((n) => n.category === "ویدیو").slice(0, 6).map((v, i) => (
+              <a key={i} href={v.link} target="_blank" rel="noreferrer" className={`relative rounded-2xl overflow-hidden group cursor-pointer border border-white/10 hover:border-[#4AE183]/40 transition-all ${i === 0 ? "md:col-span-2 lg:row-span-2" : ""}`}
+                style={i === 0 ? { aspectRatio: "16/10" } : { aspectRatio: "16/9" }}>
+                {v.image && <img src={v.image} alt={v.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.05]" loading="lazy" />}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                 <span className="absolute inset-0 flex items-center justify-center">
-                  <span className="w-12 h-12 rounded-full flex items-center justify-center border border-white/25 transition-transform duration-200 group-hover:scale-110" style={{ background: "rgba(16,22,16,0.65)", backdropFilter: "blur(6px)" }}>
-                    <Play size={20} className="text-white translate-x-[-1px]" />
+                  <span className={`rounded-full flex items-center justify-center border border-white/25 transition-transform duration-200 group-hover:scale-110 ${i === 0 ? "w-14 h-14" : "w-10 h-10"}`} style={{ background: "rgba(16,22,16,0.65)", backdropFilter: "blur(6px)" }}>
+                    <Play size={i === 0 ? 22 : 16} className="text-white translate-x-[-1px]" />
                   </span>
                 </span>
-                <p className="absolute bottom-2 right-2 left-2 text-[11px] font-bold text-white line-clamp-2">{v.title}</p>
+                <p className={`absolute bottom-2 right-3 left-3 font-bold text-white line-clamp-2 ${i === 0 ? "text-[15px]" : "text-[11px]"}`}>{v.title}</p>
               </a>
             ))}
-            {!(mixedNews ?? []).some((n) => n.category === "ویدیو") && (
-              <div className="text-[12px] text-slate-300 text-center py-6">ویدیوهای این هفته به‌زودی از منابع رسمی بارگذاری می‌شود.</div>
-            )}
-            <Link href="/live" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#FFD34D" }}>مشاهده همه ویدیوها</Link>
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-white/10 p-8 text-center text-sm text-slate-400" style={{ background: "#101610" }}>
+            ویدیوهای این هفته به‌زودی از منابع رسمی بارگذاری می‌شود.
+          </div>
+        )}
+      </section>
+
+      {/* ============ ۶. گرید نامتقارن محتوای اصلی ============ */}
+      <main id="videos" className="flex-1 w-full max-w-[1320px] mx-auto px-4 py-6 pb-28">
+        <div className="grid gap-5 lg:grid-cols-[1fr_360px]">
+          {/* ستون اصلی — راست */}
+          <div className="space-y-5">
+            {/* جدول لیگ برتر ایران */}
+            <div className="rounded-2xl border border-white/10 p-4" style={{ background: "rgba(16,22,16,0.9)" }}>
+              <h3 className="headline text-[16px] text-white mb-3">جدول لیگ برتر ایران</h3>
+              <table className="w-full text-[12px]">
+                <thead>
+                  <tr className="text-slate-300" style={{ background: "rgba(255,255,255,0.04)" }}>
+                    <th className="px-3 py-2 text-right font-bold rounded-r-lg">تیم</th>
+                    <th className="px-2 py-2 text-center font-bold">بازی</th>
+                    <th className="px-2 py-2 text-center font-bold rounded-l-lg">امتیاز</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {standings.map((row, i) => (
+                    <tr key={row.name} className={`border-b border-white/5 transition-colors hover:bg-white/[0.03] ${i === 0 ? "bg-[#4AE183]/5" : ""}`}>
+                      <td className="px-3 py-2.5">
+                        <Link href={row.slug ? `/football/teams/${row.slug}` : "/football/leagues/persian-gulf"} className="flex items-center gap-2 min-w-0 group">
+                          <span className="tabular text-[11px] w-4 shrink-0" style={{ color: i === 0 ? "#4AE183" : "#64748b" }}>{["۱","۲","۳","۴","۵"][i]}</span>
+                          <img src={row.logo} alt={row.name} className="w-5 h-5 object-contain shrink-0" loading="lazy" />
+                          <span className="font-bold truncate text-white group-hover:text-[#4AE183] transition-colors">{row.name}</span>
+                        </Link>
+                      </td>
+                      <td className="px-2 py-2.5 text-center tabular text-slate-400">{row.played}</td>
+                      <td className="px-2 py-2.5 text-center tabular font-black" style={{ color: "#4AE183" }}>{row.pts}</td>
+                    </tr>
+                  ))}
+                  {!standings.length && (
+                    <tr><td colSpan={3}><SkeletonTableRow /></td></tr>
+                  )}
+                </tbody>
+              </table>
+              <Link href="/football/leagues/persian-gulf/standings" className="mt-auto pt-3 block text-center text-[12px] font-bold hover:underline" style={{ color: "#FFD34D" }}>مشاهده جدول کامل</Link>
+            </div>
+
+            {/* بهترین گلزنان — واقعی از Transfermarkt */}
+            <div className="rounded-2xl border border-white/10 p-4" style={{ background: "rgba(16,22,16,0.9)" }}>
+              <h3 className="headline text-[16px] text-white mb-1">بهترین گلزنان</h3>
+              <p className="text-[10px] text-slate-400 mb-3">بوندسلیگا — فصل ۲۰۲۵/۲۶</p>
+              <div className="flex-1 space-y-1.5">
+                {topScorers.map((p) => (
+                  <Link key={p.playerId} href={`/football/players/${p.playerId}`} className="flex items-center gap-2.5 px-2 py-2 rounded-xl transition-colors hover:bg-white/[0.04]" style={p.rank === 1 ? { background: "rgba(74,225,131,0.07)" } : undefined}>
+                    <span className="tabular font-black text-[12px] w-5 text-center shrink-0" style={{ color: p.rank === 1 ? "#4AE183" : "#64748b" }}>{p.rank}</span>
+                    <span className="w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 border border-white/10" style={{ background: `${p.ourTeam?.color ?? "#4AE183"}25`, color: p.ourTeam?.color ?? "#4AE183" }}>{p.name.slice(0, 2)}</span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[12px] font-bold truncate text-white">{p.name}</p>
+                      <span className="text-[10px] text-slate-400">{p.ourTeam?.name ?? "—"}</span>
+                    </div>
+                    <span className="font-black text-[14px] text-white shrink-0">{p.goals} <span className="text-[10px] font-normal text-slate-400">گل</span></span>
+                  </Link>
+                ))}
+                {!topScorers.length && (
+                  <div className="space-y-1.5">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <div key={i} className="flex items-center gap-2.5 px-2 py-2">
+                        <div className="rounded bg-white/10 animate-pulse tabular w-5 h-3 shrink-0" />
+                        <div className="rounded-full bg-white/10 animate-pulse w-9 h-9 shrink-0" />
+                        <div className="flex-1 space-y-1.5"><div className="rounded bg-white/10 animate-pulse h-3 w-3/4" /><div className="rounded bg-white/5 animate-pulse h-2.5 w-1/3" /></div>
+                        <div className="rounded bg-white/10 animate-pulse h-4 w-8 shrink-0" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <Link href="/football/leagues/bundesliga/stats" className="mt-auto pt-3 block text-center text-[12px] font-bold hover:underline" style={{ color: "#FFD34D" }}>مشاهده آمار کامل</Link>
+            </div>
+
+            {/* آخرین اخبار — ترکیبی */}
+            <div className="rounded-2xl border border-white/10 p-4" style={{ background: "rgba(16,22,16,0.9)" }}>
+              <h3 className="headline text-[16px] text-white mb-3">آخرین اخبار</h3>
+              <div className="flex-1 flex flex-col gap-2.5">
+                {mixedNews ? mixedNews.map((n, idx) => (
+                  <NewsRow
+                    key={`${n.link}-${idx}`}
+                    title={n.title} href={n.link} external={!n.internal}
+                    image={n.image} time={n.time}
+                    badge={{ label: n.sport.name, color: n.sport.color }}
+                  />
+                )) : (
+                  <>
+                    <SkeletonNewsRow /><SkeletonNewsRow /><SkeletonNewsRow />
+                  </>
+                )}
+              </div>
+              <Link href="/news" className="mt-auto pt-3 block text-center text-[12px] font-bold hover:underline" style={{ color: "#FFD34D" }}>مشاهده همه اخبار</Link>
+            </div>
           </div>
 
-          {/* ستون ۴ (چپ‌ترین): بهترین گلزنان — واقعی از Transfermarkt */}
-          <div className="rounded-2xl border border-white/10 p-4 flex flex-col" style={{ background: "rgba(16,22,16,0.9)", backdropFilter: "blur(8px)" }}>
-            <h3 className="headline text-[16px] text-white mb-3">بهترین گلزنان</h3>
-            <p className="text-[10px] text-slate-300 mb-2">بوندسلیگا — فصل ۲۰۲۵/۲۶</p>
-            <div className="flex-1 space-y-1.5">
-              {topScorers.map((p) => (
-                <Link key={p.playerId} href={`/football/players/${p.playerId}`} className="flex items-center gap-2.5 px-2 py-2 rounded-xl transition-colors hover:bg-white/[0.04]" style={p.rank === 1 ? { background: "rgba(74,225,131,0.07)" } : undefined}>
-                  <span className="tabular font-black text-[12px] w-5 text-center shrink-0" style={{ color: p.rank === 1 ? "#4AE183" : "#64748b" }}>{p.rank}</span>
-                  <span className="w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 border border-white/10" style={{ background: `${p.ourTeam?.color ?? "#4AE183"}25`, color: p.ourTeam?.color ?? "#4AE183" }}>{p.name.slice(0, 2)}</span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[12px] font-bold truncate text-white">{p.name}</p>
-                    <span className="text-[10px] text-slate-300">{p.ourTeam?.name ?? "—"}</span>
-                  </div>
-                  <span className="font-black text-[14px] text-white shrink-0">{p.goals} <span className="text-[10px] font-normal text-slate-300">گل</span></span>
-                </Link>
-              ))}
-              {!topScorers.length && (
-                <div className="space-y-1.5">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <div key={i} className="flex items-center gap-2.5 px-2 py-2">
-                      <div className="rounded bg-white/10 animate-pulse tabular w-5 h-3 shrink-0" />
-                      <div className="rounded-full bg-white/10 animate-pulse w-9 h-9 shrink-0" />
-                      <div className="flex-1 space-y-1.5"><div className="rounded bg-white/10 animate-pulse h-3 w-3/4" /><div className="rounded bg-white/5 animate-pulse h-2.5 w-1/3" /></div>
-                      <div className="rounded bg-white/10 animate-pulse h-4 w-8 shrink-0" />
-                    </div>
-                  ))}
-                </div>
-              )}
+          {/* ستون کناری — چپ */}
+          <div className="space-y-5">
+            {/* بهترین گلزنان کوچک */}
+            <div className="rounded-2xl border border-white/10 p-4" style={{ background: "rgba(16,22,16,0.9)" }}>
+              <h3 className="headline text-[16px] text-white mb-3">بازی‌های این هفته</h3>
+              <div className="space-y-2">
+                {liveMatches.slice(0, 4).map((m, i) => (
+                  <Link key={i} href={`/football/leagues/${m.leagueSlug}/matches`} className="block px-2 py-2 rounded-xl hover:bg-white/[0.04] transition-colors">
+                    <span className="text-[10px] text-slate-400">{m.league}</span>
+                    <p className="text-[12px] font-bold text-white mt-0.5">{m.home} vs {m.away}</p>
+                    {m.time && <span className="text-[10px] text-slate-400">{faRelativeDay(m.time)?.day} {faRelativeDay(m.time)?.time}</span>}
+                  </Link>
+                ))}
+                {!liveMatches.length && <p className="text-xs text-slate-500 text-center py-4">در حال بارگذاری...</p>}
+              </div>
             </div>
-            <Link href="/football/leagues/bundesliga/stats" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#FFD34D" }}>مشاهده آمار کامل</Link>
+
+            {/* مینی‌گیم‌ها */}
+            <div className="rounded-2xl border p-4" style={{ background: "linear-gradient(135deg, rgba(74,225,131,0.08), rgba(16,22,16,0.9))", borderColor: "rgba(74,225,131,0.2)" }}>
+              <h3 className="headline text-[16px] text-white mb-3">مینی‌گیم‌ها</h3>
+              <div className="space-y-2">
+                {[
+                  { href: "/games/footle", label: "فوتل", desc: "حدس بازیکن روز" },
+                  { href: "/games/higher-lower", label: "بیشتر یا کمتر", desc: "ارزش بازار کدام بیشتر؟" },
+                  { href: "/games/predictor", label: "پیش‌بینی نتیجه", desc: "۳ امتیاز نتیجه دقیق" },
+                  { href: "/games/tactics", label: "تخته تاکتیک", desc: "ترکیب بچین" },
+                ].map((g) => (
+                  <Link key={g.href} href={g.href} className="block px-3 py-2.5 rounded-xl border border-white/8 hover:border-[#4AE183]/30 transition-colors" style={{ background: "rgba(255,255,255,0.03)" }}>
+                    <span className="text-[13px] font-bold text-white">{g.label}</span>
+                    <span className="block text-[10px] text-slate-400">{g.desc}</span>
+                  </Link>
+                ))}
+              </div>
+              <Link href="/games" className="mt-3 block text-center text-[11px] font-bold hover:underline" style={{ color: "#4AE183" }}>همه بازی‌ها ←</Link>
+            </div>
           </div>
         </div>
       </main>
