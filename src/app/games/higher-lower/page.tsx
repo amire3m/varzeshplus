@@ -59,10 +59,10 @@ export default function HigherLowerPage() {
   }
 
   return (
-    <div className="min-h-screen pb-28" style={{ background: "#252525" }}>
+    <div className="min-h-screen pb-28" style={{ background: "#0A0F0B" }}>
       <div className="max-w-[720px] mx-auto px-4 pt-6">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white text-lg" style={{ background: "linear-gradient(135deg, #005cfc, #bee503)" }}>↕</div>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white text-lg" style={{ background: "linear-gradient(135deg, #4AE183, #FFD34D)" }}>↕</div>
           <div>
             <h1 className="headline text-[22px] text-white">بیشتر یا کمتر</h1>
             <p className="text-[12px] text-slate-400">ارزش بازار کدام بازیکن بیشتر است؟</p>
@@ -94,18 +94,18 @@ export default function HigherLowerPage() {
                     disabled={revealed}
                     className="rounded-2xl border p-5 text-center transition-all hover:-translate-y-1 disabled:hover:translate-y-0"
                     style={{
-                      background: "#2a2a2a",
-                      borderColor: revealed ? (isPick ? (result?.correct ? "#bee503" : "#E8385D") : "rgba(255,255,255,0.1)") : "rgba(255,255,255,0.1)",
+                      background: "#101610",
+                      borderColor: revealed ? (isPick ? (result?.correct ? "#FFD34D" : "#E8385D") : "rgba(255,255,255,0.1)") : "rgba(255,255,255,0.1)",
                       opacity: dim ? 0.55 : 1,
                     }}
                   >
                     <div className="font-black text-[15px] text-white leading-6 min-h-[48px]" dir="ltr">{p.name}</div>
                     <div className="text-[11px] text-slate-500 mt-1">{p.club}</div>
-                    <div className="headline text-lg tabular mt-3" style={{ color: revealed ? "#bee503" : "transparent", textShadow: revealed ? "none" : "0 0 12px rgba(255,255,255,0.5)", userSelect: "none" }}>
+                    <div className="headline text-lg tabular mt-3" style={{ color: revealed ? "#FFD34D" : "transparent", textShadow: revealed ? "none" : "0 0 12px rgba(255,255,255,0.5)", userSelect: "none" }}>
                       {revealed ? fmtMv(mv) : "€ ?"}
                     </div>
                     {revealed && (
-                      <Link href={playerHref(p.id)} onClick={(e) => e.stopPropagation()} className="inline-block mt-2 text-[11px] font-bold hover:underline" style={{ color: "#005cfc" }}>
+                      <Link href={playerHref(p.id)} onClick={(e) => e.stopPropagation()} className="inline-block mt-2 text-[11px] font-bold hover:underline" style={{ color: "#4AE183" }}>
                         پروفایل ←
                       </Link>
                     )}
@@ -116,10 +116,10 @@ export default function HigherLowerPage() {
             <div className="text-center mt-4">
               {result ? (
                 <div className="space-y-3">
-                  <p className="text-sm font-black" style={{ color: result.correct ? "#bee503" : "#E8385D" }}>
+                  <p className="text-sm font-black" style={{ color: result.correct ? "#FFD34D" : "#E8385D" }}>
                     {result.correct ? "✓ درست! رکوردت بیشتر شد" : "✗ اشتباه — رکورد صفر شد"}
                   </p>
-                  <button onClick={deal} className="px-6 py-2.5 rounded-full text-sm font-black text-white" style={{ background: "#005cfc" }}>
+                  <button onClick={deal} className="px-6 py-2.5 rounded-full text-sm font-black text-white" style={{ background: "#4AE183" }}>
                     دست بعدی
                   </button>
                 </div>

@@ -24,8 +24,8 @@ const TYPE_LABEL: Record<string, string> = {
   event: "رویدادی",
 };
 const TYPE_COLOR: Record<string, string> = {
-  program: "#005cfc",
-  general: "#bee503",
+  program: "#4AE183",
+  general: "#FFD34D",
   event: "#E8385D",
 };
 
@@ -58,71 +58,71 @@ export default function GamesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#252525" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0A0F0B" }}>
         <span className="text-sm" style={{ color: "#8FA1B5" }}>در حال بارگذاری بازی‌ها...</span>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen pb-28" style={{ background: "#252525" }}>
+    <div className="min-h-screen pb-28" style={{ background: "#0A0F0B" }}>
       <div className="max-w-[1320px] mx-auto px-4 pt-6">
         {/* هدر */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "rgba(0,92,252,0.15)", color: "#005cfc" }}>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "rgba(74,225,131,0.15)", color: "#4AE183" }}>
             <Trophy size={20} />
           </div>
           <div>
             <h1 className="headline text-[22px] text-white">مینی گیم‌ها</h1>
             <p className="text-[12px] text-slate-400">بازی کن، پیش‌بینی کن، امتیاز بگیر</p>
           </div>
-          <span className="mr-auto text-xs px-3 py-1.5 rounded-full border border-white/10" style={{ background: "rgba(190,229,3,0.12)", color: "#bee503" }}>
+          <span className="mr-auto text-xs px-3 py-1.5 rounded-full border border-white/10" style={{ background: "rgba(190,229,3,0.12)", color: "#FFD34D" }}>
             {games.length} بازی فعال
           </span>
         </div>
 
         {/* بنر فوتبالیست منیجر */}
-        <Link href="/games/manager" className="block rounded-2xl border border-white/10 p-4 mb-4 flex items-center gap-3 hover:border-[#005cfc]/30 transition-colors" style={{ background: "linear-gradient(135deg, rgba(0,92,252,0.14), rgba(190,229,3,0.08))" }}>
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white" style={{ background: "linear-gradient(135deg, #005cfc, #bee503)" }}>FM</div>
+        <Link href="/games/manager" className="block rounded-2xl border border-white/10 p-4 mb-4 flex items-center gap-3 hover:border-[#4AE183]/30 transition-colors" style={{ background: "linear-gradient(135deg, rgba(74,225,131,0.14), rgba(190,229,3,0.08))" }}>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white" style={{ background: "linear-gradient(135deg, #4AE183, #FFD34D)" }}>FM</div>
           <div className="min-w-0">
             <div className="headline text-sm text-white">فوتبالیست منیجر — بومی OFM</div>
             <div className="text-xs text-slate-400">تیم بردار، ترکیب بچین، ۱۴ هفته را شبیه‌سازی کن — کاملاً فارسی</div>
           </div>
-          <span className="mr-auto text-xs font-black px-3 py-1.5 rounded-full text-white shrink-0" style={{ background: "#005cfc" }}>ورود →</span>
+          <span className="mr-auto text-xs font-black px-3 py-1.5 rounded-full text-white shrink-0" style={{ background: "#4AE183" }}>ورود →</span>
         </Link>
 
         {/* آرکید روزانه */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 mb-6">
-          <Link href="/games/footle" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#bee503]/40 transition-colors" style={{ background: "#2a2a2a" }}>
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-white" style={{ background: "linear-gradient(135deg, #bee503, #005cfc)" }}>F</div>
+          <Link href="/games/footle" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#FFD34D]/40 transition-colors" style={{ background: "#101610" }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-white" style={{ background: "linear-gradient(135deg, #FFD34D, #4AE183)" }}>F</div>
             <div className="min-w-0">
               <div className="headline text-sm text-white">فوتل</div>
               <div className="text-[11px] text-slate-400">بازیکن مرموز امروز را حدس بزن</div>
             </div>
           </Link>
-          <Link href="/games/higher-lower" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#005cfc]/40 transition-colors" style={{ background: "#2a2a2a" }}>
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-white" style={{ background: "linear-gradient(135deg, #005cfc, #E8385D)" }}>↕</div>
+          <Link href="/games/higher-lower" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#4AE183]/40 transition-colors" style={{ background: "#101610" }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-white" style={{ background: "linear-gradient(135deg, #4AE183, #E8385D)" }}>↕</div>
             <div className="min-w-0">
               <div className="headline text-sm text-white">بیشتر یا کمتر</div>
               <div className="text-[11px] text-slate-400">ارزش بازار کدام بازیکن بیشتر است؟</div>
             </div>
           </Link>
-          <Link href="/games/predictor" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#bee503]/40 transition-colors" style={{ background: "#2a2a2a" }}>
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-white" style={{ background: "linear-gradient(135deg, #bee503, #E8385D)" }}>◎</div>
+          <Link href="/games/predictor" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#FFD34D]/40 transition-colors" style={{ background: "#101610" }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-white" style={{ background: "linear-gradient(135deg, #FFD34D, #E8385D)" }}>◎</div>
             <div className="min-w-0">
               <div className="headline text-sm text-white">پیش‌بینی نتیجه</div>
               <div className="text-[11px] text-slate-400">نتیجه دقیق ۳ امتیاز • جدول هفتگی</div>
             </div>
           </Link>
-          <Link href="/games/tactics" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#005cfc]/40 transition-colors" style={{ background: "#2a2a2a" }}>
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-white text-lg" style={{ background: "linear-gradient(135deg, #005cfc, #bee503)" }}>♟</div>
+          <Link href="/games/tactics" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#4AE183]/40 transition-colors" style={{ background: "#101610" }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-white text-lg" style={{ background: "linear-gradient(135deg, #4AE183, #FFD34D)" }}>♟</div>
             <div className="min-w-0">
               <div className="headline text-sm text-white">تخته تاکتیک</div>
               <div className="text-[11px] text-slate-400">ترکیب بچین و PNG بگیر</div>
             </div>
           </Link>
-          <Link href="/games/fantasy" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#bee503]/40 transition-colors" style={{ background: "#2a2a2a" }}>
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white" style={{ background: "linear-gradient(135deg, #bee503, #005cfc)" }}>
+          <Link href="/games/fantasy" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#FFD34D]/40 transition-colors" style={{ background: "#101610" }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white" style={{ background: "linear-gradient(135deg, #FFD34D, #4AE183)" }}>
               <Users size={18} />
             </div>
             <div className="min-w-0">
@@ -130,8 +130,8 @@ export default function GamesPage() {
               <div className="text-[11px] text-slate-400">۱۵ بازیکن • £100m • امتیاز واقعی</div>
             </div>
           </Link>
-          <Link href="/football/xg" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#005cfc]/40 transition-colors" style={{ background: "#2a2a2a" }}>
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white" style={{ background: "linear-gradient(135deg, #005cfc, #E8385D)" }}>
+          <Link href="/football/xg" className="rounded-2xl border border-white/10 p-4 flex items-center gap-3 hover:border-[#4AE183]/40 transition-colors" style={{ background: "#101610" }}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white" style={{ background: "linear-gradient(135deg, #4AE183, #E8385D)" }}>
               <Activity size={18} />
             </div>
             <div className="min-w-0">
@@ -156,7 +156,7 @@ export default function GamesPage() {
               className={`shrink-0 px-4 py-1.5 rounded-full text-[13px] font-bold border transition-all ${filter === t.key ? "text-white" : "text-slate-400 hover:text-white border-white/10"}`}
               style={
                 filter === t.key
-                  ? { background: t.key === "all" ? "linear-gradient(135deg, #005cfc, #bee503)" : TYPE_COLOR[t.key] + "22", borderColor: t.key === "all" ? "transparent" : TYPE_COLOR[t.key] + "55", color: t.key === "all" ? "#fff" : TYPE_COLOR[t.key] }
+                  ? { background: t.key === "all" ? "linear-gradient(135deg, #4AE183, #FFD34D)" : TYPE_COLOR[t.key] + "22", borderColor: t.key === "all" ? "transparent" : TYPE_COLOR[t.key] + "55", color: t.key === "all" ? "#fff" : TYPE_COLOR[t.key] }
                   : { background: "rgba(255,255,255,0.05)" }
               }
             >
@@ -179,15 +179,15 @@ export default function GamesPage() {
                   key={g.id}
                   href={`/games/${g.id}`}
                   className="group relative rounded-2xl border border-white/10 overflow-hidden p-5 flex flex-col gap-3 transition-all hover:-translate-y-1 hover:border-white/20"
-                  style={{ background: "#2a2a2a" }}
+                  style={{ background: "#101610" }}
                 >
-                  <span className="absolute top-0 left-0 w-full h-[2px]" style={{ background: TYPE_COLOR[g.gameType] || "#005cfc", opacity: 0.8 }} />
+                  <span className="absolute top-0 left-0 w-full h-[2px]" style={{ background: TYPE_COLOR[g.gameType] || "#4AE183", opacity: 0.8 }} />
                   <div className="flex items-start justify-between gap-2">
-                    <span className="text-[10px] font-black px-2.5 py-1 rounded-full border" style={{ background: (TYPE_COLOR[g.gameType] || "#005cfc") + "18", borderColor: (TYPE_COLOR[g.gameType] || "#005cfc") + "30", color: TYPE_COLOR[g.gameType] || "#005cfc" }}>
+                    <span className="text-[10px] font-black px-2.5 py-1 rounded-full border" style={{ background: (TYPE_COLOR[g.gameType] || "#4AE183") + "18", borderColor: (TYPE_COLOR[g.gameType] || "#4AE183") + "30", color: TYPE_COLOR[g.gameType] || "#4AE183" }}>
                       {TYPE_LABEL[g.gameType] || g.gameType}
                     </span>
                     {g.prize && (
-                      <span className="text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1" style={{ background: "rgba(190,229,3,0.12)", color: "#bee503" }}>
+                      <span className="text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1" style={{ background: "rgba(190,229,3,0.12)", color: "#FFD34D" }}>
                         <Star size={11} /> {g.prize}
                       </span>
                     )}
@@ -198,7 +198,7 @@ export default function GamesPage() {
                   <div className="mt-auto flex items-center gap-3 pt-3 border-t border-white/5 text-[11px] text-slate-400">
                     <span className="flex items-center gap-1"><Users size={12} /> {g.participants} شرکت‌کننده</span>
                     {hoursLeft !== null && <span className="flex items-center gap-1"><Clock size={12} /> {hoursLeft} ساعت باقی‌مانده</span>}
-                    <span className="mr-auto text-xs font-bold" style={{ color: "#005cfc" }}>شروع بازی ←</span>
+                    <span className="mr-auto text-xs font-bold" style={{ color: "#4AE183" }}>شروع بازی ←</span>
                   </div>
                 </Link>
               );

@@ -103,17 +103,17 @@ export function FixedChrome() {
   return (
     <>
       {/* ============ هدر ثابت ============ */}
-      <header className="fixed top-0 z-50 w-full border-b border-white/10" style={{ background: "rgba(37,37,37,0.95)", backdropFilter: "blur(14px)" }}>
+      <header className="fixed top-0 z-50 w-full border-b border-white/10" style={{ background: "rgba(16,22,16,0.95)", backdropFilter: "blur(14px)" }}>
         <div className="max-w-[1320px] mx-auto px-4 h-16 flex items-center justify-between gap-3">
           {/* راست: منو + برند */}
           <div className="flex items-center gap-3">
-            <button onClick={() => setMenuOpen((v) => !v)} aria-label="ورزش‌ها" className="p-1.5 rounded-full transition-all hover:bg-white/10 hover:scale-110" style={{ color: "#005cfc" }} title="انتخاب ورزش">
+            <button onClick={() => setMenuOpen((v) => !v)} aria-label="ورزش‌ها" className="p-1.5 rounded-full transition-all hover:bg-white/10 hover:scale-110" style={{ color: "#4AE183" }} title="انتخاب ورزش">
               {menuOpen ? <X size={24} /> : <FootballIcon size={26} />}
             </button>
             <Link href="/" className="leading-none">
               <span className="headline text-[20px] block">
                 <span className="text-white">Varzesh</span>{" "}
-                <span className="drop-shadow-[0_0_10px_rgba(0,92,252,0.6)]" style={{ color: "#005cfc" }}>Plus</span>
+                <span className="drop-shadow-[0_0_10px_rgba(74,225,131,0.6)]" style={{ color: "#4AE183" }}>Plus</span>
               </span>
               <span className="text-[10px] block mt-1 text-slate-400">شبکه ورزش</span>
             </Link>
@@ -139,16 +139,16 @@ export function FixedChrome() {
 
           {/* چپ: ساعت/تاریخ + حساب */}
           <div className="flex items-center gap-2">
-            <span className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 text-[12px] font-bold tabular text-white" style={{ background: "rgba(37,37,37,0.9)" }} dir="ltr">
-              <Clock3 size={14} style={{ color: "#005cfc" }} />{timeStr}
+            <span className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 text-[12px] font-bold tabular text-white" style={{ background: "rgba(16,22,16,0.9)" }} dir="ltr">
+              <Clock3 size={14} style={{ color: "#4AE183" }} />{timeStr}
             </span>
-            <span className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 text-[11px] text-white" style={{ background: "rgba(37,37,37,0.9)" }}>
-              <CalendarDays size={14} style={{ color: "#005cfc" }} />{dateStr}
+            <span className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 text-[11px] text-white" style={{ background: "rgba(16,22,16,0.9)" }}>
+              <CalendarDays size={14} style={{ color: "#4AE183" }} />{dateStr}
             </span>
             {user ? (
-              <Link href="/profile" className="hidden sm:flex items-center px-3 py-1.5 rounded-full border border-white/10 text-[12px] text-white" style={{ background: "rgba(37,37,37,0.9)" }}>{user.displayName}</Link>
+              <Link href="/profile" className="hidden sm:flex items-center px-3 py-1.5 rounded-full border border-white/10 text-[12px] text-white" style={{ background: "rgba(16,22,16,0.9)" }}>{user.displayName}</Link>
             ) : (
-              <Link href="/login" className="hidden sm:inline-flex px-4 py-1.5 rounded-full text-[12px] font-black text-white" style={{ background: "linear-gradient(135deg, #005cfc, #bee503)", boxShadow: "0 4px 16px rgba(0,92,252,0.3)" }}>ورود</Link>
+              <Link href="/login" className="hidden sm:inline-flex px-4 py-1.5 rounded-full text-[12px] font-black text-white" style={{ background: "linear-gradient(135deg, #4AE183, #FFD34D)", boxShadow: "0 4px 16px rgba(74,225,131,0.3)" }}>ورود</Link>
             )}
           </div>
         </div>
@@ -160,15 +160,15 @@ export function FixedChrome() {
           <div className="absolute inset-0 bg-black/60 backdrop-blur-[3px]" />
           <aside
             className="absolute top-0 bottom-0 right-0 w-[88%] max-w-[420px] overflow-y-auto border-l border-white/10 animate-[megaSlideIn_0.32s_cubic-bezier(0.22,1,0.36,1)]"
-            style={{ background: "linear-gradient(180deg, #252525 0%, #1e1e1e 100%)" }}
+            style={{ background: "linear-gradient(180deg, #0A0F0B 0%, #0D120D 100%)" }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* هدر drawer با گرادینت توپ */}
             <div className="relative overflow-hidden border-b border-white/10 px-5 py-5">
-              <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full blur-3xl pointer-events-none" style={{ background: "rgba(0,92,252,0.25)" }} />
+              <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full blur-3xl pointer-events-none" style={{ background: "rgba(74,225,131,0.25)" }} />
               <div className="relative flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="w-11 h-11 rounded-2xl flex items-center justify-center text-white shrink-0" style={{ background: "linear-gradient(135deg,#005cfc,#bee503)", boxShadow: "0 4px 18px rgba(0,92,252,0.4)" }}>
+                  <span className="w-11 h-11 rounded-2xl flex items-center justify-center text-white shrink-0" style={{ background: "linear-gradient(135deg,#4AE183,#FFD34D)", boxShadow: "0 4px 18px rgba(74,225,131,0.4)" }}>
                     <FootballIcon size={24} />
                   </span>
                   <div>
@@ -193,7 +193,7 @@ export function FixedChrome() {
                     onClick={() => setMenuOpen(false)}
                     className="relative block rounded-2xl border p-4 overflow-hidden sport-tile group"
                     style={{
-                      background: `linear-gradient(135deg, ${s.color}1f, #2a2a2a 65%)`,
+                      background: `linear-gradient(135deg, ${s.color}1f, #101610 65%)`,
                       borderColor: `${s.color}44`,
                       boxShadow: `0 0 0 0 ${s.color}00`,
                       animation: `megaPop 0.4s cubic-bezier(0.22,1,0.36,1) both`,
@@ -207,7 +207,7 @@ export function FixedChrome() {
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
                           <span className="headline text-[15px] text-white">{s.name}</span>
-                          {isFootball && <span className="text-[9px] font-black px-2 py-0.5 rounded-full text-white" style={{ background: "linear-gradient(135deg,#005cfc,#bee503)" }}>پیشنهادی</span>}
+                          {isFootball && <span className="text-[9px] font-black px-2 py-0.5 rounded-full text-white" style={{ background: "linear-gradient(135deg,#4AE183,#FFD34D)" }}>پیشنهادی</span>}
                         </div>
                         <p className="text-[11px] text-slate-400 mt-0.5">{desc}</p>
                       </div>
@@ -227,7 +227,7 @@ export function FixedChrome() {
       {searchOpen && (
         <div className="fixed inset-0 z-[70]" onClick={() => setSearchOpen(false)}>
           <div className="absolute inset-0 bg-black/60 backdrop-blur-[4px]" />
-          <div className="absolute top-[72px] left-1/2 -translate-x-1/2 w-[92%] max-w-[600px] max-h-[70vh] overflow-hidden rounded-2xl border border-white/10 shadow-2xl flex flex-col" style={{ background: "#1e1e1e" }} onClick={(e) => e.stopPropagation()}>
+          <div className="absolute top-[72px] left-1/2 -translate-x-1/2 w-[92%] max-w-[600px] max-h-[70vh] overflow-hidden rounded-2xl border border-white/10 shadow-2xl flex flex-col" style={{ background: "#0D120D" }} onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="text-slate-500 shrink-0"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.35-4.35" /></svg>
               <input
@@ -280,7 +280,7 @@ export function FixedChrome() {
                       <p className="text-[11px] font-bold text-slate-500 px-2 mb-1">بازیکنان</p>
                       {searchData.players.map((p) => (
                         <Link key={p.id} href={`/football/players/${p.id}`} onClick={() => { setSearchOpen(false); setSearchQ(""); }} className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition-colors">
-                          <span className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 border border-white/10" style={{ background: "rgba(0,92,252,0.15)", color: "#005cfc" }}>{p.name.slice(0, 2)}</span>
+                          <span className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 border border-white/10" style={{ background: "rgba(74,225,131,0.15)", color: "#4AE183" }}>{p.name.slice(0, 2)}</span>
                           <span className="text-sm font-bold text-white">{p.name}</span>
                           <span className="text-[11px] text-slate-500">{p.position ?? ""} {p.club ? `• ${p.club}` : ""}</span>
                         </Link>
@@ -297,7 +297,7 @@ export function FixedChrome() {
       {/* ============ داک شناور ============ */}
       <nav
         className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-6 py-2.5 rounded-full border border-white/10 shadow-2xl flex items-center gap-6"
-        style={{ background: "rgba(37,37,37,0.92)", backdropFilter: "blur(20px)" }}
+        style={{ background: "rgba(16,22,16,0.92)", backdropFilter: "blur(20px)" }}
         dir="rtl"
       >
         {DOCK_ITEMS.map((item) => {
@@ -311,7 +311,7 @@ export function FixedChrome() {
                 : pathname === hrefPath || pathname.startsWith(hrefPath + "/");
           const Icon = item.icon;
           return isActive ? (
-            <Link key={item.key} href={item.href} className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-200" style={{ background: "rgba(0,92,252,0.15)", border: "1px solid rgba(0,92,252,0.3)", color: "#005cfc" }}>
+            <Link key={item.key} href={item.href} className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-200" style={{ background: "rgba(74,225,131,0.15)", border: "1px solid rgba(74,225,131,0.3)", color: "#4AE183" }}>
               <Icon size={18} className="fill-current" />
               <span className="text-[12px] font-black">{item.label}</span>
             </Link>

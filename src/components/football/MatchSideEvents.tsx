@@ -28,12 +28,12 @@ export function MatchSideEvents({ match }: { match: Match }) {
 
   return (
     <div className="space-y-3">
-      <div className="rounded-2xl border border-white/10 p-4 flex items-center justify-between" style={{ background: "#2a2a2a" }}>
+      <div className="rounded-2xl border border-white/10 p-4 flex items-center justify-between" style={{ background: "#101610" }}>
         <div>
           <h3 className="headline text-sm text-white">حاشیه {home.name} و {away.name}</h3>
           <p className="text-[11px] text-slate-500 mt-0.5">اخبار واقعی از خبرورزشی — به‌روزرسانی هر ۱۰ دقیقه</p>
         </div>
-        <span className="text-[10px] font-black px-2 py-1 rounded-full shrink-0" style={{ background: "rgba(0,92,252,0.15)", color: "#005cfc" }}>زنده</span>
+        <span className="text-[10px] font-black px-2 py-1 rounded-full shrink-0" style={{ background: "rgba(74,225,131,0.15)", color: "#4AE183" }}>زنده</span>
       </div>
 
       {loading && (
@@ -50,7 +50,7 @@ export function MatchSideEvents({ match }: { match: Match }) {
         <NewsRow
           key={i} title={it.title} href={it.link} external
           image={it.image} time={it.time}
-          badge={it.category ? { label: it.category, color: "#005cfc" } : null}
+          badge={it.category ? { label: it.category, color: "#4AE183" } : null}
           description={it.description}
         />
       ))}

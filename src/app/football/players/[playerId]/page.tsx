@@ -162,21 +162,21 @@ export default function PlayerProfilePage() {
       />
     );
   }
-  return <div className="min-h-screen flex items-center justify-center" style={{ background: "#252525" }}><p className="text-sm animate-pulse" style={{ color: "#8FA1B5" }}>بارگذاری پروفایل بازیکن...</p></div>;
+  return <div className="min-h-screen flex items-center justify-center" style={{ background: "#0A0F0B" }}><p className="text-sm animate-pulse" style={{ color: "#8FA1B5" }}>بارگذاری پروفایل بازیکن...</p></div>;
 }
 
 /* ================= نمای واقعی TM ================= */
 
 function RealProfileView({ real, teammates }: { real: RealData; teammates: Teammate[] }) {
   const { player, history, transfers, seasonStats, estimatedFee } = real;
-  const color = player.ourTeam?.color ?? "#005cfc";
+  const color = player.ourTeam?.color ?? "#4AE183";
   const latest = seasonStats[0];
 
   return (
-    <div className="min-h-screen pb-24" style={{ background: "#252525" }}>
+    <div className="min-h-screen pb-24" style={{ background: "#0A0F0B" }}>
       <div className="max-w-3xl mx-auto px-4 pt-5 space-y-4">
         {/* هدر بازیکن */}
-        <section className="rounded-2xl border border-white/10 overflow-hidden" style={{ background: `linear-gradient(160deg, ${color}22, #2a2a2a 60%)`, borderColor: `${color}33` }}>
+        <section className="rounded-2xl border border-white/10 overflow-hidden" style={{ background: `linear-gradient(160deg, ${color}22, #101610 60%)`, borderColor: `${color}33` }}>
           <div className="p-5 flex items-center gap-4">
             <PlayerAvatar name={player.prettyName} size={84} color={color} />
             <div className="min-w-0 flex-1">
@@ -203,14 +203,14 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
             <h2 className="headline text-sm text-white mb-2">آمار فصل {latest.yr} ({latest.competition_id})</h2>
             <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
               {[
-                { label: "بازی", value: latest.games, color: "#005cfc" },
-                { label: "گل", value: latest.goals ?? 0, color: "#bee503" },
-                { label: "پاس گل", value: latest.assists ?? 0, color: "#bee503" },
+                { label: "بازی", value: latest.games, color: "#4AE183" },
+                { label: "گل", value: latest.goals ?? 0, color: "#FFD34D" },
+                { label: "پاس گل", value: latest.assists ?? 0, color: "#FFD34D" },
                 { label: "دقیقه", value: latest.minutes ?? 0, color: "#8FA1B5" },
                 { label: "کارت زرد", value: latest.yellows ?? 0, color: "#eab308" },
                 { label: "کارت قرمز", value: latest.reds ?? 0, color: "#ef4444" },
               ].map((s) => (
-                <div key={s.label} className="rounded-xl border border-white/10 p-3 text-center" style={{ background: "#2a2a2a" }}>
+                <div key={s.label} className="rounded-xl border border-white/10 p-3 text-center" style={{ background: "#101610" }}>
                   <div className="headline text-xl tabular" style={{ color: s.color }}>{s.value}</div>
                   <div className="text-[10px] text-slate-400 mt-0.5">{s.label}</div>
                 </div>
@@ -220,14 +220,14 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
         )}
 
         {/* ارزش بازار + نمودار */}
-        <section className="rounded-2xl border p-4" style={{ background: "#2a2a2a", borderColor: "rgba(0,92,252,0.25)" }}>
+        <section className="rounded-2xl border p-4" style={{ background: "#101610", borderColor: "rgba(74,225,131,0.25)" }}>
           <div className="flex items-center justify-between mb-3">
             <h3 className="headline text-sm text-white">ارزش بازار</h3>
-            <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: "rgba(0,92,252,0.12)", color: "#005cfc" }}>دیتای واقعی Transfermarkt</span>
+            <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: "rgba(74,225,131,0.12)", color: "#4AE183" }}>دیتای واقعی Transfermarkt</span>
           </div>
           <div className="flex flex-wrap items-end gap-4 mb-4">
             <div>
-              <div className="headline text-2xl tabular" style={{ color: "#005cfc" }}>{fmtEur(player.marketValueEur)}</div>
+              <div className="headline text-2xl tabular" style={{ color: "#4AE183" }}>{fmtEur(player.marketValueEur)}</div>
               <div className="text-[10px] text-slate-500">ارزش فعلی</div>
             </div>
             <div>
@@ -245,7 +245,7 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
                     <div
                       key={i}
                       className="flex-1 rounded-t transition-all"
-                      style={{ height: `${Math.max(6, ((h.v ?? 0) / max) * 100)}%`, background: i === history.length - 1 ? "#bee503" : "#005cfc", opacity: 0.4 + (i / history.length) * 0.6 }}
+                      style={{ height: `${Math.max(6, ((h.v ?? 0) / max) * 100)}%`, background: i === history.length - 1 ? "#FFD34D" : "#4AE183", opacity: 0.4 + (i / history.length) * 0.6 }}
                       title={`${h.date}: ${fmtEur(h.v)}`}
                     />
                   );
@@ -262,12 +262,12 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
 
         {/* تخمین مبلغ انتقال */}
         {estimatedFee && (
-          <section className="rounded-2xl border p-4" style={{ background: "linear-gradient(135deg, rgba(190,229,3,0.08), rgba(0,92,252,0.08))", borderColor: "rgba(190,229,3,0.3)" }}>
+          <section className="rounded-2xl border p-4" style={{ background: "linear-gradient(135deg, rgba(190,229,3,0.08), rgba(74,225,131,0.08))", borderColor: "rgba(190,229,3,0.3)" }}>
             <div className="flex items-center justify-between mb-2">
               <h3 className="headline text-sm text-white">تخمین مبلغ انتقال</h3>
-              <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: "rgba(190,229,3,0.12)", color: "#bee503" }}>مدل شفاف</span>
+              <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: "rgba(190,229,3,0.12)", color: "#FFD34D" }}>مدل شفاف</span>
             </div>
-            <div className="headline text-2xl tabular mb-2" style={{ color: "#bee503" }}>{fmtEur(estimatedFee.value)}</div>
+            <div className="headline text-2xl tabular mb-2" style={{ color: "#FFD34D" }}>{fmtEur(estimatedFee.value)}</div>
             <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px]">
               {estimatedFee.factors.map((f) => (
                 <div key={f.label} className="flex justify-between gap-2 border-b border-white/5 pb-1">
@@ -280,7 +280,7 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
         )}
 
         {/* پروفایل کامل */}
-        <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#2a2a2a" }}>
+        <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
           <h3 className="headline text-sm text-white mb-3">پروفایل بازیکن</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2.5 text-[11px]">
             {[
@@ -304,16 +304,16 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
 
         {/* سابقه انتقالات واقعی */}
         {transfers.length > 0 && (
-          <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#2a2a2a" }}>
+          <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
             <h3 className="headline text-sm text-white mb-3">سابقه انتقالات</h3>
             <div className="space-y-1.5">
               {transfers.map((t, i) => (
                 <div key={i} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-white/5" style={{ background: "rgba(255,255,255,0.03)" }}>
                   <span className="text-[11px] tabular text-slate-500 shrink-0 w-16">{t.transfer_date?.slice(0, 10)}</span>
                   <span className="text-xs font-bold text-slate-300 truncate">{t.from_club_name}</span>
-                  <span className="material-symbols-outlined text-[14px] shrink-0" style={{ color: "#005cfc" }}>arrow_forward</span>
+                  <span className="material-symbols-outlined text-[14px] shrink-0" style={{ color: "#4AE183" }}>arrow_forward</span>
                   <span className="text-xs font-bold text-white truncate">{t.to_club_name}</span>
-                  <span className="mr-auto text-[10px] font-black tabular px-2 py-0.5 rounded-full shrink-0" style={{ background: "rgba(0,92,252,0.12)", color: "#005cfc" }}>{fmtFee(t.transfer_fee)}</span>
+                  <span className="mr-auto text-[10px] font-black tabular px-2 py-0.5 rounded-full shrink-0" style={{ background: "rgba(74,225,131,0.12)", color: "#4AE183" }}>{fmtFee(t.transfer_fee)}</span>
                 </div>
               ))}
             </div>
@@ -322,7 +322,7 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
 
         {/* آمار فصل‌به‌فصل */}
         {seasonStats.length > 0 && (
-          <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#2a2a2a" }}>
+          <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
             <h3 className="headline text-sm text-white mb-3">آمار فصل‌به‌فصل</h3>
             <table className="w-full text-[12px]">
               <thead>
@@ -338,7 +338,7 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
                     <td className="px-2 py-2 tabular">{s.yr}</td>
                     <td className="px-2 py-2 text-slate-400">{s.competition_id}</td>
                     <td className="px-2 py-2 text-center tabular">{s.games}</td>
-                    <td className="px-2 py-2 text-center tabular font-black" style={{ color: "#bee503" }}>{s.goals ?? 0}</td>
+                    <td className="px-2 py-2 text-center tabular font-black" style={{ color: "#FFD34D" }}>{s.goals ?? 0}</td>
                     <td className="px-2 py-2 text-center tabular">{s.assists ?? 0}</td>
                     <td className="px-2 py-2 text-center tabular">{s.minutes ?? 0}</td>
                   </tr>
@@ -350,14 +350,14 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
 
         {/* تیم + هم‌تیمی‌ها */}
         <section className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-2xl border border-white/10 p-4" style={{ background: "#2a2a2a" }}>
+          <div className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
             <h3 className="headline text-sm text-white mb-3">تیم فعلی</h3>
             {player.ourTeam ? (
               <div className="flex items-center gap-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={player.ourTeam.logo} alt={player.ourTeam.name} className="w-12 h-12 object-contain" />
                 <div className="min-w-0">
-                  <Link href={`/football/teams/${player.ourTeam.slug}`} className="font-bold text-sm text-white hover:text-[#005cfc] transition-colors">{player.ourTeam.name}</Link>
+                  <Link href={`/football/teams/${player.ourTeam.slug}`} className="font-bold text-sm text-white hover:text-[#4AE183] transition-colors">{player.ourTeam.name}</Link>
                   <p className="text-[11px] text-slate-400">{player.tmClubName ?? ""}</p>
                 </div>
               </div>
@@ -365,7 +365,7 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
               <p className="text-sm text-slate-300 font-bold">{player.tmClubName ?? "—"}</p>
             )}
           </div>
-          <div className="rounded-2xl border border-white/10 p-4" style={{ background: "#2a2a2a" }}>
+          <div className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
             <h3 className="headline text-sm text-white mb-3">هم‌تیمی‌ها</h3>
             <div className="space-y-1.5">
               {teammates.map((t) => (
@@ -388,19 +388,19 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
 
 function LegacyProfileView({ player, team, league, teammates, market, marketChecked }: { player: any; team: any; league: any; teammates: any[]; market: MarketData | null; marketChecked: boolean }) {
   const stats = [
-    { label: "بازی", value: player.appearances, color: "#005cfc" },
-    { label: "ترکیب اصلی", value: player.starts, color: "#005cfc" },
-    { label: "گل", value: player.goals, color: "#bee503" },
-    { label: "پاس گل", value: player.assists, color: "#bee503" },
+    { label: "بازی", value: player.appearances, color: "#4AE183" },
+    { label: "ترکیب اصلی", value: player.starts, color: "#4AE183" },
+    { label: "گل", value: player.goals, color: "#FFD34D" },
+    { label: "پاس گل", value: player.assists, color: "#FFD34D" },
     { label: "کارت زرد", value: player.yellowCards, color: "#eab308" },
     { label: "کارت قرمز", value: player.redCards, color: "#ef4444" },
   ];
 
   return (
-    <div className="min-h-screen pb-24" style={{ background: "#252525" }}>
+    <div className="min-h-screen pb-24" style={{ background: "#0A0F0B" }}>
       <div className="max-w-3xl mx-auto px-4 pt-5 space-y-4">
         {/* هدر بازیکن */}
-        <section className="rounded-2xl border border-white/10 overflow-hidden" style={{ background: `linear-gradient(160deg, ${team.color}22, #2a2a2a 60%)`, borderColor: `${team.color}33` }}>
+        <section className="rounded-2xl border border-white/10 overflow-hidden" style={{ background: `linear-gradient(160deg, ${team.color}22, #101610 60%)`, borderColor: `${team.color}33` }}>
           <div className="p-5 flex items-center gap-4">
             <PlayerAvatar name={player.name} size={84} color={team.color} />
             <div className="min-w-0 flex-1">
@@ -424,7 +424,7 @@ function LegacyProfileView({ player, team, league, teammates, market, marketChec
           <h2 className="headline text-sm text-white mb-2">آمار فصل</h2>
           <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
             {stats.map((s) => (
-              <div key={s.label} className="rounded-xl border border-white/10 p-3 text-center" style={{ background: "#2a2a2a" }}>
+              <div key={s.label} className="rounded-xl border border-white/10 p-3 text-center" style={{ background: "#101610" }}>
                 <div className="headline text-xl tabular" style={{ color: s.color }}>{s.value}</div>
                 <div className="text-[10px] text-slate-400 mt-0.5">{s.label}</div>
               </div>
@@ -434,14 +434,14 @@ function LegacyProfileView({ player, team, league, teammates, market, marketChec
 
         {/* ارزش بازار — Transfermarkt */}
         {marketChecked && market && (
-          <section className="rounded-2xl border p-4" style={{ background: "#2a2a2a", borderColor: "rgba(0,92,252,0.25)" }}>
+          <section className="rounded-2xl border p-4" style={{ background: "#101610", borderColor: "rgba(74,225,131,0.25)" }}>
             <div className="flex items-center justify-between mb-3">
               <h3 className="headline text-sm text-white">ارزش بازار</h3>
-              <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: "rgba(0,92,252,0.12)", color: "#005cfc" }}>دیتای واقعی Transfermarkt</span>
+              <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: "rgba(74,225,131,0.12)", color: "#4AE183" }}>دیتای واقعی Transfermarkt</span>
             </div>
             <div className="flex flex-wrap items-end gap-4 mb-4">
               <div>
-                <div className="headline text-2xl tabular" style={{ color: "#005cfc" }}>{fmtEur(market.player.marketValueEur)}</div>
+                <div className="headline text-2xl tabular" style={{ color: "#4AE183" }}>{fmtEur(market.player.marketValueEur)}</div>
                 <div className="text-[10px] text-slate-500">ارزش فعلی</div>
               </div>
               <div>
@@ -460,7 +460,7 @@ function LegacyProfileView({ player, team, league, teammates, market, marketChec
                       <div
                         key={i}
                         className="flex-1 rounded-t transition-all"
-                        style={{ height: `${Math.max(6, ((h.v ?? 0) / max) * 100)}%`, background: i === market.history.length - 1 ? "#bee503" : "#005cfc", opacity: 0.4 + (i / market.history.length) * 0.6 }}
+                        style={{ height: `${Math.max(6, ((h.v ?? 0) / max) * 100)}%`, background: i === market.history.length - 1 ? "#FFD34D" : "#4AE183", opacity: 0.4 + (i / market.history.length) * 0.6 }}
                         title={`${h.date}: ${fmtEur(h.v)}`}
                       />
                     );
@@ -478,7 +478,7 @@ function LegacyProfileView({ player, team, league, teammates, market, marketChec
 
         {/* پروفایل کامل — Transfermarkt */}
         {marketChecked && market && (
-          <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#2a2a2a" }}>
+          <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
             <h3 className="headline text-sm text-white mb-3">پروفایل بازیکن</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2.5 text-[11px]">
               {[
@@ -503,16 +503,16 @@ function LegacyProfileView({ player, team, league, teammates, market, marketChec
 
         {/* تاریخچه انتقالات واقعی */}
         {marketChecked && market && market.transfers.length > 0 && (
-          <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#2a2a2a" }}>
+          <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
             <h3 className="headline text-sm text-white mb-3">سابقه انتقالات</h3>
             <div className="space-y-1.5">
               {market.transfers.map((t, i) => (
                 <div key={i} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-white/5" style={{ background: "rgba(255,255,255,0.03)" }}>
                   <span className="text-[11px] tabular text-slate-500 shrink-0 w-16">{t.transfer_date?.slice(0, 10)}</span>
                   <span className="text-xs font-bold text-slate-300 truncate">{t.from_club_name}</span>
-                  <span className="material-symbols-outlined text-[14px] shrink-0" style={{ color: "#005cfc" }}>arrow_forward</span>
+                  <span className="material-symbols-outlined text-[14px] shrink-0" style={{ color: "#4AE183" }}>arrow_forward</span>
                   <span className="text-xs font-bold text-white truncate">{t.to_club_name}</span>
-                  <span className="mr-auto text-[10px] font-black tabular px-2 py-0.5 rounded-full shrink-0" style={{ background: "rgba(0,92,252,0.12)", color: "#005cfc" }}>{fmtFee(t.transfer_fee)}</span>
+                  <span className="mr-auto text-[10px] font-black tabular px-2 py-0.5 rounded-full shrink-0" style={{ background: "rgba(74,225,131,0.12)", color: "#4AE183" }}>{fmtFee(t.transfer_fee)}</span>
                 </div>
               ))}
             </div>
@@ -521,13 +521,13 @@ function LegacyProfileView({ player, team, league, teammates, market, marketChec
 
         {/* تیم و هم‌تیمی‌ها */}
         <section className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-2xl border border-white/10 p-4" style={{ background: "#2a2a2a" }}>
+          <div className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
             <h3 className="headline text-sm text-white mb-3">تیم فعلی</h3>
             <div className="flex items-center gap-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={team.logo} alt={team.name} className="w-12 h-12 object-contain" />
               <div className="min-w-0">
-                <Link href={`/football/teams/${team.slug}`} className="font-bold text-sm text-white hover:text-[#005cfc] transition-colors">{team.name}</Link>
+                <Link href={`/football/teams/${team.slug}`} className="font-bold text-sm text-white hover:text-[#4AE183] transition-colors">{team.name}</Link>
                 <p className="text-[11px] text-slate-400">{team.city} • {team.stadium}</p>
               </div>
             </div>
@@ -537,7 +537,7 @@ function LegacyProfileView({ player, team, league, teammates, market, marketChec
               <div className="flex justify-between"><span className="text-slate-500">لقب</span><span className="text-slate-300 font-bold">{team.shortName}</span></div>
             </div>
           </div>
-          <div className="rounded-2xl border border-white/10 p-4" style={{ background: "#2a2a2a" }}>
+          <div className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
             <h3 className="headline text-sm text-white mb-3">هم‌تیمی‌ها</h3>
             <div className="space-y-1.5">
               {teammates.map((t) => (

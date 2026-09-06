@@ -4,7 +4,7 @@ import { useState } from "react";
 import { usePlayerPhoto } from "@/lib/player-photo";
 
 /** آواتار بازیکن: عکس واقعی TheSportsDB → fallback حروف اول با رنگ تیم */
-export function PlayerAvatar({ name, size = 40, color = "#005cfc", round = false }: { name: string; size?: number; color?: string; round?: boolean }) {
+export function PlayerAvatar({ name, size = 40, color = "#4AE183", round = false }: { name: string; size?: number; color?: string; round?: boolean }) {
   const photoUrl = usePlayerPhoto(name);
   const [failed, setFailed] = useState(false);
   const initials = name.slice(0, 2);
@@ -15,7 +15,7 @@ export function PlayerAvatar({ name, size = 40, color = "#005cfc", round = false
       style={{
         width: size, height: size,
         borderRadius: round ? "9999px" : size * 0.22,
-        background: showImg ? "rgba(255,255,255,0.05)" : `linear-gradient(160deg, ${color}33, rgba(37,37,37,0.9))`,
+        background: showImg ? "rgba(255,255,255,0.05)" : `linear-gradient(160deg, ${color}33, rgba(16,22,16,0.9))`,
         border: `1px solid ${color}44`,
         color,
         fontSize: size * 0.34,

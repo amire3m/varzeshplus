@@ -21,7 +21,7 @@ export function NewsRow({
       className="flex items-start gap-3 p-2 rounded-xl bg-white/[0.03] border border-white/5 transition-colors hover:bg-white/[0.06] hover:border-white/10"
     >
       {image ? (
-        <SafeImage src={image} alt={title} fallbackText={title} color={badge?.color ?? "#005cfc"} className="w-[84px] h-[58px] rounded-lg" />
+        <SafeImage src={image} alt={title} fallbackText={title} color={badge?.color ?? "#4AE183"} className="w-[84px] h-[58px] rounded-lg" />
       ) : null}
       <div className="min-w-0 flex-1">
         {(badge || time) && (

@@ -93,7 +93,7 @@ export default function MatchPage() {
   if (!match) {
     if (realChecked && dynamicMatch === null && !staticMatch) return notFound();
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#252525" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0A0F0B" }}>
         <p className="text-sm animate-pulse" style={{ color: "var(--color-muted)" }}>در حال بارگذاری مسابقه...</p>
       </div>
     );

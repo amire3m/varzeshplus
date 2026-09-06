@@ -12,7 +12,7 @@ export function MatchStatsView({ match }: { match: Match }) {
   return (
     <div className="space-y-3">
       {/* هدر دو تیم */}
-      <div className="rounded-2xl border border-white/10 p-4 flex items-center justify-between" style={{ background: "#2a2a2a" }}>
+      <div className="rounded-2xl border border-white/10 p-4 flex items-center justify-between" style={{ background: "#101610" }}>
         <div className="flex items-center gap-2.5 min-w-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={home.logo} alt={home.name} className="w-9 h-9 object-contain" />
@@ -37,20 +37,20 @@ export function MatchStatsView({ match }: { match: Match }) {
         const homeWins = r.home > r.away;
         const awayWins = r.away > r.home;
         return (
-          <div key={r.key} className="rounded-2xl border border-white/10 p-4" style={{ background: "#2a2a2a" }}>
+          <div key={r.key} className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
             <div className="flex items-center justify-between mb-2">
-              <span className="tabular font-black text-lg min-w-[48px]" style={{ color: homeWins ? "#005cfc" : "#8FA1B5" }}>{r.home}{suffix}</span>
+              <span className="tabular font-black text-lg min-w-[48px]" style={{ color: homeWins ? "#4AE183" : "#8FA1B5" }}>{r.home}{suffix}</span>
               <span className="text-[11px] font-bold text-center" style={{ color: "var(--color-muted)" }}>{label}</span>
-              <span className="tabular font-black text-lg min-w-[48px] text-left" style={{ color: awayWins ? "#bee503" : "#8FA1B5" }}>{r.away}{suffix}</span>
+              <span className="tabular font-black text-lg min-w-[48px] text-left" style={{ color: awayWins ? "#FFD34D" : "#8FA1B5" }}>{r.away}{suffix}</span>
             </div>
             {/* بار دوتایی از مرکز به دو طرف */}
             <div className="flex items-center gap-1 h-2">
               <div className="flex-1 flex justify-end">
-                <div className="h-2 rounded-full transition-all" style={{ width: `${homePct}%`, background: "linear-gradient(90deg, transparent, #005cfc)", opacity: homeWins ? 1 : 0.55 }} />
+                <div className="h-2 rounded-full transition-all" style={{ width: `${homePct}%`, background: "linear-gradient(90deg, transparent, #4AE183)", opacity: homeWins ? 1 : 0.55 }} />
               </div>
               <div className="w-0.5 h-2 rounded-full bg-white/25 shrink-0" />
               <div className="flex-1 flex justify-start">
-                <div className="h-2 rounded-full transition-all" style={{ width: `${awayPct}%`, background: "linear-gradient(90deg, #bee503, transparent)", opacity: awayWins ? 1 : 0.55 }} />
+                <div className="h-2 rounded-full transition-all" style={{ width: `${awayPct}%`, background: "linear-gradient(90deg, #FFD34D, transparent)", opacity: awayWins ? 1 : 0.55 }} />
               </div>
             </div>
           </div>

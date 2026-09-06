@@ -8,7 +8,7 @@ import { PlayerEventBadge } from "./PlayerEventBadge";
 const EVENTS: Record<string, number> = { goal: 1, own_goal: 1, penalty_goal: 1, penalty_miss: 1, red_card: 1, yellow_card: 1, assist: 2, sub_in: 2, sub_out: 2 };
 
 /** گره بازیکن روی زمین: [Rating][عکس/آواتار][شماره][نام] + کاپیتان + رویدادها — حلقه رنگ تیم */
-export function PlayerLineupNode({ player, color = "#005cfc" }: { player: LineupPlayer; color?: string }) {
+export function PlayerLineupNode({ player, color = "#4AE183" }: { player: LineupPlayer; color?: string }) {
   const captain = player.captain;
   const notable = player.events.filter((e) => EVENTS[e.type] === 1);
   const indicators = player.events.filter((e) => EVENTS[e.type] === 2);

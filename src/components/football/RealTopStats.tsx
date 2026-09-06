@@ -19,7 +19,7 @@ function RealStatRow({ item, label, color }: { item: TopItem; label: string; col
       href={`/football/players/${item.playerId}`}
       className="glass-panel p-3.5 flex items-center gap-3 text-sm hover:border-white/20 transition-colors"
     >
-      <span className="tabular font-black text-[12px] w-5 text-center shrink-0" style={{ color: item.rank === 1 ? "#005cfc" : "var(--color-muted)" }}>{item.rank}</span>
+      <span className="tabular font-black text-[12px] w-5 text-center shrink-0" style={{ color: item.rank === 1 ? "#4AE183" : "var(--color-muted)" }}>{item.rank}</span>
       <PlayerAvatar name={item.name} size={36} color={item.ourTeam?.color ?? color} round />
       <div className="min-w-0 flex-1">
         <p className="font-bold truncate text-[13px]">{item.name}</p>
@@ -28,7 +28,7 @@ function RealStatRow({ item, label, color }: { item: TopItem; label: string; col
         </p>
       </div>
       <div className="text-center shrink-0">
-        <p className="headline text-base tabular" style={{ color: item.rank === 1 ? "#bee503" : "inherit" }}>{value}</p>
+        <p className="headline text-base tabular" style={{ color: item.rank === 1 ? "#FFD34D" : "inherit" }}>{value}</p>
         <p className="text-[9px]" style={{ color: "var(--color-muted)" }}>{label}</p>
       </div>
     </Link>
@@ -39,7 +39,7 @@ function MockStatRow({ stat, getTeam, label }: { stat: PlayerStat; getTeam: (id:
   const team = getTeam(stat.teamId);
   return (
     <div className="glass-panel p-3.5 flex items-center gap-3 text-sm">
-      <span className="tabular font-black text-[12px] w-5 text-center shrink-0" style={{ color: stat.rank === 1 ? "#005cfc" : "var(--color-muted)" }}>{stat.rank}</span>
+      <span className="tabular font-black text-[12px] w-5 text-center shrink-0" style={{ color: stat.rank === 1 ? "#4AE183" : "var(--color-muted)" }}>{stat.rank}</span>
       <PlayerAvatar name={stat.player} size={36} color={team.color} round />
       <div className="min-w-0 flex-1">
         <p className="font-bold truncate text-[13px]">{stat.player}</p>
@@ -127,7 +127,7 @@ export function RealTopStats({ leagueSlug, leagueId, getTeam }: { leagueSlug: st
         <h2 className="headline text-lg text-white">آمار فصل</h2>
         <div className="flex items-center gap-1.5">
           {[2025, 2024, 2023].map((s) => (
-            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors text-xs" style={season === s ? { background: "linear-gradient(135deg,#005cfc,#bee503)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>
+            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors text-xs" style={season === s ? { background: "linear-gradient(135deg,#4AE183,#FFD34D)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>
               {s}/{String(s + 1).slice(2)}
             </button>
           ))}
@@ -139,13 +139,13 @@ export function RealTopStats({ leagueSlug, leagueId, getTeam }: { leagueSlug: st
             <h3 className="text-sm font-bold mb-3 text-white">{title}</h3>
             <div className="space-y-2">
               {(data[key] ?? []).slice(0, 6).map((item) => (
-                <RealStatRow key={item.playerId} item={item} label={label} color="#005cfc" />
+                <RealStatRow key={item.playerId} item={item} label={label} color="#4AE183" />
               ))}
             </div>
           </div>
         ))}
       </div>
-      <div className="text-center text-[10px]" style={{ color: "#005cfc" }}>دیتای واقعی Transfermarkt — فصل {season}/{String(season + 1).slice(2)}</div>
+      <div className="text-center text-[10px]" style={{ color: "#4AE183" }}>دیتای واقعی Transfermarkt — فصل {season}/{String(season + 1).slice(2)}</div>
     </div>
   );
 }

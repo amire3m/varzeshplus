@@ -2,7 +2,7 @@ import type { LineupPlayer, MatchLineup } from "@/lib/football";
 import { PlayerLineupNode } from "./PlayerLineupNode";
 
 /** توزیع بازیکن‌ها روی زمین بر اساس formation — home: x مستقیم، away: آینه‌ای */
-export function FormationRenderer({ lineup, home, color = "#005cfc" }: { lineup: MatchLineup; home: boolean; color?: string }) {
+export function FormationRenderer({ lineup, home, color = "#4AE183" }: { lineup: MatchLineup; home: boolean; color?: string }) {
   const players = lineup.starters.map((p) => ({
     ...p,
     x: home ? p.x : 100 - p.x,

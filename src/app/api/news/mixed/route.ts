@@ -5,7 +5,7 @@ import { eq, desc } from "drizzle-orm";
 import { getFeed, relTime, labelSport } from "@/lib/rss";
 
 const SPORT_META: Record<string, SportMeta> = {
-  football: { name: "فوتبال", color: "#005cfc" },
+  football: { name: "فوتبال", color: "#4AE183" },
   volleyball: { name: "والیبال", color: "#22c55e" },
   basketball: { name: "بسکتبال", color: "#e8820c" },
   tennis: { name: "تنیس", color: "#84cc16" },

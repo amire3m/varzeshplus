@@ -18,7 +18,7 @@ const MATCHES = [
   { id: "3943043", label: "فینال یورو ۲۰۲۴" },
 ];
 
-function Pitch({ shots, homeTeam, homeColor = "#005cfc", awayColor = "#E8385D" }: { shots: Shot[]; homeTeam: string; homeColor?: string; awayColor?: string }) {
+function Pitch({ shots, homeTeam, homeColor = "#4AE183", awayColor = "#E8385D" }: { shots: Shot[]; homeTeam: string; homeColor?: string; awayColor?: string }) {
   const W = 640, H = 427; // 120x80
   const X = (x: number) => (x / 120) * W;
   const Y = (y: number) => (y / 80) * H;
@@ -35,7 +35,7 @@ function Pitch({ shots, homeTeam, homeColor = "#005cfc", awayColor = "#E8385D" }
         const r = 3 + Math.min(9, s.xg * 22);
         return (
           <g key={i}>
-            <circle cx={X(s.x)} cy={Y(s.y)} r={r} fill={goal ? "#bee503" : home ? homeColor : awayColor} opacity={goal ? 1 : 0.65} stroke="#fff" strokeWidth={goal ? 1.5 : 0.5}>
+            <circle cx={X(s.x)} cy={Y(s.y)} r={r} fill={goal ? "#FFD34D" : home ? homeColor : awayColor} opacity={goal ? 1 : 0.65} stroke="#fff" strokeWidth={goal ? 1.5 : 0.5}>
               <title>{`${s.player} — دقیقه ${s.minute} — xG ${s.xg} — ${s.outcome}`}</title>
             </circle>
           </g>
@@ -45,7 +45,7 @@ function Pitch({ shots, homeTeam, homeColor = "#005cfc", awayColor = "#E8385D" }
   );
 }
 
-function XgChart({ timeline, homeColor = "#005cfc", awayColor = "#E8385D" }: { timeline: TPoint[]; homeColor?: string; awayColor?: string }) {
+function XgChart({ timeline, homeColor = "#4AE183", awayColor = "#E8385D" }: { timeline: TPoint[]; homeColor?: string; awayColor?: string }) {
   const W = 640, H = 200, P = 28;
   const maxMin = Math.max(90, ...timeline.map((t) => t.minute));
   const maxXg = Math.max(0.5, ...timeline.map((t) => Math.max(t.home, t.away)));
@@ -53,7 +53,7 @@ function XgChart({ timeline, homeColor = "#005cfc", awayColor = "#E8385D" }: { t
   const Y = (v: number) => H - P - (v / (maxXg * 1.1)) * (H - P * 2);
   const line = (key: "home" | "away") => timeline.map((t, i) => `${i === 0 ? "M" : "L"}${X(t.minute).toFixed(1)},${Y(t[key]).toFixed(1)}`).join(" ");
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full rounded-xl border border-white/10" style={{ background: "#2a2a2a" }}>
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full rounded-xl border border-white/10" style={{ background: "#101610" }}>
       {[0.25, 0.5, 0.75, 1].map((f) => (
         <g key={f}>
           <line x1={P} y1={Y(maxXg * 1.1 * f)} x2={W - P} y2={Y(maxXg * 1.1 * f)} stroke="rgba(255,255,255,0.07)" />
@@ -84,10 +84,10 @@ export default function XgPage() {
   }, [mid]);
 
   return (
-    <div className="min-h-screen pb-28" style={{ background: "#252525" }}>
+    <div className="min-h-screen pb-28" style={{ background: "#0A0F0B" }}>
       <div className="max-w-[900px] mx-auto px-4 pt-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white" style={{ background: "linear-gradient(135deg, #005cfc, #bee503)" }}>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white" style={{ background: "linear-gradient(135deg, #4AE183, #FFD34D)" }}>
             <Activity size={20} />
           </div>
           <div>
@@ -101,7 +101,7 @@ export default function XgPage() {
           {MATCHES.map((m) => (
             <button key={m.id} onClick={() => setMid(m.id)}
               className={`px-4 py-1.5 rounded-full text-[12px] font-bold border transition-all ${mid === m.id ? "text-white" : "text-slate-400 border-white/10 hover:text-white"}`}
-              style={mid === m.id ? { background: "linear-gradient(135deg, #005cfc, #bee503)", borderColor: "transparent" } : { background: "rgba(255,255,255,0.05)" }}>
+              style={mid === m.id ? { background: "linear-gradient(135deg, #4AE183, #FFD34D)", borderColor: "transparent" } : { background: "rgba(255,255,255,0.05)" }}>
               {m.label}
             </button>
           ))}
@@ -110,16 +110,16 @@ export default function XgPage() {
         {loading || !data ? (
           <div className="space-y-4">
             <div className="h-10 w-48 rounded-full bg-white/10 animate-pulse" />
-            <div className="rounded-2xl border border-white/10 h-[280px] animate-pulse" style={{ background: "#2a2a2a" }} />
+            <div className="rounded-2xl border border-white/10 h-[280px] animate-pulse" style={{ background: "#101610" }} />
             <div className="h-24 rounded-xl bg-white/10 animate-pulse" />
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="rounded-2xl border border-white/10 p-4 text-center" style={{ background: "#2a2a2a" }}>
+            <div className="rounded-2xl border border-white/10 p-4 text-center" style={{ background: "#101610" }}>
               <div className="text-[11px] text-slate-500 mb-1">{data.meta.comp}</div>
               <div className="headline text-xl text-white">{data.meta.home} <b className="tabular">{data.meta.hs} - {data.meta.as}</b> {data.meta.away}</div>
               <div className="flex items-center justify-center gap-4 mt-2 text-[12px]">
-                <span style={{ color: "#005cfc" }}>xG {data.totals.homeXg} <span className="text-slate-500">({data.totals.homeShots} شوت)</span></span>
+                <span style={{ color: "#4AE183" }}>xG {data.totals.homeXg} <span className="text-slate-500">({data.totals.homeShots} شوت)</span></span>
                 <span style={{ color: "#E8385D" }}>xG {data.totals.awayXg} <span className="text-slate-500">({data.totals.awayShots} شوت)</span></span>
               </div>
             </div>
@@ -136,7 +136,7 @@ export default function XgPage() {
 
             <div className="grid md:grid-cols-2 gap-3">
               {data.teams.map((t, i) => (
-                <div key={i} className="rounded-2xl border border-white/10 p-4" style={{ background: "#2a2a2a" }}>
+                <div key={i} className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
                   <h4 className="headline text-sm text-white mb-1">{t.name}</h4>
                   <p className="text-[10px] text-slate-500 mb-2 tabular">{t.formation}</p>
                   <div className="space-y-1 max-h-[220px] overflow-y-auto pl-1">

@@ -25,16 +25,16 @@ export function StandingsTable({ league, custom }: { league: League; custom?: { 
         <h2 className="headline text-lg">جدول {league.name}</h2>
         <div className="flex items-center gap-1.5 text-xs">
           {[league.season, "2025/26", "2024/25"].map((s) => (
-            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors" style={season === s ? { background: "linear-gradient(135deg,#005cfc,#bee503)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>{s}</button>
+            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors" style={season === s ? { background: "linear-gradient(135deg,#4AE183,#FFD34D)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>{s}</button>
           ))}
         </div>
       </div>
-      <div className="overflow-x-auto rounded-[14px] border" style={{ scrollbarWidth: "thin", background: "#2a2a2a", borderColor: "rgba(255,255,255,0.1)" }}>
+      <div className="overflow-x-auto rounded-[14px] border" style={{ scrollbarWidth: "thin", background: "#101610", borderColor: "rgba(255,255,255,0.1)" }}>
         <table className="w-full min-w-[720px] text-sm border-separate border-spacing-0">
           <thead>
             <tr style={{ color: "#8FA1B5" }}>
               {["رتبه", "تیم", "P", "W", "D", "L", "GF", "GA", "GD", "PTS"].map((h, i) => (
-                <th key={i} className={`px-2.5 py-2.5 text-xs font-bold whitespace-nowrap ${i === 1 ? "text-right" : "text-center"} ${i >= 2 ? "tabular" : ""}`} style={{ background: "#2e2e2e", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>{h}</th>
+                <th key={i} className={`px-2.5 py-2.5 text-xs font-bold whitespace-nowrap ${i === 1 ? "text-right" : "text-center"} ${i >= 2 ? "tabular" : ""}`} style={{ background: "#161E14", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>{h}</th>
               ))}
             </tr>
           </thead>

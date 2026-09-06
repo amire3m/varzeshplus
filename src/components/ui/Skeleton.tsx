@@ -23,7 +23,7 @@ export function SkeletonNewsRow() {
 /** ردیف مسابقه: دو تیم + نتیجه وسط */
 export function SkeletonMatchRow() {
   return (
-    <div className="rounded-[14px] border border-white/10 p-4 flex items-center gap-3" style={{ background: "#2a2a2a" }}>
+    <div className="rounded-[14px] border border-white/10 p-4 flex items-center gap-3" style={{ background: "#101610" }}>
       <Bar className="w-8 h-8 !rounded-full shrink-0" />
       <Bar className="h-3 flex-1" />
       <Bar className="h-6 w-14 shrink-0" />
@@ -49,7 +49,7 @@ export function SkeletonTableRow() {
 /** بلوک متنی عمومی */
 export function SkeletonBlock({ lines = 3 }: { lines?: number }) {
   return (
-    <div className="rounded-[14px] border border-white/10 p-4 space-y-2.5" style={{ background: "#2a2a2a" }}>
+    <div className="rounded-[14px] border border-white/10 p-4 space-y-2.5" style={{ background: "#101610" }}>
       {Array.from({ length: lines }).map((_, i) => (
         <Bar key={i} className="h-3" style={{ width: `${92 - i * 14}%` }} />
       ))}

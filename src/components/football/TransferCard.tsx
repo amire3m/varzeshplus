@@ -27,9 +27,9 @@ function RealTransferCard({ item }: { item: TmItem }) {
   const fromTeam = item.from.ourTeam;
   const toTeam = item.to.ourTeam;
   return (
-    <div className="rounded-[14px] p-4 flex flex-wrap items-center gap-3 border-r-[3px]" style={{ borderRightColor: "#005cfc", background: "rgba(255,255,255,0.02)" }}>
+    <div className="rounded-[14px] p-4 flex flex-wrap items-center gap-3 border-r-[3px]" style={{ borderRightColor: "#4AE183", background: "rgba(255,255,255,0.02)" }}>
       <div className="flex items-center gap-2 w-full sm:w-auto">
-        <span className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-black" style={{ background: "rgba(0,92,252,0.15)", color: "#005cfc" }}>{item.playerName.slice(0, 2)}</span>
+        <span className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-black" style={{ background: "rgba(74,225,131,0.15)", color: "#4AE183" }}>{item.playerName.slice(0, 2)}</span>
         <div className="min-w-0">
           <p className="font-bold text-sm truncate">{item.playerName}</p>
           <p className="text-[11px]" style={{ color: "var(--color-muted)" }}>{item.date}</p>
@@ -45,7 +45,7 @@ function RealTransferCard({ item }: { item: TmItem }) {
         </span>
       </div>
       <div className="flex items-center gap-2 text-xs ml-auto">
-        <span className="px-2 py-1 rounded-full tabular font-black" style={{ background: "rgba(0,92,252,0.12)", color: "#005cfc" }}>{item.fee}</span>
+        <span className="px-2 py-1 rounded-full tabular font-black" style={{ background: "rgba(74,225,131,0.12)", color: "#4AE183" }}>{item.fee}</span>
         <span className="px-2 py-1 rounded-full font-black" style={{ background: "var(--color-club-green)", color: "#08120B" }}>رسمی</span>
       </div>
     </div>
@@ -73,7 +73,7 @@ export function TransferCard({ transfer, getTeam }: { transfer: Transfer; getTea
         <span className="flex items-center gap-1.5 min-w-0"><TeamBadge team={to} size={26} /><span className="text-xs font-bold truncate">{to.shortName}</span></span>
       </div>
       <div className="flex items-center gap-2 text-xs ml-auto">
-        <span className="px-2 py-1 rounded-full font-bold tabular" style={{ background: "rgba(0,92,252,0.12)", color: "#005cfc" }}>{TYPE_LABEL[transfer.type]}</span>
+        <span className="px-2 py-1 rounded-full font-bold tabular" style={{ background: "rgba(74,225,131,0.12)", color: "#4AE183" }}>{TYPE_LABEL[transfer.type]}</span>
         {transfer.fee && <span className="px-2 py-1 rounded-full tabular font-bold" style={{ background: "var(--color-panel-raised)", color: "var(--color-floodlight)" }}>{transfer.fee}</span>}
         <span className={`px-2 py-1 rounded-full font-black ${transfer.official ? "" : "border border-dashed"}`} style={transfer.official ? { background: "var(--color-club-green)", color: "#08120B" } : { color: "#f9c759", borderColor: "#f9c759" }}>{transfer.official ? "رسمی" : "شایعه"}</span>
       </div>
@@ -115,7 +115,7 @@ export function RealTransfersSection({ leagueSlug, leagueId, getTeam }: { league
 
   return (
     <div className="space-y-2.5">
-      <span className="inline-flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: "rgba(0,92,252,0.12)", color: "#005cfc" }}>
+      <span className="inline-flex items-center gap-1 text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: "rgba(74,225,131,0.12)", color: "#4AE183" }}>
         دیتای واقعی Transfermarkt
       </span>
       {items.map((it, i) => <RealTransferCard key={`${it.playerId}-${i}`} item={it} />)}

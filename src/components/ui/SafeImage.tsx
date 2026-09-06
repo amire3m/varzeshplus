@@ -4,7 +4,7 @@ import { useState } from "react";
 
 /** تصویر امن: با خطا به بلوک حروف اول با رنگ تیم/دسته تبدیل می‌شود */
 export function SafeImage({
-  src, alt, fallbackText, color = "#005cfc", className = "", eager = false,
+  src, alt, fallbackText, color = "#4AE183", className = "", eager = false,
 }: {
   src?: string | null; alt: string; fallbackText: string; color?: string; className?: string; eager?: boolean;
 }) {

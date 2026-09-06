@@ -91,10 +91,10 @@ export default function FantasyPage() {
   }
 
   return (
-    <div className="min-h-screen pb-28" style={{ background: "#252525" }}>
+    <div className="min-h-screen pb-28" style={{ background: "#0A0F0B" }}>
       <div className="max-w-[900px] mx-auto px-4 pt-6">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white" style={{ background: "linear-gradient(135deg, #005cfc, #bee503)" }}>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white" style={{ background: "linear-gradient(135deg, #4AE183, #FFD34D)" }}>
             <Users size={20} />
           </div>
           <div>
@@ -105,21 +105,21 @@ export default function FantasyPage() {
         </div>
 
         {!authed && (
-          <Link href="/login" className="block rounded-2xl border border-white/10 p-3 mb-4 text-center text-xs text-slate-300 hover:border-[#005cfc]/40" style={{ background: "rgba(0,92,252,0.08)" }}>
-            برای ذخیره تیم و حضور در جدول <b style={{ color: "#005cfc" }}>وارد شوید ←</b>
+          <Link href="/login" className="block rounded-2xl border border-white/10 p-3 mb-4 text-center text-xs text-slate-300 hover:border-[#4AE183]/40" style={{ background: "rgba(74,225,131,0.08)" }}>
+            برای ذخیره تیم و حضور در جدول <b style={{ color: "#4AE183" }}>وارد شوید ←</b>
           </Link>
         )}
 
         {/* نوار بودجه */}
-        <div className="rounded-2xl border border-white/10 p-4 mb-4" style={{ background: "#2a2a2a" }}>
+        <div className="rounded-2xl border border-white/10 p-4 mb-4" style={{ background: "#101610" }}>
           <div className="flex items-center justify-between text-xs mb-2">
             <span className="text-slate-400">بازیکن: <b className="tabular text-white">{team.length}/15</b></span>
-            <span className="text-slate-400">بودجه: <b className="tabular" style={{ color: cost > 100 ? "#E8385D" : "#bee503" }}>£{cost.toFixed(1)}m / £100m</b></span>
-            <span className="text-slate-400">امتیاز تیم: <b className="tabular" style={{ color: "#005cfc" }}>{myPoints}</b></span>
+            <span className="text-slate-400">بودجه: <b className="tabular" style={{ color: cost > 100 ? "#E8385D" : "#FFD34D" }}>£{cost.toFixed(1)}m / £100m</b></span>
+            <span className="text-slate-400">امتیاز تیم: <b className="tabular" style={{ color: "#4AE183" }}>{myPoints}</b></span>
           </div>
           <div className="flex items-center gap-1.5 text-[10px] text-slate-500 mb-3">
             {[1, 2, 3, 4].map((t) => (
-              <span key={t} className="px-2 py-0.5 rounded-full border" style={{ borderColor: counts[t] === NEED[t] ? "#bee503" : "rgba(255,255,255,0.1)", color: counts[t] === NEED[t] ? "#bee503" : "#64748b" }}>
+              <span key={t} className="px-2 py-0.5 rounded-full border" style={{ borderColor: counts[t] === NEED[t] ? "#FFD34D" : "rgba(255,255,255,0.1)", color: counts[t] === NEED[t] ? "#FFD34D" : "#64748b" }}>
                 {["", "دروازه‌بان", "مدافع", "هافبک", "مهاجم"][t]} {counts[t]}/{NEED[t]}
               </span>
             ))}
@@ -135,10 +135,10 @@ export default function FantasyPage() {
             </div>
           )}
           <div className="flex items-center gap-2">
-            <button onClick={save} disabled={!valid} className="px-5 py-2 rounded-full text-xs font-black text-white disabled:opacity-40" style={{ background: "#005cfc" }}>
+            <button onClick={save} disabled={!valid} className="px-5 py-2 rounded-full text-xs font-black text-white disabled:opacity-40" style={{ background: "#4AE183" }}>
               ذخیره تیم
             </button>
-            {msg && <span className="text-[11px]" style={{ color: msg.startsWith("✓") ? "#bee503" : "#E8385D" }}>{msg}</span>}
+            {msg && <span className="text-[11px]" style={{ color: msg.startsWith("✓") ? "#FFD34D" : "#E8385D" }}>{msg}</span>}
           </div>
         </div>
 
@@ -146,13 +146,13 @@ export default function FantasyPage() {
         <div className="relative mb-2">
           <Search size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="جست‌وجوی بازیکن (حداقل ۲ حرف)..."
-            className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 pr-9 px-3 text-sm placeholder-slate-500 focus:outline-none focus:border-[#005cfc] text-white" />
+            className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 pr-9 px-3 text-sm placeholder-slate-500 focus:outline-none focus:border-[#4AE183] text-white" />
         </div>
         <div className="flex items-center gap-1.5 mb-3 overflow-x-auto pb-1">
           {POS_TABS.map((t) => (
             <button key={t.v} onClick={() => setPos(t.v)}
               className={`shrink-0 px-3 py-1 rounded-full text-[11px] font-bold border transition-all ${pos === t.v ? "text-white" : "text-slate-400 border-white/10"}`}
-              style={pos === t.v ? { background: "#005cfc", borderColor: "transparent" } : { background: "rgba(255,255,255,0.05)" }}>
+              style={pos === t.v ? { background: "#4AE183", borderColor: "transparent" } : { background: "rgba(255,255,255,0.05)" }}>
               {t.label}
             </button>
           ))}
@@ -163,13 +163,13 @@ export default function FantasyPage() {
             return (
               <button key={p.id} onClick={() => toggle(p)} disabled={!inTeam && team.length >= 15}
                 className="w-full flex items-center gap-3 rounded-xl border p-2.5 text-right transition-colors disabled:opacity-40"
-                style={{ background: inTeam ? "rgba(0,92,252,0.12)" : "#2a2a2a", borderColor: inTeam ? "#005cfc" : "rgba(255,255,255,0.08)" }}>
+                style={{ background: inTeam ? "rgba(74,225,131,0.12)" : "#101610", borderColor: inTeam ? "#4AE183" : "rgba(255,255,255,0.08)" }}>
                 <span className="min-w-0 flex-1">
                   <span className="block text-[13px] font-bold text-white truncate" dir="ltr" style={{ textAlign: "left" }}>{p.name}</span>
                   <span className="block text-[10px] text-slate-500">{p.team} • {p.posFa} • ⚽{p.goals} 🅰{p.assists}</span>
                 </span>
                 <span className="text-[11px] tabular text-slate-300 shrink-0">£{p.cost.toFixed(1)}m</span>
-                <span className="tabular font-black text-sm shrink-0 w-10" style={{ color: "#bee503" }}>{p.points}</span>
+                <span className="tabular font-black text-sm shrink-0 w-10" style={{ color: "#FFD34D" }}>{p.points}</span>
               </button>
             );
           })}
@@ -179,16 +179,16 @@ export default function FantasyPage() {
         </div>
 
         {/* لیدربورد */}
-        <h2 className="headline text-[15px] text-white mb-2 flex items-center gap-2"><Medal size={15} style={{ color: "#bee503" }} /> جدول فانتزی‌بازها</h2>
+        <h2 className="headline text-[15px] text-white mb-2 flex items-center gap-2"><Medal size={15} style={{ color: "#FFD34D" }} /> جدول فانتزی‌بازها</h2>
         {board.length === 0 ? (
           <div className="rounded-2xl border border-white/10 p-6 text-center text-xs text-slate-500">هنوز تیمی ثبت نشده — اولین نفر باش!</div>
         ) : (
-          <div className="rounded-2xl border border-white/10 overflow-hidden" style={{ background: "#2a2a2a" }}>
+          <div className="rounded-2xl border border-white/10 overflow-hidden" style={{ background: "#101610" }}>
             {board.map((b) => (
-              <div key={b.rank} className="flex items-center gap-3 px-4 py-2.5 border-b border-white/5 last:border-0" style={b.me ? { background: "rgba(0,92,252,0.1)" } : undefined}>
-                <span className="tabular font-black text-sm w-6 text-center" style={{ color: b.rank <= 3 ? "#bee503" : "#64748b" }}>{b.rank}</span>
+              <div key={b.rank} className="flex items-center gap-3 px-4 py-2.5 border-b border-white/5 last:border-0" style={b.me ? { background: "rgba(74,225,131,0.1)" } : undefined}>
+                <span className="tabular font-black text-sm w-6 text-center" style={{ color: b.rank <= 3 ? "#FFD34D" : "#64748b" }}>{b.rank}</span>
                 <span className="text-[13px] font-bold text-white truncate flex-1">{b.name}{b.me ? " (شما)" : ""}</span>
-                <span className="tabular font-black text-sm" style={{ color: "#bee503" }}>{b.points}</span>
+                <span className="tabular font-black text-sm" style={{ color: "#FFD34D" }}>{b.points}</span>
               </div>
             ))}
           </div>

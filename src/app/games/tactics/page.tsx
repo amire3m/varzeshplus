@@ -21,7 +21,7 @@ const FORMATIONS: Record<string, number[][]> = {
   "5-3-2": [[1], [2, 5, 6, 4, 3], [7, 8, 11], [9, 10]],
 };
 
-const TEAM_COLORS = ["#005cfc", "#E8385D"];
+const TEAM_COLORS = ["#4AE183", "#E8385D"];
 
 function formationPlayers(formation: string, team: 0 | 1): Player[] {
   const lines = FORMATIONS[formation];
@@ -181,10 +181,10 @@ export default function TacticsPage() {
   }
 
   return (
-    <div className="min-h-screen pb-28" style={{ background: "#252525" }}>
+    <div className="min-h-screen pb-28" style={{ background: "#0A0F0B" }}>
       <div className="max-w-[900px] mx-auto px-4 pt-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white text-lg" style={{ background: "linear-gradient(135deg, #005cfc, #bee503)" }}>♟</div>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white text-lg" style={{ background: "linear-gradient(135deg, #4AE183, #FFD34D)" }}>♟</div>
           <div>
             <h1 className="headline text-[22px] text-white">تخته تاکتیک</h1>
             <p className="text-[12px] text-slate-400">بازیکنان و توپ را بکش، ترکیب بچین، خروجی PNG بگیر</p>
@@ -196,7 +196,7 @@ export default function TacticsPage() {
           {Object.keys(FORMATIONS).map((f) => (
             <button key={f} onClick={() => applyFormation(f)} dir="ltr"
               className={`px-3 py-1.5 rounded-full text-xs font-black tabular border transition-all ${formation === f ? "text-white" : "text-slate-400 border-white/10 hover:text-white"}`}
-              style={formation === f ? { background: "#005cfc", borderColor: "transparent" } : { background: "rgba(255,255,255,0.05)" }}>
+              style={formation === f ? { background: "#4AE183", borderColor: "transparent" } : { background: "rgba(255,255,255,0.05)" }}>
               {f}
             </button>
           ))}
@@ -204,7 +204,7 @@ export default function TacticsPage() {
             <button onClick={save} className="px-3 py-1.5 rounded-full text-xs font-bold border border-white/10 text-slate-300 hover:text-white flex items-center gap-1">
               <Save size={13} /> {saved ? "ذخیره شد ✓" : "ذخیره"}
             </button>
-            <button onClick={exportPng} className="px-3 py-1.5 rounded-full text-xs font-black text-white flex items-center gap-1" style={{ background: "#005cfc" }}>
+            <button onClick={exportPng} className="px-3 py-1.5 rounded-full text-xs font-black text-white flex items-center gap-1" style={{ background: "#4AE183" }}>
               <Download size={13} /> PNG
             </button>
             <button onClick={() => applyFormation(formation)} className="px-3 py-1.5 rounded-full text-xs border border-white/10 text-slate-400 hover:text-white flex items-center gap-1">

@@ -85,7 +85,7 @@ export function RealLeagueMatches({ leagueSlug, fallbackGames, getTeam }: {
         <h2 className="headline text-lg text-white">بازی‌های فصل</h2>
         <div className="flex items-center gap-1.5">
           {[2025, 2024, 2023].map((s) => (
-            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors text-xs" style={season === s ? { background: "linear-gradient(135deg,#005cfc,#bee503)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>
+            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors text-xs" style={season === s ? { background: "linear-gradient(135deg,#4AE183,#FFD34D)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>
               {s}/{String(s + 1).slice(2)}
             </button>
           ))}
@@ -105,7 +105,7 @@ export function RealLeagueMatches({ leagueSlug, fallbackGames, getTeam }: {
         <h3 className="text-sm font-bold mb-2" style={{ color: "var(--color-muted)" }}>نتایج اخیر</h3>
         <div className="grid gap-3 md:grid-cols-2">{finished.slice(0, 20).map((g) => <GameRowCard key={g.gameId} g={g} linkable={linkable} />)}</div>
       </div>
-      <div className="text-center text-[10px]" style={{ color: "#005cfc" }}>دیتای واقعی Transfermarkt</div>
+      <div className="text-center text-[10px]" style={{ color: "#4AE183" }}>دیتای واقعی Transfermarkt</div>
     </div>
   );
 }
@@ -163,24 +163,24 @@ export function RealStandingsTable({ leagueSlug, fallback }: { leagueSlug: strin
         <h2 className="headline text-lg text-white">جدول لیگ</h2>
         <div className="flex items-center gap-1.5">
           {[2025, 2024, 2023].map((s) => (
-            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors text-xs" style={season === s ? { background: "linear-gradient(135deg,#005cfc,#bee503)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>
+            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors text-xs" style={season === s ? { background: "linear-gradient(135deg,#4AE183,#FFD34D)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>
               {s}/{String(s + 1).slice(2)}
             </button>
           ))}
         </div>
       </div>
-      <div className="glass-panel overflow-x-auto rounded-[14px]" style={{ background: "#2a2a2a", borderColor: "rgba(255,255,255,0.1)" }}>
+      <div className="glass-panel overflow-x-auto rounded-[14px]" style={{ background: "#101610", borderColor: "rgba(255,255,255,0.1)" }}>
         <table className="w-full min-w-[560px] text-sm">
           <thead>
             <tr style={{ color: "#8FA1B5" }}>
               {["#", "تیم", "بازی", "برد", "مساوی", "باخت", "گل زده", "گل خورده", "تفاضل", "امتیاز"].map((h, i) => (
-                <th key={i} className={`px-2.5 py-2.5 text-xs font-bold ${i <= 1 ? "text-right" : "text-center"} tabular`} style={{ background: "#2e2e2e", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>{h}</th>
+                <th key={i} className={`px-2.5 py-2.5 text-xs font-bold ${i <= 1 ? "text-right" : "text-center"} tabular`} style={{ background: "#161E14", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {(standings ?? []).map((row) => {
-              const zone = row.rank <= 4 ? "#005cfc" : row.rank <= 6 ? "#bee503" : row.rank >= (standings?.length ?? 20) - 2 ? "#E23B3B" : null;
+              const zone = row.rank <= 4 ? "#4AE183" : row.rank <= 6 ? "#FFD34D" : row.rank >= (standings?.length ?? 20) - 2 ? "#E23B3B" : null;
               return (
                 <tr key={row.teamId} className="border-t border-white/5 hover:bg-white/[0.04] transition-colors">
                   <td className="px-2.5 py-2.5 text-center tabular font-black relative">
@@ -192,7 +192,7 @@ export function RealStandingsTable({ leagueSlug, fallback }: { leagueSlug: strin
                       <Link href={`/football/teams/${row.team.slug}`} className="flex items-center gap-2 group">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={row.team.logo} alt={row.team.name} className="w-6 h-6 object-contain shrink-0" loading="lazy" />
-                        <span className="font-bold text-[13px] group-hover:text-[#005cfc] transition-colors">{row.team.name}</span>
+                        <span className="font-bold text-[13px] group-hover:text-[#4AE183] transition-colors">{row.team.name}</span>
                       </Link>
                     ) : <span className="text-xs text-slate-500">تیم #{row.teamId}</span>}
                   </td>
@@ -203,7 +203,7 @@ export function RealStandingsTable({ leagueSlug, fallback }: { leagueSlug: strin
                   <td className="px-2.5 py-2.5 text-center tabular">{row.gf}</td>
                   <td className="px-2.5 py-2.5 text-center tabular">{row.ga}</td>
                   <td className="px-2.5 py-2.5 text-center tabular">{row.gf - row.ga > 0 ? "+" : ""}{row.gf - row.ga}</td>
-                  <td className="px-2.5 py-2.5 text-center tabular font-black" style={{ color: "#005cfc" }}>{row.pts}</td>
+                  <td className="px-2.5 py-2.5 text-center tabular font-black" style={{ color: "#4AE183" }}>{row.pts}</td>
                 </tr>
               );
             })}
@@ -211,10 +211,10 @@ export function RealStandingsTable({ leagueSlug, fallback }: { leagueSlug: strin
         </table>
       </div>
       <div className="flex items-center gap-4 justify-center text-[10px] text-slate-500">
-        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#005cfc" }} /> سهمیه لیگ قهرمانان</span>
-        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#bee503" }} /> سهمیه اروپایی</span>
+        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#4AE183" }} /> سهمیه لیگ قهرمانان</span>
+        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#FFD34D" }} /> سهمیه اروپایی</span>
         <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ background: "#E23B3B" }} /> سقوط</span>
-        <span style={{ color: "#005cfc" }}>{isIran ? "دیتای واقعی victoryapi" : "دیتای واقعی Transfermarkt"}</span>
+        <span style={{ color: "#4AE183" }}>{isIran ? "دیتای واقعی victoryapi" : "دیتای واقعی Transfermarkt"}</span>
       </div>
     </div>
   );

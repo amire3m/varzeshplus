@@ -48,7 +48,7 @@ export default function SportPage() {
 
   if (!sport) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-6 text-center" style={{ background: "#252525" }}>
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-6 text-center" style={{ background: "#0A0F0B" }}>
         <span className="text-5xl">🤷</span>
         <h1 className="headline text-xl">ورزش پیدا نشد</h1>
         <Link href="/" className="btn-green px-5 py-2 text-sm">بازگشت به خانه</Link>
@@ -60,7 +60,7 @@ export default function SportPage() {
   const color = sport.color;
 
   return (
-    <div className="min-h-screen flex flex-col pt-16" style={{ background: "#252525" }}>
+    <div className="min-h-screen flex flex-col pt-16" style={{ background: "#0A0F0B" }}>
       {/* نوار وضعیت ورزش (زیر هدر ثابت FixedChrome) */}
       <div className="max-w-[1200px] mx-auto px-3 w-full pt-4">
         <div className="flex items-center justify-between">
@@ -71,7 +71,7 @@ export default function SportPage() {
 
       <main className="flex-1 w-full max-w-[1200px] mx-auto px-3 py-6 space-y-6">
         {/* هیرو ورزش */}
-        <section className="relative rounded-2xl overflow-hidden p-6 md:p-10 border" style={{ background: `linear-gradient(135deg, ${color}2e, #252525 55%)`, borderColor: `${color}44`, boxShadow: `0 0 30px ${color}22` }}>
+        <section className="relative rounded-2xl overflow-hidden p-6 md:p-10 border" style={{ background: `linear-gradient(135deg, ${color}2e, #0A0F0B 55%)`, borderColor: `${color}44`, boxShadow: `0 0 30px ${color}22` }}>
           <div className="absolute -left-10 -top-10 w-48 h-48 rounded-full blur-3xl pointer-events-none" style={{ background: `${color}33` }} />
           <div className="relative flex flex-wrap items-center gap-4">
             <span className="text-6xl drop-shadow-lg">{sport.emoji}</span>
@@ -79,13 +79,13 @@ export default function SportPage() {
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="headline text-2xl md:text-3xl">{sport.name}</h1>
                 {leagueName && (
-                  <span className="text-xs px-3 py-1 rounded-full font-bold" style={{ background: "linear-gradient(135deg,#005cfc,#bee503)", color: "#fff", boxShadow: "0 0 12px rgba(190,229,3,0.4)" }}>{leagueName}</span>
+                  <span className="text-xs px-3 py-1 rounded-full font-bold" style={{ background: "linear-gradient(135deg,#4AE183,#FFD34D)", color: "#fff", boxShadow: "0 0 12px rgba(190,229,3,0.4)" }}>{leagueName}</span>
                 )}
               </div>
               <p className="text-sm mt-2 max-w-lg" style={{ color: "var(--color-muted)" }}>مسابقات، پخش‌های زنده و بازی‌های مرتبط با {sport.name} {leagueName ? `— ${leagueName}` : ""}</p>
               <div className="flex flex-wrap gap-2 mt-3">
                 {sport.subs.map((s) => (
-                  <button key={s} onClick={() => router.push(`/sport/${sport.key}/${encodeURIComponent(s)}`)} className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${s === leagueName ? "text-white font-bold border-transparent" : "bg-white/5 border-white/10 text-white/75 hover:bg-white/10"}`} style={s === leagueName ? { background: `linear-gradient(135deg,#005cfc,#bee503)` } : undefined}>
+                  <button key={s} onClick={() => router.push(`/sport/${sport.key}/${encodeURIComponent(s)}`)} className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${s === leagueName ? "text-white font-bold border-transparent" : "bg-white/5 border-white/10 text-white/75 hover:bg-white/10"}`} style={s === leagueName ? { background: `linear-gradient(135deg,#4AE183,#FFD34D)` } : undefined}>
                     {s}
                   </button>
                 ))}
@@ -130,7 +130,7 @@ export default function SportPage() {
           {sportNews && sportNews.length ? (
             <div className="grid gap-3 sm:grid-cols-2">
               {sportNews.slice(0, 6).map((n, i) => (
-                <a key={i} href={n.link} target="_blank" rel="noreferrer" className="block rounded-2xl border p-4 transition-colors hover:border-white/20" style={{ background: "#2a2a2a", borderColor: "rgba(255,255,255,0.1)" }}>
+                <a key={i} href={n.link} target="_blank" rel="noreferrer" className="block rounded-2xl border p-4 transition-colors hover:border-white/20" style={{ background: "#101610", borderColor: "rgba(255,255,255,0.1)" }}>
                   <div className="flex gap-3">
                     {n.image && <img src={n.image} alt="" className="w-16 h-16 rounded-xl object-cover shrink-0" loading="lazy" />}
                     <div className="min-w-0 flex-1">

@@ -77,7 +77,7 @@ function RealSquadTable({ team }: { team: Team }) {
     <div className="space-y-4">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <h2 className="headline text-lg">ترکیب {team.name}</h2>
-        <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: "rgba(0,92,252,0.12)", color: "#005cfc" }}>دیتای واقعی Transfermarkt — فصل ۲۰۲۵/۲۶</span>
+        <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background: "rgba(74,225,131,0.12)", color: "#4AE183" }}>دیتای واقعی Transfermarkt — فصل ۲۰۲۵/۲۶</span>
       </div>
       {groups.map(([label, filter]) => {
         const list = (players ?? []).filter(filter);
@@ -85,12 +85,12 @@ function RealSquadTable({ team }: { team: Team }) {
         return (
           <div key={label} className="space-y-2">
             <h3 className="text-sm font-bold" style={{ color: "var(--color-muted)" }}>{label}</h3>
-            <div className="glass-panel overflow-x-auto rounded-[14px]" style={{ background: "#2a2a2a", borderColor: "rgba(255,255,255,0.1)" }}>
+            <div className="glass-panel overflow-x-auto rounded-[14px]" style={{ background: "#101610", borderColor: "rgba(255,255,255,0.1)" }}>
               <table className="w-full min-w-[640px] text-sm">
                 <thead>
                   <tr style={{ color: "#8FA1B5" }}>
                     {["بازیکن", "پست", "سن", "قد", "پای غالب", "بازی", "گل", "پاس", "دقیقه", "ارزش بازار", "قرارداد"].map((h, i) => (
-                      <th key={i} className={`px-3 py-2.5 text-xs font-bold ${i === 0 ? "text-right" : "text-center"} ${i >= 5 ? "tabular" : ""}`} style={{ background: "#2e2e2e", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>{h}</th>
+                      <th key={i} className={`px-3 py-2.5 text-xs font-bold ${i === 0 ? "text-right" : "text-center"} ${i >= 5 ? "tabular" : ""}`} style={{ background: "#161E14", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -102,7 +102,7 @@ function RealSquadTable({ team }: { team: Team }) {
                         <td className="px-3 py-2.5 font-bold whitespace-nowrap">
                           <Link href={`/football/players/${p.playerId}`} className="flex items-center gap-2 group">
                             <PlayerAvatar name={p.name} size={30} color={team.color} />
-                            <span className="group-hover:text-[#005cfc] transition-colors" style={{ color: "#F5F7FA" }}>{p.name}</span>
+                            <span className="group-hover:text-[#4AE183] transition-colors" style={{ color: "#F5F7FA" }}>{p.name}</span>
                           </Link>
                         </td>
                         <td className="px-3 py-2.5 text-center text-xs">{TM_POS_FA[p.subPosition ?? p.position ?? ""] ?? p.position}</td>
@@ -110,10 +110,10 @@ function RealSquadTable({ team }: { team: Team }) {
                         <td className="px-3 py-2.5 text-center tabular">{p.height ?? "—"}</td>
                         <td className="px-3 py-2.5 text-center text-xs">{p.foot === "right" ? "راست" : p.foot === "left" ? "چپ" : "دو پا"}</td>
                         <td className="px-3 py-2.5 text-center tabular">{p.seasonStats?.games ?? "—"}</td>
-                        <td className="px-3 py-2.5 text-center tabular font-bold" style={{ color: "#005cfc" }}>{p.seasonStats?.goals ?? "—"}</td>
+                        <td className="px-3 py-2.5 text-center tabular font-bold" style={{ color: "#4AE183" }}>{p.seasonStats?.goals ?? "—"}</td>
                         <td className="px-3 py-2.5 text-center tabular">{p.seasonStats?.assists ?? "—"}</td>
                         <td className="px-3 py-2.5 text-center tabular">{p.seasonStats?.minutes ?? "—"}</td>
-                        <td className="px-3 py-2.5 text-center tabular font-black" style={{ color: "#bee503" }}>{fmtEur(p.marketValue)}</td>
+                        <td className="px-3 py-2.5 text-center tabular font-black" style={{ color: "#FFD34D" }}>{fmtEur(p.marketValue)}</td>
                         <td className="px-3 py-2.5 text-center tabular text-xs text-slate-400">{p.contractUntil?.slice(0, 10) ?? "—"}</td>
                       </tr>
                     );
@@ -176,7 +176,7 @@ function MockSquadTable({ team }: { team: Team }) {
         <h2 className="headline text-lg">ترکیب {team.name}</h2>
         <div className="flex items-center gap-1.5 text-xs">
           {["2026/27", "2025/26"].map((s) => (
-            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors" style={season === s ? { background: "linear-gradient(135deg,#005cfc,#bee503)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>{s}</button>
+            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors" style={season === s ? { background: "linear-gradient(135deg,#4AE183,#FFD34D)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>{s}</button>
           ))}
         </div>
       </div>
@@ -187,12 +187,12 @@ function MockSquadTable({ team }: { team: Team }) {
         return (
           <div key={pos} className="space-y-2">
             <h3 className="text-sm font-bold" style={{ color: "var(--color-muted)" }}>{POSITION_LABEL[pos]}</h3>
-            <div className="glass-panel overflow-x-auto rounded-[14px]" style={{ background: "#2a2a2a", borderColor: "rgba(255,255,255,0.1)" }}>
+            <div className="glass-panel overflow-x-auto rounded-[14px]" style={{ background: "#101610", borderColor: "rgba(255,255,255,0.1)" }}>
               <table className="w-full min-w-[640px] text-sm">
                 <thead>
                   <tr style={{ color: "#8FA1B5" }}>
                     {["#", "بازیکن", "پست", "سن", "ملیت", "بازی", "ترکیب اصلی", "گل", "پاس گل", "زرد", "قرمز"].map((h, i) => (
-                      <th key={i} className={`px-3 py-2.5 text-xs font-bold ${i <= 1 ? "text-right" : "text-center"} tabular`} style={{ background: "#2e2e2e", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>{h}</th>
+                      <th key={i} className={`px-3 py-2.5 text-xs font-bold ${i <= 1 ? "text-right" : "text-center"} tabular`} style={{ background: "#161E14", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -203,7 +203,7 @@ function MockSquadTable({ team }: { team: Team }) {
                       <td className="px-3 py-2.5 font-bold whitespace-nowrap">
                         <Link href={`/football/players/${p.id}`} className="flex items-center gap-2 group">
                           <PlayerAvatar name={p.name} size={30} color={team.color} />
-                          <span dir="rtl" className="group-hover:text-[#005cfc] transition-colors" style={{ color: "#F5F7FA" }}>{p.name}</span>
+                          <span dir="rtl" className="group-hover:text-[#4AE183] transition-colors" style={{ color: "#F5F7FA" }}>{p.name}</span>
                         </Link>
                       </td>
                       <td className="px-3 py-2.5 text-center">{POSITION_LABEL[p.position]}</td>
@@ -211,7 +211,7 @@ function MockSquadTable({ team }: { team: Team }) {
                       <td className="px-3 py-2.5 text-center whitespace-nowrap">{p.nationality}</td>
                       <td className="px-3 py-2.5 text-center tabular">{p.appearances}</td>
                       <td className="px-3 py-2.5 text-center tabular">{p.starts}</td>
-                      <td className="px-3 py-2.5 text-center tabular font-bold" style={{ color: "#005cfc" }}>{p.goals}</td>
+                      <td className="px-3 py-2.5 text-center tabular font-bold" style={{ color: "#4AE183" }}>{p.goals}</td>
                       <td className="px-3 py-2.5 text-center tabular">{p.assists}</td>
                       <td className="px-3 py-2.5 text-center tabular" style={{ color: "#f9c759" }}>{p.yellowCards}</td>
                       <td className="px-3 py-2.5 text-center tabular" style={{ color: "#ffb4ab" }}>{p.redCards}</td>

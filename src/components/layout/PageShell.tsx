@@ -17,5 +17,5 @@ type Props = {
 };
 
 export function PageShell({ children }: Props) {
-  return <div className="min-h-screen pb-24" style={{ background: "#252525" }}>{children}</div>;
+  return <div className="min-h-screen pb-24" style={{ background: "#0A0F0B" }}>{children}</div>;
 }

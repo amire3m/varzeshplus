@@ -38,7 +38,7 @@ export function LeagueHeroSlider({ slides }: { slides: PLSlide[] }) {
 
       <div className="absolute bottom-0 w-full p-5 md:p-7 z-10">
         <div className="flex items-center gap-2 mb-2 flex-wrap">
-          <span className="text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider" style={{ background: "linear-gradient(135deg,#005cfc,#bee503)", color: "#fff" }}>{s.badge}</span>
+          <span className="text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider" style={{ background: "linear-gradient(135deg,#4AE183,#FFD34D)", color: "#fff" }}>{s.badge}</span>
           {s.team && (
             <span className="flex items-center gap-1.5 text-[11px] px-2 py-0.5 rounded-full bg-black/40 backdrop-blur border border-white/10 text-white/80">
               <TeamBadge src={s.team.badge} name={s.team.short} size={16} />
@@ -61,7 +61,7 @@ export function LeagueHeroSlider({ slides }: { slides: PLSlide[] }) {
 
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
         {slides.map((_, idx) => (
-          <button key={idx} onClick={() => setI(idx)} aria-label={`اسلاید ${idx + 1}`} className={`transition-all duration-300 rounded-full ${idx === i ? "w-7 h-2" : "w-2 h-2 bg-white/40 hover:bg-white/70"}`} style={idx === i ? { background: "linear-gradient(90deg,#005cfc,#bee503)", boxShadow: "0 0 8px rgba(0,92,252,0.6)" } : undefined} />
+          <button key={idx} onClick={() => setI(idx)} aria-label={`اسلاید ${idx + 1}`} className={`transition-all duration-300 rounded-full ${idx === i ? "w-7 h-2" : "w-2 h-2 bg-white/40 hover:bg-white/70"}`} style={idx === i ? { background: "linear-gradient(90deg,#4AE183,#FFD34D)", boxShadow: "0 0 8px rgba(74,225,131,0.6)" } : undefined} />
         ))}
       </div>
     </section>

@@ -33,7 +33,7 @@ function Chip({ label, value, ok, dir }: { label: string; value: string; ok?: bo
       className="text-[11px] font-bold px-2 py-1 rounded-lg border"
       style={
         ok
-          ? { background: "rgba(190,229,3,0.15)", borderColor: "#bee503", color: "#bee503" }
+          ? { background: "rgba(190,229,3,0.15)", borderColor: "#FFD34D", color: "#FFD34D" }
           : { background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.12)", color: "#cbd5e1" }
       }
     >
@@ -109,10 +109,10 @@ export default function FootlePage() {
   }
 
   return (
-    <div className="min-h-screen pb-28" style={{ background: "#252525" }}>
+    <div className="min-h-screen pb-28" style={{ background: "#0A0F0B" }}>
       <div className="max-w-[720px] mx-auto px-4 pt-6">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white" style={{ background: "linear-gradient(135deg, #005cfc, #bee503)" }}>F</div>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white" style={{ background: "linear-gradient(135deg, #4AE183, #FFD34D)" }}>F</div>
           <div>
             <h1 className="headline text-[22px] text-white">فوتل — حدس بازیکن روز</h1>
             <p className="text-[12px] text-slate-400">بازیکن مرموز امروز را در {MAX_TRIES} حدس پیدا کن</p>
@@ -122,7 +122,7 @@ export default function FootlePage() {
 
         <div className="flex items-center gap-2 mb-4 text-[11px] text-slate-400">
           <span>تلاش‌ها: <b className="text-white tabular">{guesses.length}/{MAX_TRIES}</b></span>
-          {won && <span className="flex items-center gap-1 font-black" style={{ color: "#bee503" }}><Trophy size={13} /> بردی! 🎉</span>}
+          {won && <span className="flex items-center gap-1 font-black" style={{ color: "#FFD34D" }}><Trophy size={13} /> بردی! 🎉</span>}
         </div>
 
         {!over && (
@@ -135,10 +135,10 @@ export default function FootlePage() {
                   onKeyDown={(e) => { if (e.key === "Enter" && suggests.length) submit(suggests[0].name); }}
                   placeholder="نام بازیکن به انگلیسی... (مثلا Saka)"
                   dir="ltr" style={{ textAlign: "left" }}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 pr-9 pl-3 text-sm placeholder-slate-500 focus:outline-none focus:border-[#005cfc] text-white"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 pr-9 pl-3 text-sm placeholder-slate-500 focus:outline-none focus:border-[#4AE183] text-white"
                 />
                 {suggests.length > 0 && (
-                  <div className="absolute z-20 top-full mt-1 w-full rounded-xl border border-white/10 overflow-hidden" style={{ background: "#2a2a2a" }}>
+                  <div className="absolute z-20 top-full mt-1 w-full rounded-xl border border-white/10 overflow-hidden" style={{ background: "#101610" }}>
                     {suggests.map((s) => (
                       <button key={s.id} onClick={() => submit(s.name)} className="w-full text-left px-3 py-2 text-sm hover:bg-white/10 flex items-center justify-between gap-2" dir="ltr">
                         <span className="text-white truncate">{s.name}</span>
@@ -148,7 +148,7 @@ export default function FootlePage() {
                   </div>
                 )}
               </div>
-              <button onClick={() => suggests.length && submit(suggests[0].name)} disabled={busy || !suggests.length} className="px-5 rounded-xl text-sm font-black text-white disabled:opacity-40 shrink-0" style={{ background: "#005cfc" }}>
+              <button onClick={() => suggests.length && submit(suggests[0].name)} disabled={busy || !suggests.length} className="px-5 rounded-xl text-sm font-black text-white disabled:opacity-40 shrink-0" style={{ background: "#4AE183" }}>
                 حدس
               </button>
             </div>
@@ -158,7 +158,7 @@ export default function FootlePage() {
 
         <div className="space-y-2.5">
           {guesses.map((g, i) => (
-            <div key={i} className="rounded-2xl border p-3" style={{ background: "#2a2a2a", borderColor: g.correct ? "#bee503" : "rgba(255,255,255,0.1)" }}>
+            <div key={i} className="rounded-2xl border p-3" style={{ background: "#101610", borderColor: g.correct ? "#FFD34D" : "rgba(255,255,255,0.1)" }}>
               <div className="font-black text-sm text-white mb-2" dir="ltr" style={{ textAlign: "left" }}>{g.feedback.name}</div>
               <div className="flex flex-wrap gap-1.5">
                 <Chip label="باشگاه" value={g.feedback.club} ok={g.feedback.clubMatch} />
@@ -177,13 +177,13 @@ export default function FootlePage() {
         </div>
 
         {(won || reveal) && (
-          <div className="mt-5 rounded-2xl border p-5 text-center" style={{ background: "linear-gradient(135deg, rgba(0,92,252,0.15), rgba(190,229,3,0.1))", borderColor: "#bee50355" }}>
+          <div className="mt-5 rounded-2xl border p-5 text-center" style={{ background: "linear-gradient(135deg, rgba(74,225,131,0.15), rgba(190,229,3,0.1))", borderColor: "#FFD34D55" }}>
             <div className="text-[11px] text-slate-400 mb-1">{won ? "آفرین! بازیکن امروز:" : "بازیکن امروز بود:"}</div>
             <div className="headline text-xl text-white" dir="ltr">{(won && guesses.length ? guesses[guesses.length - 1].feedback.name : reveal?.name) ?? reveal?.name}</div>
             {reveal && <div className="text-xs text-slate-400 mt-1">{reveal.club}</div>}
             <div className="flex items-center justify-center gap-2 mt-3">
               {reveal && (
-                <Link href={`/football/players/${reveal.id}`} className="px-4 py-2 rounded-full text-xs font-black text-white" style={{ background: "#005cfc" }}>
+                <Link href={`/football/players/${reveal.id}`} className="px-4 py-2 rounded-full text-xs font-black text-white" style={{ background: "#4AE183" }}>
                   مشاهده پروفایل ←
                 </Link>
               )}
