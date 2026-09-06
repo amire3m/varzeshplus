@@ -46,7 +46,7 @@ export default function ManagerDashboard() {
             <div>
               <div className="text-xs text-slate-400">بازی بعدی — هفته {nextMatch.week}</div>
               <div className="headline text-sm text-white mt-1">{nextMatch.homeTeam} — {nextMatch.awayTeam}</div>
-              <div className="text-xs text-slate-500">{starters.length}/11 فیکس • میانگین {Math.round(starters.reduce((s: number, p: any) => s + p.rating, 0) / Math.max(1, starters.length))}</div>
+              <div className="text-xs text-slate-300">{starters.length}/11 فیکس • میانگین {Math.round(starters.reduce((s: number, p: any) => s + p.rating, 0) / Math.max(1, starters.length))}</div>
             </div>
             <button onClick={() => action("simulate")} className="px-6 py-2.5 rounded-full text-sm font-black text-white" style={{ background: "linear-gradient(135deg, #4AE183, #FFD34D)" }}>شبیه‌سازی →</button>
           </div>
@@ -74,14 +74,14 @@ export default function ManagerDashboard() {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-slate-400">{starters.length}/11 فیکس — میانگین {starters.length ? Math.round(starters.reduce((s: number, p: any) => s + p.rating, 0) / starters.length) : 0}</span>
-              <span className="text-[11px] text-slate-500">تمرین هر بازیکن ۵۰,۰۰۰ • کلیک برای فیکس/نیمکت</span>
+              <span className="text-[11px] text-slate-300">تمرین هر بازیکن ۵۰,۰۰۰ • کلیک برای فیکس/نیمکت</span>
             </div>
             <div className="grid md:grid-cols-2 gap-2">
               {players.map((p: any) => (
                 <div key={p.id} className={`rounded-xl border p-3 flex items-center gap-3 ${p.isStarter ? "border-[#4AE183]/30" : "border-white/10"}`} style={{ background: p.isStarter ? "rgba(74,225,131,0.08)" : "#101610" }}>
                   <button onClick={() => action("toggleStarter", { playerId: p.id })} className={`w-7 h-7 rounded-lg flex items-center justify-center text-[10px] font-black shrink-0 ${p.isStarter ? "text-white" : "text-slate-400 border border-white/10"}`} style={p.isStarter ? { background: "#4AE183" } : { background: "rgba(255,255,255,0.05)" }}>{POS_LABEL[p.position]?.[0] || p.position[0]}</button>
                   <div className="min-w-0 flex-1">
-                    <div className="text-xs font-bold text-white truncate">{p.name} <span className="font-normal text-slate-500">— {POS_LABEL[p.position]} • {p.age} سال</span></div>
+                    <div className="text-xs font-bold text-white truncate">{p.name} <span className="font-normal text-slate-300">— {POS_LABEL[p.position]} • {p.age} سال</span></div>
                     <div className="text-[11px] text-slate-400">ریت {p.rating} • ارزش {p.value.toLocaleString("fa-IR")} • دستمزد {p.salary.toLocaleString("fa-IR")}</div>
                   </div>
                   <button onClick={() => action("train", { playerId: p.id })} className="text-[10px] px-2 py-1 rounded-full border border-white/10 text-slate-300 hover:bg-white/5">تمرین +1</button>
@@ -95,7 +95,7 @@ export default function ManagerDashboard() {
           <div className="space-y-2">
             {matches.map((m: any) => (
               <div key={m.id} className={`rounded-xl border p-3 flex items-center justify-between ${m.status === "upcoming" ? "border-white/10" : "border-[#FFD34D]/20"}`} style={{ background: m.status === "upcoming" ? "#101610" : "rgba(190,229,3,0.06)" }}>
-                <span className="text-xs text-slate-500">هـ {m.week}</span>
+                <span className="text-xs text-slate-300">هـ {m.week}</span>
                 <span className="text-xs font-bold text-white">{m.homeTeam} — {m.awayTeam}</span>
                 <span className="text-xs font-black tabular" style={{ color: m.status === "upcoming" ? "#8FA1B5" : "#FFD34D" }}>{m.status === "upcoming" ? "—" : `${m.homeScore} : ${m.awayScore}`}</span>
               </div>
@@ -105,11 +105,11 @@ export default function ManagerDashboard() {
 
         {tab === "inbox" && (
           <div className="space-y-2">
-            {inbox.length === 0 ? <p className="text-xs text-slate-500 text-center py-6">صندوق خالی</p> : inbox.map((msg: any) => (
+            {inbox.length === 0 ? <p className="text-xs text-slate-300 text-center py-6">صندوق خالی</p> : inbox.map((msg: any) => (
               <div key={msg.id} className={`rounded-xl border p-3 ${msg.isRead ? "border-white/5 opacity-70" : "border-white/10"}`} style={{ background: msg.isRead ? "rgba(255,255,255,0.03)" : "#101610" }}>
-                <div className="text-xs font-bold text-white">{msg.title} <span className="font-normal text-slate-500">— {msg.category}</span></div>
+                <div className="text-xs font-bold text-white">{msg.title} <span className="font-normal text-slate-300">— {msg.category}</span></div>
                 <div className="text-xs text-slate-400 mt-1 whitespace-pre-wrap leading-5">{msg.body}</div>
-                <div className="text-[10px] text-slate-500 mt-1">{new Date(msg.createdAt).toLocaleString("fa-IR")}</div>
+                <div className="text-[10px] text-slate-300 mt-1">{new Date(msg.createdAt).toLocaleString("fa-IR")}</div>
               </div>
             ))}
           </div>

@@ -116,11 +116,11 @@ export default function XgPage() {
         ) : (
           <div className="space-y-4">
             <div className="rounded-2xl border border-white/10 p-4 text-center" style={{ background: "#101610" }}>
-              <div className="text-[11px] text-slate-500 mb-1">{data.meta.comp}</div>
+              <div className="text-[11px] text-slate-300 mb-1">{data.meta.comp}</div>
               <div className="headline text-xl text-white">{data.meta.home} <b className="tabular">{data.meta.hs} - {data.meta.as}</b> {data.meta.away}</div>
               <div className="flex items-center justify-center gap-4 mt-2 text-[12px]">
-                <span style={{ color: "#4AE183" }}>xG {data.totals.homeXg} <span className="text-slate-500">({data.totals.homeShots} شوت)</span></span>
-                <span style={{ color: "#E8385D" }}>xG {data.totals.awayXg} <span className="text-slate-500">({data.totals.awayShots} شوت)</span></span>
+                <span style={{ color: "#4AE183" }}>xG {data.totals.homeXg} <span className="text-slate-300">({data.totals.homeShots} شوت)</span></span>
+                <span style={{ color: "#E8385D" }}>xG {data.totals.awayXg} <span className="text-slate-300">({data.totals.awayShots} شوت)</span></span>
               </div>
             </div>
 
@@ -138,20 +138,20 @@ export default function XgPage() {
               {data.teams.map((t, i) => (
                 <div key={i} className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
                   <h4 className="headline text-sm text-white mb-1">{t.name}</h4>
-                  <p className="text-[10px] text-slate-500 mb-2 tabular">{t.formation}</p>
+                  <p className="text-[10px] text-slate-300 mb-2 tabular">{t.formation}</p>
                   <div className="space-y-1 max-h-[220px] overflow-y-auto pl-1">
                     {t.starters.map((p, j) => (
                       <div key={j} className="flex items-center gap-2 text-[11px]">
-                        <span className="tabular text-slate-500 w-5">{p.number}</span>
+                        <span className="tabular text-slate-300 w-5">{p.number}</span>
                         <span className="text-slate-200 font-bold truncate">{p.name}</span>
-                        <span className="mr-auto text-slate-600 shrink-0">{p.position}</span>
+                        <span className="mr-auto text-slate-400 shrink-0">{p.position}</span>
                       </div>
                     ))}
                   </div>
                 </div>
               ))}
             </div>
-            <p className="text-center text-[10px] text-slate-600">منبع: StatsBomb Open Data • مختصات شوت واقعی با xG هر ضربه</p>
+            <p className="text-center text-[10px] text-slate-400">منبع: StatsBomb Open Data • مختصات شوت واقعی با xG هر ضربه</p>
           </div>
         )}
       </div>

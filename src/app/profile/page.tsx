@@ -68,7 +68,7 @@ export default function ProfilePage() {
             ].map((s) => (
               <div key={s.label} className="py-3">
                 <div className="headline text-lg tabular" style={{ color: s.color }}>{s.value}</div>
-                <div className="text-[10px] text-slate-500">{s.label}</div>
+                <div className="text-[10px] text-slate-300">{s.label}</div>
               </div>
             ))}
           </div>
@@ -87,7 +87,7 @@ export default function ProfilePage() {
                   <span className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-black text-white shrink-0" style={{ background: "linear-gradient(135deg,#4AE183,#FFD34D)" }}>FM</span>
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-bold text-white truncate">{s.teamName}</p>
-                    <p className="text-[10px] text-slate-500">فصل {s.season} • هفته {s.week}</p>
+                    <p className="text-[10px] text-slate-300">فصل {s.season} • هفته {s.week}</p>
                   </div>
                   <span className="text-[11px] font-black tabular" style={{ color: "#FFD34D" }}>{s.points} امتیاز</span>
                 </Link>

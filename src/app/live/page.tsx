@@ -197,7 +197,7 @@ export default function LivePage() {
               {scoreMatches.map((m) => (
                 <ScoreMatchCard key={m.id} m={m} />
               ))}
-              {scoreSource && <p className="text-center text-[10px] text-slate-600">منبع: {scoreSource === "worldcup26" ? "worldcup26.ir" : "ESPN"} • به‌روزرسانی هر دقیقه</p>}
+              {scoreSource && <p className="text-center text-[10px] text-slate-400">منبع: {scoreSource === "worldcup26" ? "worldcup26.ir" : "ESPN"} • به‌روزرسانی هر دقیقه</p>}
             </div>
           )}
         </div>
@@ -284,7 +284,7 @@ function ScoreMatchCard({ m }: { m: ScoreMatch }) {
               <span className="live-dot" style={{ width: 6, height: 6 }} /> {m.minute}
             </span>
           )}
-          {m.status === "finished" && <span className="block mt-1 text-[10px] text-slate-500">پایان</span>}
+          {m.status === "finished" && <span className="block mt-1 text-[10px] text-slate-300">پایان</span>}
         </div>
         <TeamChip t={m.away} />
       </div>
@@ -294,12 +294,12 @@ function ScoreMatchCard({ m }: { m: ScoreMatch }) {
             <div key={i} className="flex items-center gap-2 text-[11px] text-slate-400">
               <span className="tabular font-black shrink-0" style={{ color: "#FFD34D" }}>{g.minute}</span>
               <span className="font-bold text-slate-200 truncate">{g.player}</span>
-              {g.assist && <span className="truncate text-slate-500">(پاس: {g.assist})</span>}
+              {g.assist && <span className="truncate text-slate-300">(پاس: {g.assist})</span>}
             </div>
           ))}
         </div>
       )}
-      {m.venue && <p className="mt-2 text-[10px] text-slate-600">{m.venue}</p>}
+      {m.venue && <p className="mt-2 text-[10px] text-slate-400">{m.venue}</p>}
     </div>
   );
 }

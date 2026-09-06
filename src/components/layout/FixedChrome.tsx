@@ -296,29 +296,28 @@ export function FixedChrome() {
 
       {/* ============ داک شناور ============ */}
       <nav
-        className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-6 py-2.5 rounded-full border border-white/10 shadow-2xl flex items-center gap-6"
-        style={{ background: "rgba(16,22,16,0.92)", backdropFilter: "blur(20px)" }}
+        className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-6 py-2.5 rounded-full border border-white/10 shadow-2xl flex items-center gap-4 sm:gap-6 max-w-[95vw] overflow-x-auto"
+        style={{ background: "rgba(16,22,16,0.94)", backdropFilter: "blur(20px)" }}
         dir="rtl"
       >
         {DOCK_ITEMS.map((item) => {
-          // فعال‌سازی درست هر آیتم بر اساس pathname
           const hrefPath = item.href.split("#")[0] || "/";
           const isActive =
             item.key === "home"
               ? pathname === "/"
-              : item.href.includes("#")
-                ? pathname === "/" // هش‌ها روی صفحه اصلی فعال می‌شوند
-                : pathname === hrefPath || pathname.startsWith(hrefPath + "/");
+              : pathname === hrefPath || pathname.startsWith(hrefPath + "/");
           const Icon = item.icon;
-          return isActive ? (
-            <Link key={item.key} href={item.href} className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-200" style={{ background: "rgba(74,225,131,0.15)", border: "1px solid rgba(74,225,131,0.3)", color: "#4AE183" }}>
-              <Icon size={18} className="fill-current" />
-              <span className="text-[12px] font-black">{item.label}</span>
-            </Link>
-          ) : (
-            <Link key={item.key} href={item.href} className="flex flex-col items-center gap-0.5 text-slate-400 hover:text-white transition-colors">
-              <Icon size={19} />
-              <span className="text-[9px] font-bold">{item.label}</span>
+          return (
+            <Link
+              key={item.key} href={item.href}
+              aria-label={item.label}
+              className={`shrink-0 flex items-center gap-1.5 rounded-full transition-all duration-200 ${isActive ? "px-3.5 py-1.5" : "flex-col gap-0.5 px-1 py-0.5"}`}
+              style={isActive
+                ? { background: "rgba(74,225,131,0.15)", border: "1px solid rgba(74,225,131,0.3)", color: "#4AE183" }
+                : { color: "#9DAE9C" }}
+            >
+              <Icon size={isActive ? 18 : 19} className={isActive ? "fill-current" : ""} />
+              <span className={isActive ? "text-[12px] font-black" : "text-[9px] font-bold"}>{item.label}</span>
             </Link>
           );
         })}

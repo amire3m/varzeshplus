@@ -252,7 +252,7 @@ export default function HomePage() {
                     <button key={s.key} onClick={() => { setMenuView(s.key); setMenuSearch(""); }} className="sport-tile flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/10 w-full">
                       <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: `${s.color}22`, color: s.color }}><span className="material-symbols-outlined text-[20px]">{s.icon}</span></div>
                       <span className="text-sm font-bold text-white">{s.name}</span>
-                      <ChevronLeft size={18} className="text-slate-600 mr-auto" />
+                      <ChevronLeft size={18} className="text-slate-400 mr-auto" />
                     </button>
                   ))}
                 </div>
@@ -360,6 +360,23 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ============ لینک‌های سریع — موبایل‌فرست ============ */}
+      <section className="w-full px-4 pt-3 xl:hidden">
+        <div className="max-w-[1320px] mx-auto grid grid-cols-4 gap-2">
+          {[
+            { href: "/football/leagues/persian-gulf/standings", label: "جدول", emoji: "📊" },
+            { href: "/football/leagues/premier-league/matches", label: "بازی‌ها", emoji: "⚽" },
+            { href: "/news", label: "اخبار", emoji: "📰" },
+            { href: "/live", label: "پخش زنده", emoji: "📺" },
+          ].map((q) => (
+            <Link key={q.label} href={q.href} className="flex flex-col items-center gap-1 rounded-2xl border border-white/10 py-3 transition-colors active:scale-95" style={{ background: "#101610" }}>
+              <span className="text-xl">{q.emoji}</span>
+              <span className="text-[11px] font-bold text-slate-200">{q.label}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* ============ ۴. نوار افقی مسابقات زنده ============ */}
       <section id="games" className="w-full py-4" style={{ background: "#0A0F0B" }}>
         <div className="max-w-[1320px] mx-auto px-4">
@@ -434,7 +451,7 @@ export default function HomePage() {
                         )
                       ) : (
                         <>
-                          <span className="tabular text-[22px] font-black leading-none text-white">{m.hs} <span className="text-slate-500">-</span> {m.as}</span>
+                          <span className="tabular text-[22px] font-black leading-none text-white">{m.hs} <span className="text-slate-300">-</span> {m.as}</span>
                           {m.status === "live" && <span className="block text-[9px] font-black tabular mt-1 animate-pulse" style={{ color: "#ff6b8a" }}>{m.minute}&apos;</span>}
                         </>
                       )}
@@ -461,7 +478,7 @@ export default function HomePage() {
             <h3 className="headline text-[16px] text-white mb-3">جدول لیگ برتر ایران</h3>
             <table className="w-full text-[12px]">
               <thead>
-                <tr className="text-slate-500" style={{ background: "rgba(255,255,255,0.04)" }}>
+                <tr className="text-slate-300" style={{ background: "rgba(255,255,255,0.04)" }}>
                   <th className="px-3 py-2 text-right font-bold rounded-r-lg">تیم</th>
                   <th className="px-2 py-2 text-center font-bold">بازی</th>
                   <th className="px-2 py-2 text-center font-bold rounded-l-lg">امتیاز</th>
@@ -481,7 +498,7 @@ export default function HomePage() {
                     <td className="px-2 py-2.5 text-center tabular font-black" style={{ color: "#4AE183" }}>{row.pts}</td>
                   </tr>
                 ))}
-                {!standings.length && <tr><td colSpan={3} className="text-center text-slate-500 py-4 text-[11px]">در حال بارگذاری جدول واقعی...</td></tr>}
+                {!standings.length && <tr><td colSpan={3} className="text-center text-slate-300 py-4 text-[11px]">در حال بارگذاری جدول واقعی...</td></tr>}
               </tbody>
             </table>
             <Link href="/football/leagues/persian-gulf/standings" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#FFD34D" }}>مشاهده جدول کامل</Link>
@@ -523,7 +540,7 @@ export default function HomePage() {
               </a>
             ))}
             {!(mixedNews ?? []).some((n) => n.category === "ویدیو") && (
-              <div className="text-[12px] text-slate-500 text-center py-6">ویدیوهای این هفته به‌زودی از منابع رسمی بارگذاری می‌شود.</div>
+              <div className="text-[12px] text-slate-300 text-center py-6">ویدیوهای این هفته به‌زودی از منابع رسمی بارگذاری می‌شود.</div>
             )}
             <Link href="/live" className="mt-auto pt-3 text-center text-[12px] font-bold hover:underline" style={{ color: "#FFD34D" }}>مشاهده همه ویدیوها</Link>
           </div>
@@ -531,7 +548,7 @@ export default function HomePage() {
           {/* ستون ۴ (چپ‌ترین): بهترین گلزنان — واقعی از Transfermarkt */}
           <div className="rounded-2xl border border-white/10 p-4 flex flex-col" style={{ background: "rgba(16,22,16,0.9)", backdropFilter: "blur(8px)" }}>
             <h3 className="headline text-[16px] text-white mb-3">بهترین گلزنان</h3>
-            <p className="text-[10px] text-slate-500 mb-2">بوندسلیگا — فصل ۲۰۲۵/۲۶</p>
+            <p className="text-[10px] text-slate-300 mb-2">بوندسلیگا — فصل ۲۰۲۵/۲۶</p>
             <div className="flex-1 space-y-1.5">
               {topScorers.map((p) => (
                 <Link key={p.playerId} href={`/football/players/${p.playerId}`} className="flex items-center gap-2.5 px-2 py-2 rounded-xl transition-colors hover:bg-white/[0.04]" style={p.rank === 1 ? { background: "rgba(74,225,131,0.07)" } : undefined}>
@@ -539,9 +556,9 @@ export default function HomePage() {
                   <span className="w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 border border-white/10" style={{ background: `${p.ourTeam?.color ?? "#4AE183"}25`, color: p.ourTeam?.color ?? "#4AE183" }}>{p.name.slice(0, 2)}</span>
                   <div className="min-w-0 flex-1">
                     <p className="text-[12px] font-bold truncate text-white">{p.name}</p>
-                    <span className="text-[10px] text-slate-500">{p.ourTeam?.name ?? "—"}</span>
+                    <span className="text-[10px] text-slate-300">{p.ourTeam?.name ?? "—"}</span>
                   </div>
-                  <span className="font-black text-[14px] text-white shrink-0">{p.goals} <span className="text-[10px] font-normal text-slate-500">گل</span></span>
+                  <span className="font-black text-[14px] text-white shrink-0">{p.goals} <span className="text-[10px] font-normal text-slate-300">گل</span></span>
                 </Link>
               ))}
               {!topScorers.length && (

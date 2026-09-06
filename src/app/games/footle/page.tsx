@@ -129,7 +129,7 @@ export default function FootlePage() {
           <div className="relative mb-5">
             <div className="flex gap-2">
               <div className="relative flex-1">
-                <Search size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                <Search size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300" />
                 <input
                   value={query} onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter" && suggests.length) submit(suggests[0].name); }}
@@ -142,7 +142,7 @@ export default function FootlePage() {
                     {suggests.map((s) => (
                       <button key={s.id} onClick={() => submit(s.name)} className="w-full text-left px-3 py-2 text-sm hover:bg-white/10 flex items-center justify-between gap-2" dir="ltr">
                         <span className="text-white truncate">{s.name}</span>
-                        <span className="text-[11px] text-slate-500 shrink-0">{s.club}</span>
+                        <span className="text-[11px] text-slate-300 shrink-0">{s.club}</span>
                       </button>
                     ))}
                   </div>
@@ -170,7 +170,7 @@ export default function FootlePage() {
             </div>
           ))}
           {guesses.length === 0 && (
-            <div className="rounded-2xl border border-dashed border-white/15 p-8 text-center text-sm text-slate-500">
+            <div className="rounded-2xl border border-dashed border-white/15 p-8 text-center text-sm text-slate-300">
               هنوز حدسی نزدی — سبز یعنی درست، ▲ یعنی جواب بالاتر است، ▼ یعنی پایین‌تر
             </div>
           )}

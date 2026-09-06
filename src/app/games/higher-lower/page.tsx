@@ -72,14 +72,14 @@ export default function HigherLowerPage() {
 
         <div className="flex items-center gap-3 mb-5 text-[12px]">
           <span className="flex items-center gap-1 font-black" style={{ color: "#E8385D" }}><Flame size={14} /> رکورد فعلی: <b className="tabular">{streak}</b></span>
-          <span className="text-slate-500">بهترین: <b className="tabular text-slate-300">{best}</b></span>
-          <button onClick={() => { setStreak(0); try { localStorage.setItem("hl-streak", "0"); } catch {} }} className="mr-auto text-slate-500 hover:text-white flex items-center gap-1 text-[11px]">
+          <span className="text-slate-300">بهترین: <b className="tabular text-slate-300">{best}</b></span>
+          <button onClick={() => { setStreak(0); try { localStorage.setItem("hl-streak", "0"); } catch {} }} className="mr-auto text-slate-300 hover:text-white flex items-center gap-1 text-[11px]">
             <RotateCcw size={12} /> صفر کردن رکورد
           </button>
         </div>
 
         {loading || !pair ? (
-          <div className="rounded-2xl border border-white/10 p-10 text-center text-sm text-slate-500 animate-pulse">در حال پخش کارت‌ها...</div>
+          <div className="rounded-2xl border border-white/10 p-10 text-center text-sm text-slate-300 animate-pulse">در حال پخش کارت‌ها...</div>
         ) : (
           <>
             <div className="grid grid-cols-2 gap-3">
@@ -100,7 +100,7 @@ export default function HigherLowerPage() {
                     }}
                   >
                     <div className="font-black text-[15px] text-white leading-6 min-h-[48px]" dir="ltr">{p.name}</div>
-                    <div className="text-[11px] text-slate-500 mt-1">{p.club}</div>
+                    <div className="text-[11px] text-slate-300 mt-1">{p.club}</div>
                     <div className="headline text-lg tabular mt-3" style={{ color: revealed ? "#FFD34D" : "transparent", textShadow: revealed ? "none" : "0 0 12px rgba(255,255,255,0.5)", userSelect: "none" }}>
                       {revealed ? fmtMv(mv) : "€ ?"}
                     </div>
@@ -124,7 +124,7 @@ export default function HigherLowerPage() {
                   </button>
                 </div>
               ) : (
-                <p className="text-xs text-slate-500">روی بازیکنی که فکر می‌کنی گران‌تر است بزن</p>
+                <p className="text-xs text-slate-300">روی بازیکنی که فکر می‌کنی گران‌تر است بزن</p>
               )}
             </div>
           </>

@@ -55,6 +55,14 @@ export default function TeamPage() {
   return (
     <PageShell badge={team.name} activeDock="home">
       <main className="flex-1 w-full max-w-[1200px] mx-auto px-3 py-5 space-y-5">
+        {/* مسیر برگشت */}
+        <nav aria-label="breadcrumb" className="flex items-center gap-1.5 text-[12px] text-slate-400">
+          <Link href="/football/leagues/persian-gulf" className="hover:text-white transition-colors">فوتبال</Link>
+          <span className="text-slate-600">/</span>
+          <Link href={`/football/leagues/${league.slug}`} className="hover:text-white transition-colors">{league.name}</Link>
+          <span className="text-slate-600">/</span>
+          <span className="text-white font-bold">{team.name}</span>
+        </nav>
         <TeamHeader team={team} league={league} rank={standing?.rank ?? 0} />
         <TeamNavigation active={tab} onChange={changeTab} />
 

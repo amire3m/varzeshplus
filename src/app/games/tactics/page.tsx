@@ -223,7 +223,7 @@ export default function TacticsPage() {
             className="block touch-none cursor-grab active:cursor-grabbing w-full"
           />
         </div>
-        <p className="text-[11px] text-slate-500 mt-2 text-center">آبی حمله می‌کند به راست • قرمز به چپ • توپ سفید وسط</p>
+        <p className="text-[11px] text-slate-300 mt-2 text-center">آبی حمله می‌کند به راست • قرمز به چپ • توپ سفید وسط</p>
       </div>
     </div>
   );

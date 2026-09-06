@@ -79,7 +79,7 @@ export default function ManagerPickerPage() {
           <button onClick={createSave} disabled={!selectedTeam} className="w-full mt-4 py-2.5 rounded-full text-sm font-black text-white disabled:opacity-40" style={{ background: "linear-gradient(135deg, #4AE183, #FFD34D)" }}>
             شروع مربیگری
           </button>
-          <p className="text-[11px] text-slate-500 mt-2 text-center">۱۸ بازیکن با ریتینگ ۶۶-۸۴، ۱۴ هفته، بودجه ۵M — الهام از OpenFootManager</p>
+          <p className="text-[11px] text-slate-300 mt-2 text-center">۱۸ بازیکن با ریتینگ ۶۶-۸۴، ۱۴ هفته، بودجه ۵M — الهام از OpenFootManager</p>
         </div>
       </div>
     </div>

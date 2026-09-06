@@ -19,7 +19,7 @@ function ProbsHint({ homeSlug, awaySlug, league }: { homeSlug: string; awaySlug:
     return () => { alive = false; };
   }, [homeSlug, awaySlug, league]);
   if (!txt) return null;
-  return <div className="mt-2 pt-2 border-t border-white/5 text-[10px] text-slate-500">📊 {txt}</div>;
+  return <div className="mt-2 pt-2 border-t border-white/5 text-[10px] text-slate-300">📊 {txt}</div>;
 }
 
 type Fx = {
@@ -132,9 +132,9 @@ export default function PredictorPage() {
 
         <h2 className="headline text-[15px] text-white mb-2">بازی‌های پیش رو</h2>
         {fxLoading ? (
-          <div className="rounded-2xl border border-white/10 p-8 text-center text-sm text-slate-500 animate-pulse">در حال دریافت بازی‌ها...</div>
+          <div className="rounded-2xl border border-white/10 p-8 text-center text-sm text-slate-300 animate-pulse">در حال دریافت بازی‌ها...</div>
         ) : fixtures.length === 0 ? (
-          <div className="rounded-2xl border border-white/10 p-8 text-center text-sm text-slate-500">فعلاً بازی آینده‌ای ثبت نشده است.</div>
+          <div className="rounded-2xl border border-white/10 p-8 text-center text-sm text-slate-300">فعلاً بازی آینده‌ای ثبت نشده است.</div>
         ) : (
           <div className="space-y-2.5 mb-6">
             {fixtures.map((fx) => {
@@ -150,7 +150,7 @@ export default function PredictorPage() {
                     <div className="flex items-center gap-1.5 shrink-0" dir="ltr">
                       <input value={pick.h} onChange={(e) => setPicks({ ...picks, [fx.id]: { ...pick, h: e.target.value.replace(/\D/g, "").slice(0, 2) } })}
                         inputMode="numeric" placeholder="–" className="w-10 text-center bg-white/5 border border-white/10 rounded-lg py-1.5 text-sm font-black tabular text-white focus:outline-none focus:border-[#4AE183]" />
-                      <span className="text-slate-600 font-black">:</span>
+                      <span className="text-slate-400 font-black">:</span>
                       <input value={pick.a} onChange={(e) => setPicks({ ...picks, [fx.id]: { ...pick, a: e.target.value.replace(/\D/g, "").slice(0, 2) } })}
                         inputMode="numeric" placeholder="–" className="w-10 text-center bg-white/5 border border-white/10 rounded-lg py-1.5 text-sm font-black tabular text-white focus:outline-none focus:border-[#4AE183]" />
                     </div>
@@ -160,7 +160,7 @@ export default function PredictorPage() {
                     </div>
                   </div>
                   <div className="flex items-center justify-between mt-3">
-                    <span className="text-[10px] text-slate-500">
+                    <span className="text-[10px] text-slate-300">
                       {fx.date ? new Intl.DateTimeFormat("fa-IR", { weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }).format(new Date(fx.date)) : ""}
                       {myKeys.has(fx.id) && <b style={{ color: "#FFD34D" }}> • ثبت شده ✓</b>}
                     </span>
@@ -186,14 +186,14 @@ export default function PredictorPage() {
 
         <h2 className="headline text-[15px] text-white mb-2 flex items-center gap-2"><Medal size={15} style={{ color: "#FFD34D" }} /> جدول پیش‌بینی‌کننده‌ها</h2>
         {board.length === 0 ? (
-          <div className="rounded-2xl border border-white/10 p-6 text-center text-xs text-slate-500">هنوز کسی امتیاز نگرفته — اولین نفر باش!</div>
+          <div className="rounded-2xl border border-white/10 p-6 text-center text-xs text-slate-300">هنوز کسی امتیاز نگرفته — اولین نفر باش!</div>
         ) : (
           <div className="rounded-2xl border border-white/10 overflow-hidden" style={{ background: "#101610" }}>
             {board.map((b) => (
               <div key={b.rank} className="flex items-center gap-3 px-4 py-2.5 border-b border-white/5 last:border-0" style={b.me ? { background: "rgba(74,225,131,0.1)" } : undefined}>
                 <span className="tabular font-black text-sm w-6 text-center" style={{ color: b.rank <= 3 ? "#FFD34D" : "#64748b" }}>{b.rank}</span>
                 <span className="text-[13px] font-bold text-white truncate flex-1">{b.name}{b.me ? " (شما)" : ""}</span>
-                <span className="text-[11px] text-slate-500 tabular">{b.count} پیش‌بینی</span>
+                <span className="text-[11px] text-slate-300 tabular">{b.count} پیش‌بینی</span>
                 <span className="tabular font-black text-sm" style={{ color: "#FFD34D" }}>{b.total}</span>
               </div>
             ))}

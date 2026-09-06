@@ -137,8 +137,8 @@ export default function SportPage() {
                       <p className="text-sm font-bold text-white leading-6 line-clamp-2">{n.title}</p>
                       <div className="flex items-center gap-2 mt-1.5 text-[10px]">
                         {n.category && <span className="px-1.5 py-0.5 rounded" style={{ background: `${sport.color}22`, color: sport.color }}>{n.category}</span>}
-                        {n.time && <span className="text-slate-500">{n.time}</span>}
-                        <span className="text-slate-600 mr-auto">خبرورزشی ↗</span>
+                        {n.time && <span className="text-slate-300">{n.time}</span>}
+                        <span className="text-slate-400 mr-auto">خبرورزشی ↗</span>
                       </div>
                     </div>
                   </div>

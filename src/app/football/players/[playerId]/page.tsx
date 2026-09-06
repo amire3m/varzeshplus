@@ -228,11 +228,11 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
           <div className="flex flex-wrap items-end gap-4 mb-4">
             <div>
               <div className="headline text-2xl tabular" style={{ color: "#4AE183" }}>{fmtEur(player.marketValueEur)}</div>
-              <div className="text-[10px] text-slate-500">ارزش فعلی</div>
+              <div className="text-[10px] text-slate-300">ارزش فعلی</div>
             </div>
             <div>
               <div className="headline text-sm tabular text-slate-300">{fmtEur(player.highestMarketValueEur)}</div>
-              <div className="text-[10px] text-slate-500">بیشترین سابقه</div>
+              <div className="text-[10px] text-slate-300">بیشترین سابقه</div>
             </div>
           </div>
           {history.length > 2 && (
@@ -251,7 +251,7 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
                   );
                 })}
               </div>
-              <div className="flex justify-between text-[9px] text-slate-600 mt-1">
+              <div className="flex justify-between text-[9px] text-slate-400 mt-1">
                 <span>{history[0]?.date.slice(0, 7)}</span>
                 <span>تاریخچه ارزش بازار</span>
                 <span>{history[history.length - 1]?.date.slice(0, 7)}</span>
@@ -271,7 +271,7 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
             <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[10px]">
               {estimatedFee.factors.map((f) => (
                 <div key={f.label} className="flex justify-between gap-2 border-b border-white/5 pb-1">
-                  <span className="text-slate-500">{f.label}</span>
+                  <span className="text-slate-300">{f.label}</span>
                   <span className="text-slate-300 font-bold text-left">{f.text}</span>
                 </div>
               ))}
@@ -295,7 +295,7 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
               ["قرارداد تا", player.contractUntil ? player.contractUntil.slice(0, 10) : "—"],
             ].map(([k, v]) => (
               <div key={k as string} className="flex flex-col gap-0.5 border-b border-white/5 pb-1.5">
-                <span className="text-slate-500">{k}</span>
+                <span className="text-slate-300">{k}</span>
                 <span className="text-slate-200 font-bold">{v}</span>
               </div>
             ))}
@@ -309,7 +309,7 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
             <div className="space-y-1.5">
               {transfers.map((t, i) => (
                 <div key={i} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-white/5" style={{ background: "rgba(255,255,255,0.03)" }}>
-                  <span className="text-[11px] tabular text-slate-500 shrink-0 w-16">{t.transfer_date?.slice(0, 10)}</span>
+                  <span className="text-[11px] tabular text-slate-300 shrink-0 w-16">{t.transfer_date?.slice(0, 10)}</span>
                   <span className="text-xs font-bold text-slate-300 truncate">{t.from_club_name}</span>
                   <span className="material-symbols-outlined text-[14px] shrink-0" style={{ color: "#4AE183" }}>arrow_forward</span>
                   <span className="text-xs font-bold text-white truncate">{t.to_club_name}</span>
@@ -372,7 +372,7 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
                 <Link key={t.playerId} href={`/football/players/${t.playerId}`} className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors">
                   <PlayerAvatar name={t.name} size={28} color={color} round />
                   <span className="text-xs font-bold text-slate-200 truncate">{t.name}</span>
-                  <span className="mr-auto text-[10px] text-slate-500">{POS_EN_FA[t.position ?? ""] ?? t.position}</span>
+                  <span className="mr-auto text-[10px] text-slate-300">{POS_EN_FA[t.position ?? ""] ?? t.position}</span>
                 </Link>
               ))}
               {!teammates.length && <p className="text-xs" style={{ color: "var(--color-muted)" }}>در حال بارگذاری...</p>}
@@ -414,7 +414,7 @@ function LegacyProfileView({ player, team, league, teammates, market, marketChec
                 <span className="text-xs px-2.5 py-1 rounded-full border border-white/10 bg-white/5 text-slate-300">{player.age} سال</span>
                 <span className="text-xs px-2.5 py-1 rounded-full border border-white/10 bg-white/5 text-slate-300">{player.nationality}</span>
               </div>
-              {league && <p className="text-[11px] text-slate-500 mt-2">{league.name} • فصل {league.season}</p>}
+              {league && <p className="text-[11px] text-slate-300 mt-2">{league.name} • فصل {league.season}</p>}
             </div>
           </div>
         </section>
@@ -442,11 +442,11 @@ function LegacyProfileView({ player, team, league, teammates, market, marketChec
             <div className="flex flex-wrap items-end gap-4 mb-4">
               <div>
                 <div className="headline text-2xl tabular" style={{ color: "#4AE183" }}>{fmtEur(market.player.marketValueEur)}</div>
-                <div className="text-[10px] text-slate-500">ارزش فعلی</div>
+                <div className="text-[10px] text-slate-300">ارزش فعلی</div>
               </div>
               <div>
                 <div className="headline text-sm tabular text-slate-300">{fmtEur(market.player.highestMarketValueEur)}</div>
-                <div className="text-[10px] text-slate-500">بیشترین سابقه</div>
+                <div className="text-[10px] text-slate-300">بیشترین سابقه</div>
               </div>
             </div>
             {/* نمودار تاریخچه */}
@@ -466,7 +466,7 @@ function LegacyProfileView({ player, team, league, teammates, market, marketChec
                     );
                   })}
                 </div>
-                <div className="flex justify-between text-[9px] text-slate-600 mt-1">
+                <div className="flex justify-between text-[9px] text-slate-400 mt-1">
                   <span>{market.history[0]?.date.slice(0, 7)}</span>
                   <span>تاریخچه ارزش بازار</span>
                   <span>{market.history[market.history.length - 1]?.date.slice(0, 7)}</span>
@@ -493,7 +493,7 @@ function LegacyProfileView({ player, team, league, teammates, market, marketChec
                 ["باشگاه فعلی (TM)", market.player.tmClubName ?? "—"],
               ].map(([k, v]) => (
                 <div key={k as string} className="flex flex-col gap-0.5 border-b border-white/5 pb-1.5">
-                  <span className="text-slate-500">{k}</span>
+                  <span className="text-slate-300">{k}</span>
                   <span className="text-slate-200 font-bold">{v}</span>
                 </div>
               ))}
@@ -508,7 +508,7 @@ function LegacyProfileView({ player, team, league, teammates, market, marketChec
             <div className="space-y-1.5">
               {market.transfers.map((t, i) => (
                 <div key={i} className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border border-white/5" style={{ background: "rgba(255,255,255,0.03)" }}>
-                  <span className="text-[11px] tabular text-slate-500 shrink-0 w-16">{t.transfer_date?.slice(0, 10)}</span>
+                  <span className="text-[11px] tabular text-slate-300 shrink-0 w-16">{t.transfer_date?.slice(0, 10)}</span>
                   <span className="text-xs font-bold text-slate-300 truncate">{t.from_club_name}</span>
                   <span className="material-symbols-outlined text-[14px] shrink-0" style={{ color: "#4AE183" }}>arrow_forward</span>
                   <span className="text-xs font-bold text-white truncate">{t.to_club_name}</span>
@@ -532,9 +532,9 @@ function LegacyProfileView({ player, team, league, teammates, market, marketChec
               </div>
             </div>
             <div className="mt-3 pt-3 border-t border-white/5 space-y-1.5 text-[11px]">
-              <div className="flex justify-between"><span className="text-slate-500">سرمربی</span><span className="text-slate-300 font-bold">{team.coach}</span></div>
-              <div className="flex justify-between"><span className="text-slate-500">سال تأسیس</span><span className="text-slate-300 font-bold tabular">{team.founded}</span></div>
-              <div className="flex justify-between"><span className="text-slate-500">لقب</span><span className="text-slate-300 font-bold">{team.shortName}</span></div>
+              <div className="flex justify-between"><span className="text-slate-300">سرمربی</span><span className="text-slate-300 font-bold">{team.coach}</span></div>
+              <div className="flex justify-between"><span className="text-slate-300">سال تأسیس</span><span className="text-slate-300 font-bold tabular">{team.founded}</span></div>
+              <div className="flex justify-between"><span className="text-slate-300">لقب</span><span className="text-slate-300 font-bold">{team.shortName}</span></div>
             </div>
           </div>
           <div className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
@@ -544,7 +544,7 @@ function LegacyProfileView({ player, team, league, teammates, market, marketChec
                 <Link key={t.id} href={`/football/players/${t.id}`} className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors">
                   <PlayerAvatar name={t.name} size={28} color={team.color} round />
                   <span className="text-xs font-bold text-slate-200 truncate">{t.name}</span>
-                  <span className="mr-auto text-[10px] text-slate-500">{POSITION_LABEL[t.position]}</span>
+                  <span className="mr-auto text-[10px] text-slate-300">{POSITION_LABEL[t.position]}</span>
                 </Link>
               ))}
             </div>

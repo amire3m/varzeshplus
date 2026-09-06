@@ -143,7 +143,7 @@ export default function GamesPage() {
 
         {/* فیلتر تب‌ها */}
         <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-1">
-          <Filter size={14} className="text-slate-500 shrink-0" />
+          <Filter size={14} className="text-slate-300 shrink-0" />
           {[
             { key: "all", label: "همه" },
             { key: "program", label: "برنامه‌ای" },
@@ -194,7 +194,7 @@ export default function GamesPage() {
                   </div>
                   <h3 className="headline text-[15px] leading-6 text-white line-clamp-2">{g.title}</h3>
                   {g.description && <p className="text-[12px] leading-6 text-slate-400 line-clamp-2">{g.description}</p>}
-                  {g.programTitle && <span className="text-[11px] text-slate-500">برنامه: {g.programTitle}</span>}
+                  {g.programTitle && <span className="text-[11px] text-slate-300">برنامه: {g.programTitle}</span>}
                   <div className="mt-auto flex items-center gap-3 pt-3 border-t border-white/5 text-[11px] text-slate-400">
                     <span className="flex items-center gap-1"><Users size={12} /> {g.participants} شرکت‌کننده</span>
                     {hoursLeft !== null && <span className="flex items-center gap-1"><Clock size={12} /> {hoursLeft} ساعت باقی‌مانده</span>}
