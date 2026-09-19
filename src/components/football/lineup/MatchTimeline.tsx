@@ -172,7 +172,7 @@ export function MatchTimelineView({ match }: { match: Match }) {
             );
           })}
           <div className="mt-3 pt-2 border-t border-white/5 text-sm flex items-center justify-center gap-2">
-            <span className="font-bold">{home.name}</span><span className="tabular font-black text-lg" style={{ color: "var(--color-club-green)" }}>{tl.penaltyScoreHome} - {tl.penaltyScoreAway}</span><span className="font-bold">{away.name}</span>
+            <span className="font-bold"><bdi>{home.name}</bdi></span><span className="tabular font-black text-lg" style={{ color: "var(--color-club-green)" }}>{tl.penaltyScoreHome} - {tl.penaltyScoreAway}</span><span className="font-bold"><bdi>{away.name}</bdi></span>
           </div>
         </section>
       )}

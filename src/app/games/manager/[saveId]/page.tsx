@@ -96,7 +96,7 @@ export default function ManagerDashboard() {
             {matches.map((m: any) => (
               <div key={m.id} className={`rounded-xl border p-3 flex items-center justify-between ${m.status === "upcoming" ? "border-white/10" : "border-[#FFD34D]/20"}`} style={{ background: m.status === "upcoming" ? "#101610" : "rgba(190,229,3,0.06)" }}>
                 <span className="text-xs text-slate-300">هـ {m.week}</span>
-                <span className="text-xs font-bold text-white">{m.homeTeam} — {m.awayTeam}</span>
+                <span className="text-xs font-bold text-white"><bdi>{m.homeTeam}</bdi> — <bdi>{m.awayTeam}</bdi></span>
                 <span className="text-xs font-black tabular" style={{ color: m.status === "upcoming" ? "#8FA1B5" : "#FFD34D" }}>{m.status === "upcoming" ? "—" : `${m.homeScore} : ${m.awayScore}`}</span>
               </div>
             ))}

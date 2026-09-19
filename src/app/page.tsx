@@ -566,7 +566,7 @@ export default function HomePage() {
                 {liveMatches.slice(0, 4).map((m, i) => (
                   <Link key={i} href={`/football/leagues/${m.leagueSlug}/matches`} className="block px-2 py-2 rounded-xl hover:bg-white/[0.04] transition-colors">
                     <span className="text-[10px] text-slate-400">{m.league}</span>
-                    <p className="text-[12px] font-bold text-white mt-0.5">{m.home} vs {m.away}</p>
+                    <p className="text-[12px] font-bold text-white mt-0.5"><bdi>{m.home}</bdi> vs <bdi>{m.away}</bdi></p>
                     {m.time && <span className="text-[10px] text-slate-400">{faRelativeDay(m.time)?.day} {faRelativeDay(m.time)?.time}</span>}
                   </Link>
                 ))}
