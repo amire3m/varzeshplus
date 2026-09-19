@@ -112,8 +112,8 @@ export function FixedChrome() {
             </button>
             <Link href="/" className="leading-none">
               <span className="headline text-[20px] block">
-                <span className="text-white">Varzesh</span>{" "}
-                <span className="drop-shadow-[0_0_10px_rgba(74,225,131,0.6)]" style={{ color: "#4AE183" }}>Plus</span>
+                <span className="text-white">ورزش</span>{" "}
+                <span className="drop-shadow-[0_0_10px_rgba(74,225,131,0.6)]" style={{ color: "#4AE183" }}>پلاس</span>
               </span>
               <span className="text-[10px] block mt-1 text-slate-400">شبکه ورزش</span>
             </Link>
