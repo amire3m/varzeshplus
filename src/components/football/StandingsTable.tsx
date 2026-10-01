@@ -20,21 +20,21 @@ export function StandingsTable({ league, custom }: { league: League; custom?: { 
   if (!rows.length) return null;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <h2 className="headline text-lg">جدول {league.name}</h2>
-        <div className="flex items-center gap-1.5 text-xs">
+        <h2 className="headline text-base">جدول {league.name}</h2>
+        <div className="flex items-center gap-1 text-[11px]">
           {[league.season, "2025/26", "2024/25"].map((s) => (
-            <button key={s} onClick={() => setSeason(s)} className="px-3 py-1.5 rounded-full border transition-colors" style={season === s ? { background: "linear-gradient(135deg,#4AE183,#FFD34D)", color: "#fff", borderColor: "transparent" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>{s}</button>
+            <button key={s} onClick={() => setSeason(s)} className="px-2.5 py-1 rounded-full border transition-colors text-xs" style={season === s ? { background: "#4AE183", color: "#0A0F0B", borderColor: "#4AE183" } : { borderColor: "rgba(255,255,255,0.12)", color: "var(--color-muted)" }}>{s}</button>
           ))}
         </div>
       </div>
-      <div className="overflow-x-auto rounded-[14px] border" style={{ scrollbarWidth: "thin", background: "#101610", borderColor: "rgba(255,255,255,0.1)" }}>
-        <table className="w-full min-w-[720px] text-sm border-separate border-spacing-0">
+      <div className="overflow-x-auto rounded-xl border" style={{ scrollbarWidth: "thin", background: "#101610", borderColor: "rgba(255,255,255,0.1)" }}>
+        <table className="w-full min-w-[640px] text-[12px] border-separate border-spacing-0">
           <thead>
             <tr style={{ color: "#8FA1B5" }}>
-              {["رتبه", "تیم", "P", "W", "D", "L", "GF", "GA", "GD", "PTS"].map((h, i) => (
-                <th key={i} className={`px-2.5 py-2.5 text-xs font-bold whitespace-nowrap ${i === 1 ? "text-right" : "text-center"} ${i >= 2 ? "tabular" : ""}`} style={{ background: "#161E14", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>{h}</th>
+              {["#", "تیم", "P", "W", "D", "L", "GF", "GA", "GD", "PTS"].map((h, i) => (
+                <th key={i} className={`px-2 py-2 text-[11px] font-bold whitespace-nowrap ${i === 1 ? "text-right" : "text-center"} ${i >= 2 ? "tabular" : ""}`} style={{ background: "#161E14", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>{h}</th>
               ))}
             </tr>
           </thead>
@@ -43,21 +43,21 @@ export function StandingsTable({ league, custom }: { league: League; custom?: { 
               const t = allTeams.find((x) => x.id === r.teamId)!;
               const zone = rowZone(idx + 1);
               return (
-                <tr key={r.teamId} className="transition-colors hover:bg-white/[0.045]">
-                  <td className="px-2.5 py-2.5 text-center tabular">
-                    <span className="inline-flex items-center gap-1.5">
-                      <span className={`w-1.5 h-6 rounded-full shrink-0 ${zone ? "" : "bg-transparent"}`} style={zone ? { background: zone === "ucl" ? "#4AE183" : zone === "euro" ? "#FFD34D" : "#E8385D" } : undefined} />
-                      <span className="font-black tabular">{idx + 1}</span>
+                <tr key={r.teamId} className={`transition-colors ${idx % 2 === 0 ? "bg-white/[0.02]" : "bg-transparent"} hover:bg-white/[0.05]`}>
+                  <td className="px-2 py-1.5 text-center tabular">
+                    <span className="inline-flex items-center gap-1">
+                      <span className={`w-1 h-5 rounded-full shrink-0 ${zone ? "" : "bg-transparent"}`} style={zone ? { background: zone === "ucl" ? "#4AE183" : zone === "euro" ? "#FFD34D" : "#E8385D" } : undefined} />
+                      <span className="font-black tabular text-[12px]">{idx + 1}</span>
                     </span>
                   </td>
-                  <td className="px-2.5 py-2.5">
+                  <td className="px-2 py-1.5">
                     <a href={`/football/teams/${t.slug}`} className="flex items-center gap-2 min-w-0 hover:underline decoration-[#4AE183] underline-offset-2">
-                      <img src={t.logo} alt={t.name} className="w-7 h-7 object-contain shrink-0" loading="lazy" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
-                      <span dir="rtl" className="font-bold truncate" style={{ color: "#F5F7FA" }}>{t.name}</span>
+                      <img src={t.logo} alt={t.name} className="w-6 h-6 object-contain shrink-0" loading="lazy" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
+                      <span dir="rtl" className="font-bold truncate text-[12px]" style={{ color: "#F5F7FA" }}>{t.name}</span>
                     </a>
                   </td>
                   {[r.played, r.win, r.draw, r.loss, r.gf, r.ga, r.gf - r.ga, r.pts].map((v, j) => (
-                    <td key={j} className={`px-2.5 py-2.5 text-center tabular ${j === 7 ? "font-black" : ""}`} style={j === 7 ? { color: "#4AE183" } : undefined}>{v}</td>
+                    <td key={j} className={`px-2 py-1.5 text-center tabular text-[12px] ${j === 7 ? "font-black" : "text-white/70"}`} style={j === 7 ? { color: "#4AE183" } : undefined}>{v}</td>
                   ))}
                 </tr>
               );

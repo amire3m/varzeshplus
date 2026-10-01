@@ -2,11 +2,12 @@ import type { League, Team } from "@/lib/football";
 import Link from "next/link";
 import { TeamBadge } from "./TeamBadge";
 import { TeamForm } from "./TeamForm";
+import FavoriteStar from "./FavoriteStar";
 
 export function TeamHeader({ team, league, rank }: { team: Team; league: League; rank: number }) {
   return (
     <section className="panel p-4 md:p-5 flex flex-wrap items-center gap-4">
-      <TeamBadge team={team} size={64} />
+      <TeamBadge team={team} size={56} />
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <h1 className="headline text-xl md:text-2xl">{team.name}</h1>
@@ -23,7 +24,10 @@ export function TeamHeader({ team, league, rank }: { team: Team; league: League;
         </div>
       </div>
       <div className="flex flex-col items-end gap-1.5">
-        <TeamForm form={team} />
+        <div className="flex items-center gap-2">
+          <FavoriteStar type="team" id={team.slug} />
+          <TeamForm form={team} />
+        </div>
         <div className="text-xs" style={{ color: "var(--color-muted)" }}>
           <span className="tabular">{team.stadium}</span> • تأسیس {team.founded}
         </div>
