@@ -19,21 +19,20 @@ export function LeagueHeader({ league }: { league: League }) {
   const [open, setOpen] = useState(false);
   return (
     <section
-      className="relative rounded-3xl overflow-hidden border border-white/10"
+      className="relative rounded-2xl overflow-hidden border border-white/10"
       style={{
-        background: "radial-gradient(ellipse 90% 140% at 85% -30%, rgba(74,225,131,0.16), transparent 55%), linear-gradient(180deg, #141B14 0%, #0A0F0B 100%)",
+        background: "radial-gradient(ellipse 90% 140% at 85% -30%, rgba(74,225,131,0.06), transparent 60%), linear-gradient(180deg, #121712 0%, #0A0F0B 100%)",
       }}
     >
-      {/* خطوط چمن + نورافکن */}
-      <div aria-hidden className="absolute inset-0 opacity-40" style={{ background: "repeating-linear-gradient(90deg, rgba(74,225,131,0.04) 0 40px, transparent 40px 80px)" }} />
-      <div aria-hidden className="absolute -top-24 -right-24 w-80 h-80 rounded-full blur-3xl pointer-events-none" style={{ background: "rgba(74,225,131,0.1)" }} />
+      {/* خطوط چمن — ملایم‌تر (FotMob density) */}
+      <div aria-hidden className="absolute inset-0 opacity-20" style={{ background: "repeating-linear-gradient(90deg, rgba(74,225,131,0.03) 0 40px, transparent 40px 80px)" }} />
+      <div aria-hidden className="absolute -top-24 -right-24 w-64 h-64 rounded-full blur-3xl pointer-events-none opacity-60" style={{ background: "rgba(74,225,131,0.06)" }} />
 
       <div className="relative p-4 md:p-7">
         <div className="flex flex-wrap items-center gap-4">
-          {/* لوگوی بزرگ با حلقه نئون */}
+          {/* لوگو — بدون نئون سنگین */}
           <span className="relative shrink-0">
-            <span className="absolute inset-0 rounded-2xl blur-md opacity-60" style={{ background: "linear-gradient(135deg, #4AE183, #FFD34D)" }} />
-            <span className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white flex items-center justify-center p-2 shadow-xl">
+            <span className="relative w-14 h-14 md:w-16 md:h-16 rounded-xl bg-white flex items-center justify-center p-2 border border-black/5 shadow-sm">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={league.logo} alt={league.englishName} className="w-full h-full object-contain" />
             </span>
@@ -77,13 +76,13 @@ export function LeagueHeader({ league }: { league: League }) {
                   `}
                   style={{
                     background: active
-                      ? "linear-gradient(135deg, rgba(74,225,131,0.14), rgba(255,211,77,0.06))"
+                      ? "rgba(74,225,131,0.08)"
                       : "rgba(255,255,255,0.03)",
-                    borderColor: active ? "#4AE183" : "rgba(255,255,255,0.08)",
-                    boxShadow: active ? "0 4px 20px rgba(74,225,131,0.2)" : undefined,
+                    borderColor: active ? "rgba(74,225,131,0.4)" : "rgba(255,255,255,0.08)",
+                    boxShadow: active ? "0 2px 10px rgba(74,225,131,0.12)" : undefined,
                   }}
                 >
-                  <span className={`shrink-0 w-9 h-9 rounded-full bg-white flex items-center justify-center overflow-hidden ${active ? "ring-2 ring-[#4AE183]" : ""}`}>
+                  <span className={`shrink-0 w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden border border-black/5 ${active ? "ring-1 ring-[#4AE183]" : ""}`}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={l.logo} alt={l.name} className="w-full h-full object-contain p-0.5" loading="lazy" />
                   </span>
@@ -93,7 +92,7 @@ export function LeagueHeader({ league }: { league: League }) {
                     </div>
                     <div className="text-[9px] text-slate-500">{flag} {l.englishName.split(" ").slice(-1)[0]}</div>
                   </div>
-                  {active && <span className="absolute top-1.5 left-1.5 w-2 h-2 rounded-full" style={{ background: "#4AE183", boxShadow: "0 0 8px #4AE183" }} />}
+                  {active && <span className="absolute top-1 left-1 w-1.5 h-1.5 rounded-full" style={{ background: "#4AE183" }} />}
                 </Link>
               );
             })}

@@ -17,6 +17,8 @@ import {
 import { NewsRow } from "@/components/ui/NewsRow";
 import { SkeletonNewsRow, SkeletonTableRow } from "@/components/ui/Skeleton";
 import { SectionHeader } from "@/components/ui/Card";
+import CompactMatchRow from "@/components/football/CompactMatchRow";
+import LeagueFilterChips from "@/components/football/LeagueFilterChips";
 
 /* ================= Mock Data (فقط fallback — دیتای واقعی از real-data.json) ================= */
 
@@ -93,6 +95,7 @@ export default function HomePage() {
   const [topScorers, setTopScorers] = useState<Array<{ rank: number; playerId: number; name: string; goals: number; ourTeam: { slug: string; name: string; color: string } | null }>>([]);
   const [mixedNews, setMixedNews] = useState<Array<{ title: string; link: string; description: string; image: string | null; time: string; category: string; sport: { key: string; name: string; color: string }; internal: boolean }> | null>(null);
   const [gameIds, setGameIds] = useState<number[]>([]);
+  const [selectedLeague, setSelectedLeague] = useState<string | null>(null);
 
   // ساعت و تاریخ زنده (تقویم شمسی)
   const [now, setNow] = useState(() => new Date());
@@ -351,72 +354,36 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* کارت‌های زنده — ۴ ستون دسکتاپ */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-            {liveMatches.map((m, i) => {
-              const rel = m.status === "upcoming" ? faRelativeDay(m.time) : null;
-              return (
-              <Link
-                key={i} href={`/football/leagues/${m.leagueSlug}/matches`}
-                className="group relative block rounded-2xl border border-white/10 overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:border-white/20"
-                style={{ background: "#101610" }}
-                dir="rtl"
-              >
-                {/* Glow — دو نور محو در سمت هر تیم + مرکز تیره برای خوانایی نتیجه */}
-                <span aria-hidden className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(90deg, ${m.glowHome}40 0%, transparent 35%, transparent 65%, ${m.glowAway}40 100%)` }} />
-                <span aria-hidden className="absolute top-1/2 -translate-y-1/2 -right-4 w-24 h-24 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-300 pointer-events-none" style={{ background: m.glowHome }} />
-                <span aria-hidden className="absolute top-1/2 -translate-y-1/2 -left-4 w-24 h-24 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-300 pointer-events-none" style={{ background: m.glowAway }} />
+          {/* چیپ فیلتر لیگ — FotMob */}
+          <div className="mb-3">
+            <LeagueFilterChips
+              leagues={[
+                { slug: "persian-gulf", name: "خلیج فارس", logo: "https://raw.githubusercontent.com/LordArma/Iran-Football-Leagues/master/Persian%20Gulf%20Pro%20League/Favicon/%D9%BE%D8%B1%D8%B3%D9%BE%D9%88%D9%84%DB%8C%D8%B3%20%D8%AA%D9%87%D8%B1%D8%A7%D9%86.png" },
+                { slug: "premier-league", name: "لیگ برتر", logo: "https://raw.githubusercontent.com/luuuvanhoc/pfb/main/premier-league.png" },
+                { slug: "la-liga", name: "لالیگا", logo: "https://raw.githubusercontent.com/luuuvanhoc/pfb/main/la-liga.png" },
+              ]}
+              selected={selectedLeague}
+              onSelect={setSelectedLeague}
+            />
+          </div>
 
-                <div className="relative z-10 px-4 pt-3 pb-3.5">
-                  {/* نام لیگ وسط + وضعیت گوشه */}
-                  <div className="relative mb-3">
-                    <p className="text-[10px] font-bold text-center text-slate-400 truncate px-8">{m.league}</p>
-                    {m.status === "live" ? (
-                      <span className="absolute top-0 left-0 flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded-full tabular animate-pulse" style={{ background: "rgba(232,56,93,0.18)", color: "#ff6b8a" }}>
-                        <span className="w-1 h-1 rounded-full bg-red-400" />{m.minute}&apos;
-                      </span>
-                    ) : m.status === "finished" ? (
-                      <span className="absolute top-0 left-0 text-[9px] font-black px-1.5 py-0.5 rounded-full tabular" style={{ background: "rgba(255,255,255,0.06)", color: "#8FA1B5" }}>
-                        پایان
-                      </span>
-                    ) : (
-                      <span className="absolute top-0 left-0 text-[9px] font-black px-1.5 py-0.5 rounded-full tabular" style={{ background: "rgba(16,185,129,0.15)", color: "#34d399" }}>
-                        پیش رو
-                      </span>
-                    )}
-                  </div>
-                  {/* تیم‌ها + نتیجه — نام کامل بدون برش */}
-                  <div className="flex items-start justify-between gap-1">
-                    <div className="flex flex-col items-center gap-1.5 flex-1 min-w-0 pt-1">
-                      <img src={m.homeLogo} alt={m.home} className="w-10 h-10 object-contain shrink-0" loading="lazy" />
-                      <span className="text-[11px] font-bold text-center leading-4" style={{ color: "#F5F7FA" }}>{m.home}</span>
-                    </div>
-                    <div className="shrink-0 px-1 pt-2 text-center min-w-[76px]">
-                      {m.status === "upcoming" ? (
-                        rel ? (
-                          <>
-                            <span className="block tabular text-[19px] font-black leading-none" style={{ color: "#4AE183" }} dir="ltr">{rel.time}</span>
-                            <span className="block text-[10px] font-bold text-slate-400 mt-1">{rel.day}</span>
-                          </>
-                        ) : (
-                          <span className="block text-[11px] font-bold text-slate-400">به‌زودی</span>
-                        )
-                      ) : (
-                        <>
-                          <span className="tabular text-[22px] font-black leading-none text-white">{m.hs} <span className="text-slate-300">-</span> {m.as}</span>
-                          {m.status === "live" && <span className="block text-[9px] font-black tabular mt-1 animate-pulse" style={{ color: "#ff6b8a" }}>{m.minute}&apos;</span>}
-                        </>
-                      )}
-                    </div>
-                    <div className="flex flex-col items-center gap-1.5 flex-1 min-w-0 pt-1">
-                      <img src={m.awayLogo} alt={m.away} className="w-10 h-10 object-contain shrink-0" loading="lazy" />
-                      <span className="text-[11px] font-bold text-center leading-4" style={{ color: "#F5F7FA" }}>{m.away}</span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-              );
-            })}
+          {/* لیست فشرده FotMob — 48px */}
+          <div className="flex flex-col gap-1.5">
+            {(selectedLeague ? liveMatches.filter((m) => m.leagueSlug === selectedLeague) : liveMatches).map((m, i) => (
+              <CompactMatchRow
+                key={`${m.leagueSlug}-${m.home}-${m.away}-${i}`}
+                match={m}
+                href={`/football/leagues/${m.leagueSlug}/matches`}
+              />
+            ))}
+            {!liveMatches.length && (
+              <div className="rounded-xl border border-white/10 py-8 text-center text-sm text-slate-400" style={{ background: "#101610" }}>
+                در حال بارگذاری مسابقات...
+              </div>
+            )}
+            {selectedLeague && liveMatches.filter((m) => m.leagueSlug === selectedLeague).length === 0 && liveMatches.length > 0 && (
+              <div className="rounded-xl border border-white/10 py-6 text-center text-sm text-slate-400">مسابقه‌ای برای این لیگ یافت نشد</div>
+            )}
           </div>
         </div>
       </section>
