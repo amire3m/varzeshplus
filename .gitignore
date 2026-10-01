@@ -45,3 +45,6 @@ local.db-wal
 .zcode
 .freebuff
 .agents
+
+# sample
+apk-nemone/
