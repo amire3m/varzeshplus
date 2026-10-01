@@ -67,18 +67,31 @@ export function FixedChrome() {
 
   // Drawer
   const [menuOpen, setMenuOpen] = useState(false);
-  // Search
+  // Search + history (FotMob searchable_leagues)
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQ, setSearchQ] = useState("");
   const [searchData, setSearchData] = useState<{ teams: Array<{ slug: string; name: string; englishName: string; logo: string; color: string }>; leagues: Array<{ slug: string; name: string; englishName: string; logo: string }>; players: Array<{ id: number; name: string; position: string | null; club: string | null; mv: number | null }> } | null>(null);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
+  useEffect(() => {
+    try { const raw = localStorage.getItem("varzeshplus:search-history"); if (raw) setSearchHistory(JSON.parse(raw)); } catch {}
+  }, [searchOpen]);
+  const pushHistory = (q: string) => {
+    const trimmed = q.trim();
+    if (trimmed.length < 2) return;
+    setSearchHistory((prev) => {
+      const next = [trimmed, ...prev.filter((x) => x !== trimmed)].slice(0, 8);
+      try { localStorage.setItem("varzeshplus:search-history", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (searchQ.trim().length < 2) { setSearchData(null); return; }
     const t = setTimeout(async () => {
       setSearchLoading(true);
       const res = await fetch(`/api/search?q=${encodeURIComponent(searchQ.trim())}`).then((r) => r.json()).catch(() => null);
-      if (res?.success) setSearchData(res);
+      if (res?.success) { setSearchData(res); pushHistory(searchQ.trim()); }
       setSearchLoading(false);
     }, 300);
     return () => clearTimeout(t);
@@ -241,7 +254,22 @@ export function FixedChrome() {
             </div>
             <div className="overflow-y-auto flex-1 p-2 space-y-3">
               {searchQ.trim().length < 2 ? (
-                <p className="text-xs text-slate-500 text-center py-6">حداقل ۲ حرف تایپ کنید — یا <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-slate-300 border border-white/10">/</kbd> بزنید</p>
+                searchHistory.length ? (
+                  <div>
+                    <div className="flex items-center justify-between px-2 mb-1">
+                      <p className="text-[11px] font-bold text-slate-500">تاریخچه</p>
+                      <button onClick={() => { setSearchHistory([]); try { localStorage.removeItem("varzeshplus:search-history"); } catch {} }} className="text-[11px] text-slate-500 hover:text-white">پاک کردن</button>
+                    </div>
+                    {searchHistory.map((h) => (
+                      <button key={h} onClick={() => setSearchQ(h)} className="w-full text-right flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/5 transition-colors text-sm text-white/80">
+                        <Clock3 size={14} className="text-slate-500" /> {h}
+                      </button>
+                    ))}
+                    <p className="text-[11px] text-slate-600 text-center py-2">یا حداقل ۲ حرف تایپ کنید — <kbd className="px-1 py-0.5 rounded bg-white/10 text-slate-300 border border-white/10">/</kbd></p>
+                  </div>
+                ) : (
+                  <p className="text-xs text-slate-500 text-center py-6">حداقل ۲ حرف تایپ کنید — یا <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-slate-300 border border-white/10">/</kbd> بزنید</p>
+                )
               ) : searchLoading ? (
                 <div className="space-y-2 p-2">
                   {[1, 2, 3].map((i) => <div key={i} className="h-10 rounded-xl bg-white/5 animate-pulse" />)}

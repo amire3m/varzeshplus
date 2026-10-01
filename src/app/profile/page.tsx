@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { PlayerAvatar } from "@/components/football/PlayerAvatar";
+import GlanceWidget from "@/components/pwa/GlanceWidget";
 
 type Profile = {
   user: { displayName: string | null; phoneMasked: string; points: number; coins: number; xp: number; level: number };
@@ -40,6 +41,54 @@ export default function ProfilePage() {
   const { user, history, badges, lockedBadges } = data;
   const xpInLevel = user.xp % 1000;
   const best = Math.max(0, ...history.map((h) => h.score));
+
+function NotificationToggles() {
+  const [notif, setNotif] = useState({ goal: false, card: false, start: false, perm: "default" as NotificationPermission | "default" });
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("varzeshplus:notif");
+      if (raw) setNotif((prev) => ({ ...prev, ...JSON.parse(raw) }));
+      if (typeof Notification !== "undefined") setNotif((p) => ({ ...p, perm: Notification.permission as any }));
+    } catch {}
+  }, []);
+  const toggle = async (key: "goal" | "card" | "start") => {
+    let perm = notif.perm;
+    if (typeof Notification !== "undefined" && Notification.permission === "default") {
+      try { perm = await Notification.requestPermission() as any; } catch {}
+    }
+    const next = { ...notif, [key]: !(notif as any)[key], perm };
+    setNotif(next);
+    try { localStorage.setItem("varzeshplus:notif", JSON.stringify({ goal: next.goal, card: next.card, start: next.start })); } catch {}
+    if (perm === "granted" && (next as any)[key]) {
+      try { new Notification("ورزش پلاس", { body: `نوتیف ${key} فعال شد — FotMob PushMessagingService (stub)` }); } catch {}
+    }
+  };
+  return (
+    <>
+      <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
+        <h3 className="headline text-sm text-white mb-1">نوتیفیکیشن‌ها</h3>
+        <p className="text-[11px] text-slate-500 mb-3">FotMob activity_notifications — فعلاً stub با Web Notification (بدون سرویس پوش واقعی)</p>
+        <div className="space-y-2">
+          {[
+            { key: "goal" as const, label: "گل", desc: "گل تیم‌های محبوب" },
+            { key: "card" as const, label: "کارت", desc: "کارت زرد/قرمز" },
+            { key: "start" as const, label: "شروع بازی", desc: "سوت آغاز" },
+          ].map((x) => (
+            <label key={x.key} className="flex items-center justify-between p-3 rounded-xl border border-white/5 bg-white/[0.02] cursor-pointer hover:bg-white/[0.04]">
+              <div>
+                <p className="text-sm font-bold text-white">{x.label}</p>
+                <p className="text-[11px] text-slate-400">{x.desc}</p>
+              </div>
+              <input type="checkbox" checked={!!(notif as any)[x.key]} onChange={() => toggle(x.key)} className="w-10 h-6 rounded-full appearance-none bg-white/10 checked:bg-[#4AE183] relative before:content-[''] before:w-4 before:h-4 before:bg-white before:rounded-full before:absolute before:top-1 before:left-1 checked:before:left-5 before:transition-all" />
+            </label>
+          ))}
+        </div>
+        <p className="text-[10px] text-slate-500 mt-2">وضعیت دسترسی: {notif.perm}</p>
+      </section>
+      <GlanceWidget variant="live_score" />
+    </>
+  );
+}
 
   return (
     <div className="min-h-screen pb-24" style={{ background: "#0A0F0B" }}>
@@ -127,6 +176,9 @@ export default function ProfilePage() {
             {!history.length && <p className="text-sm" style={{ color: "var(--color-muted)" }}>هنوز در بازی‌ای شرکت نکرده‌اید.</p>}
           </div>
         </section>
+
+        {/* نوتیفیکیشن — FotMob activity_notifications */}
+        <NotificationToggles />
       </div>
     </div>
   );
