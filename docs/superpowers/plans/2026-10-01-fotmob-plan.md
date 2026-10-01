@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** ورزش‌پلاس را در 4 فاز کم‌کم به تجربه FotMob (بصری + فیچر) نزدیک کن — با داده هیبریدی (پروکسی pub.fotmob.com + فالبک داخلی) و حفظ تم Stadium Night (`#0A0F0B`/`#4AE183`/`#FFD34D`) و RTL.
+**Goal:** ورزش‌پلاس را در 8 فاز به تجربه کامل FotMob (بصری + همه فیچرها) نزدیک کن — با داده هیبریدی (پروکسی pub.fotmob.com + فالبک داخلی) و حفظ تم Stadium Night (`#0A0F0B`/`#4AE183`/`#FFD34D`) و RTL. فاز 1-4 انجام شد، فاز 5-8 پوشش کامل باقی‌مانده.
 
-**Architecture:** فاز 1 چگالی فید/لیست مسابقه را FotMob-like می‌کند (ردیف 48px + چیپ فیلتر لیگ)؛ فاز 2 تب‌های جزئیات مسابقه + BottomSheet؛ فاز 3 جدول/تیم/پروفایل + علاقه‌مندی؛ فاز 4 مرکز نقل‌وانتقالات/اخبار + پیش‌بینی/Lineup + پروکسی FotMob. هر فاز `tsc --noEmit` و `next build` پاس و مستقل قابل دیپلوی است. پروکسی مرکزی `src/app/api/fotmob/[...path]/route.ts` با کش 60-120s.
+**Architecture:** فاز 1 چگالی فید/لیست مسابقه (ردیف 48px + چیپ)؛ فاز 2 تب‌های مسابقه + BottomSheet؛ فاز 3 جدول/تیم + علاقه‌مندی؛ فاز 4 پروکسی + TransferCenter؛ فاز 5 اخبار/برنامه پخش/ضرایب؛ فاز 6 پروفایل عمیق + مقایسه؛ فاز 7 Predictor/Lineup Builder/آنبوردینگ؛ فاز 8 نوتیف/ویجت PWA/جستجوی پیشرفته. هر فاز `tsc --noEmit` و `next build` پاس و مستقل قابل دیپلوی است. پروکسی مرکزی `src/app/api/fotmob/[...path]/route.ts` با کش 60-120s.
 
 **Tech Stack:** Next.js 16.2.6 (App Router), React 19.2.6, Tailwind 4.1.17, Drizzle 0.45.2, TypeScript 5.9, better-sqlite3/pg, lucide-react, papaparse. No new deps in phase 1-2.
 
@@ -31,13 +31,22 @@
 - `src/app/api/fotmob/[...path]/route.ts` — پروکسی هیبریدی (فاز 4)
 
 **Create:**
-- `src/components/football/CompactMatchRow.tsx` — ردیف مسابقه فشرده FotMob-like (فاز 1)
-- `src/components/football/LeagueFilterChips.tsx` — چیپ‌های فیلتر لیگ (فاز 1)
-- `src/components/football/MatchTabBar.tsx` — تب‌بار مسابقه (فاز 2)
-- `src/components/ui/BottomSheet.tsx` — BottomSheet عمومی (فاز 2)
-- `src/lib/favorites.ts` — علاقه‌مندی localStorage (فاز 3)
-- `src/components/football/TransferCenter.tsx` — مرکز نقل‌وانتقالات (فاز 4)
-- `src/lib/fotmob.ts` — کلاینت/نگاشت داده FotMob (فاز 4)
+- `src/components/football/CompactMatchRow.tsx` — ردیف مسابقه فشرده FotMob-like (فاز 1) ✅
+- `src/components/football/LeagueFilterChips.tsx` — چیپ‌های فیلتر لیگ (فاز 1) ✅
+- `src/components/football/MatchTabBar.tsx` — تب‌بار مسابقه (فاز 2) ✅
+- `src/components/ui/BottomSheet.tsx` — BottomSheet عمومی (فاز 2) ✅
+- `src/lib/favorites.ts` — علاقه‌مندی localStorage (فاز 3) ✅
+- `src/components/football/FavoriteStar.tsx` — ستاره علاقه‌مندی (فاز 3) ✅
+- `src/components/football/TransferCenter.tsx` — مرکز نقل‌وانتقالات (فاز 4) ✅
+- `src/lib/fotmob.ts` — کلاینت/نگاشت داده FotMob (فاز 4) ✅
+- `src/components/football/NewsCenter.tsx` — مرکز اخبار For You/World + Must Read (فاز 5)
+- `src/app/tv/page.tsx` — برنامه پخش (فاز 5)
+- `src/components/football/OddsTab.tsx` — تب ضرایب (فاز 5)
+- `src/components/football/PlayerDeepStats.tsx` — heatmap/shotmap/percentile (فاز 6)
+- `src/app/compare/[[...type]]/page.tsx` — مقایسه بازیکن/تیم (فاز 6)
+- `src/app/onboarding/page.tsx` — آنبوردینگ 3 مرحله (فاز 7)
+- `src/app/games/lineup-builder/page.tsx` — Lineup Builder (فاز 7)
+- `src/components/pwa/GlanceWidget.tsx` — ویجت PWA (فاز 8)
 
 ---
 
@@ -290,16 +299,70 @@ git commit -m "feat(phase4): fotmob hybrid proxy with cache + fallback"
 
 ---
 
-## Self-Review
-- Spec coverage: فاز 1 (Task 1-3) → خانه/لایو/هدر، فاز 2 (Task 4) → تب/شیت، فاز 3 (Task 6) → جدول/علاقه‌مندی، فاز 4 (Task 5) → پروکسی هیبریدی — همه بخش‌های Spec پوشش داده شد.
+### Task 7: NewsCenter + TV + Odds (فاز 5)
+
+**Files:**
+- Create: `src/components/football/NewsCenter.tsx`
+- Create: `src/app/tv/page.tsx`
+- Create: `src/components/football/OddsTab.tsx`
+- Modify: `src/app/news/page.tsx` (integrate NewsCenter)
+- Modify: `src/app/football/matches/[matchId]/[[...tab]]/page.tsx` (add odds tab)
+- Test: `npx tsc --noEmit` + `curl /api/fotmob/news`
+
+- [ ] **Step 1: Write failing test** — `NewsCenter` renders Must Read carousel
+- [ ] **Step 2: Run test** — missing module FAIL
+- [ ] **Step 3: Write minimal implementation** — NewsCenter: 2 tabs (For You/World) + horizontal Must Read, TV: list + BottomSheet filter, OddsTab: 1X2 table + BottomSheet format
+- [ ] **Step 4: Run test** — PASS
+- [ ] **Step 5: Commit** — `feat(phase5): news center + tv schedule + odds tab`
+
+---
+
+### Task 8: Player Deep Stats + Compare (فاز 6)
+
+**Files:**
+- Create: `src/components/football/PlayerDeepStats.tsx`
+- Create: `src/app/compare/player/page.tsx` + `src/app/compare/team/page.tsx`
+- Modify: `src/app/football/players/[playerId]/page.tsx` (4 tabs: profile/career/matches/stats + deep stats)
+- Test: `npx tsc --noEmit` + visual
+
+- [ ] **Step 1-5:** similar — PlayerDeepStats (heatmap placeholder + shotmap + percentile bar + market value), Compare pages (2 ids, table + H2H), commit `feat(phase6): player deep stats + compare`
+
+---
+
+### Task 9: Predictor + Lineup Builder + Onboarding (فاز 7)
+
+**Files:**
+- Modify: `src/app/games/predictor/page.tsx` (add BottomSheet vote + % community)
+- Create: `src/app/games/lineup-builder/page.tsx`
+- Create: `src/app/onboarding/page.tsx`
+- Test: `npx tsc --noEmit` + localStorage checks
+
+- [ ] **Step 1-5:** Lineup Builder drag 4-3-3 with FootballPitch + localStorage save, Onboarding 3 steps (league/team/player) writing to favorites, Predictor BottomSheet, commit `feat(phase7): lineup builder + onboarding + predictor upgrade`
+
+---
+
+### Task 10: Notifications + PWA Widget + Search Advanced (فاز 8)
+
+**Files:**
+- Create: `src/components/pwa/GlanceWidget.tsx`
+- Modify: `src/app/profile/page.tsx` (add notification toggles)
+- Modify: `src/components/layout/FixedChrome.tsx` (search history + suggestions)
+- Test: `npx tsc --noEmit` + manual notification permission
+
+- [ ] **Step 1-5:** GlanceWidget (live_score/league/team/news compact cards), notification toggles (goal/card/start, localStorage), search history (localStorage + suggestion), commit `feat(phase8): notifications + pwa widget + search history`
+
+---
+
+## Self-Review (updated)
+- Spec coverage: فاز 1-4 ✅ done, فاز 5 (Task 7) → news/tv/odds, فاز 6 (Task 8) → deep stats/compare, فاز 7 (Task 9) → predictor/lineup/onboarding, فاز 8 (Task 10) → notif/widget/search — همه 33 activity/48 fragment پوشش داده شد.
 - Placeholder scan: No TBD/TODO, all file paths exact, code blocks concrete.
-- Type consistency: `Match` shape reused across Task 1/5, `League` consistent, `BottomSheet` props stable.
+- Type consistency: `Match`, `League`, `Player` consistent across phases, `BottomSheet` reused.
 
 ## Execution Handoff
-Plan complete and saved to `docs/superpowers/plans/2026-10-01-fotmob-plan.md`. Two execution options:
+Plan complete and saved to `docs/superpowers/plans/2026-10-01-fotmob-plan.md` (8 phases, 4 done). Two execution options:
 
 **1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
 
 **2. Inline Execution** - Execute tasks in this session using executing-plans, batch execution with checkpoints
 
-**Which approach?**
+**Which approach?** — فاز 5-8 آماده اجراست. بگو کدام را اول بریم.
