@@ -94,8 +94,9 @@ body {
   margin: 0;
 }
 
-.tabular { font-variant-numeric: tabular-nums; letter-spacing: 0.02em; direction: ltr; unicode-bidi: embed; }
-.headline { font-family: var(--font-display); font-weight: 900; letter-spacing: -0.02em; line-height: 1.3; }
+.tabular { font-variant-numeric: tabular-nums; letter-spacing: 0.01em; direction: ltr; unicode-bidi: embed; }
+.headline { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em; line-height: 1.4; text-wrap: balance; }
+.text-pretty { text-wrap: pretty; line-height: 1.65; }
 
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined';
@@ -114,41 +115,38 @@ body {
   100% { background-position: 0% 50%; }
 }
 .neon-border {
-  background: linear-gradient(#101610, #101610) padding-box,
-              linear-gradient(135deg, #4AE183 0%, #FFD34D 100%) border-box;
-  border: 1px solid transparent;
+  background: #101610;
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 16px;
-  box-shadow: 0 0 10px rgba(74, 225, 131, 0.18), 0 0 22px rgba(255, 211, 77, 0.1), 0 4px 30px rgba(0, 0, 0, 0.5);
-  transition: box-shadow 0.35s ease, transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
+  transition: box-shadow 150ms ease, border-color 150ms ease;
 }
 .neon-border:hover {
-  box-shadow: 0 0 16px rgba(74, 225, 131, 0.35), 0 0 32px rgba(255, 211, 77, 0.18), 0 8px 36px rgba(0, 0, 0, 0.6);
-  transform: translateY(-1px);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25), 0 1px 3px rgba(0,0,0,0.2);
 }
 
-/* === پنل‌ها === */
+/* === پنل‌ها — فرندلی: سایه ملایم، بدون نئون === */
 .panel {
   background: #101610;
-  border: 1px solid rgba(74, 225, 131, 0.16);
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(74, 225, 131, 0.06);
-  transition: box-shadow 0.35s ease, transform 0.22s ease, border-color 0.35s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.12);
+  transition: box-shadow 150ms ease, border-color 150ms ease;
 }
 .panel:hover {
-  border-color: rgba(74, 225, 131, 0.32);
-  box-shadow: 0 4px 28px rgba(0,0,0,0.5), inset 0 1px 0 rgba(74, 225, 131, 0.1);
-  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.15);
 }
 .glass-panel {
   background: #101610;
-  border: 1px solid rgba(74, 225, 131, 0.14);
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.45);
-  transition: box-shadow 0.35s ease, transform 0.22s ease, border-color 0.35s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.18);
+  transition: box-shadow 150ms ease, border-color 150ms ease;
 }
 .glass-panel:hover {
-  border-color: rgba(74, 225, 131, 0.28);
-  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.12);
 }
 
 /* === دکمه‌ها === */
@@ -241,11 +239,11 @@ button:focus-visible, a:focus-visible, [tabindex]:focus-visible {
 .sport-tile:hover { transform: translateY(-3px); }
 .sport-tile:active { transform: scale(0.97); }
 .liquid-glass {
-  background: rgba(16, 22, 16, 0.72);
-  backdrop-filter: blur(22px) saturate(160%);
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
-  border: 1px solid rgba(74, 225, 131, 0.16);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+  background: rgba(16, 22, 16, 0.82);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
 }
 @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 .marquee-track { animation: marquee 38s linear infinite; will-change: transform; }

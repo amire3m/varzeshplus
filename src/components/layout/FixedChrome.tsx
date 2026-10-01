@@ -123,12 +123,15 @@ export function FixedChrome() {
             <button onClick={() => setMenuOpen((v) => !v)} aria-label="ورزش‌ها" className="p-1.5 rounded-full transition-all hover:bg-white/10 hover:scale-110" style={{ color: "#4AE183" }} title="انتخاب ورزش">
               {menuOpen ? <X size={24} /> : <FootballIcon size={26} />}
             </button>
-            <Link href="/" className="leading-none">
-              <span className="headline text-[20px] block">
-                <span className="text-white">ورزش</span>{" "}
-                <span className="drop-shadow-[0_0_10px_rgba(74,225,131,0.6)]" style={{ color: "#4AE183" }}>پلاس</span>
+            <Link href="/" className="flex items-center gap-2.5">
+              <img src="/logo.png" alt="ورزش پلاس" width={36} height={36} className="w-9 h-9 rounded-xl object-contain bg-white p-1.5 shadow-sm border border-white/10 shrink-0" />
+              <span className="leading-none hidden sm:block">
+                <span className="headline text-[18px] block">
+                  <span className="text-white">ورزش</span>{" "}
+                  <span className="drop-shadow-[0_0_10px_rgba(74,225,131,0.6)]" style={{ color: "#4AE183" }}>پلاس</span>
+                </span>
+                <span className="text-[10px] block mt-0.5 text-slate-400">شبکه ورزش</span>
               </span>
-              <span className="text-[10px] block mt-1 text-slate-400">شبکه ورزش</span>
             </Link>
           </div>
 
