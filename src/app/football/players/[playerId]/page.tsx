@@ -6,6 +6,7 @@ import Link from "next/link";
 import { TEAMS, LEAGUES } from "@/lib/football/leagues";
 import { squadFor } from "@/lib/football";
 import { PlayerAvatar } from "@/components/football/PlayerAvatar";
+import PlayerDeepStats from "@/components/football/PlayerDeepStats";
 
 const POSITION_LABEL: Record<string, string> = { GK: "دروازه‌بان", DF: "مدافع", MF: "هافبک", FW: "مهاجم" };
 
@@ -278,6 +279,9 @@ function RealProfileView({ real, teammates }: { real: RealData; teammates: Teamm
             </div>
           </section>
         )}
+
+        {/* آمار عمیق FotMob */}
+        <PlayerDeepStats name={player.prettyName} color={color} />
 
         {/* پروفایل کامل */}
         <section className="rounded-2xl border border-white/10 p-4" style={{ background: "#101610" }}>
