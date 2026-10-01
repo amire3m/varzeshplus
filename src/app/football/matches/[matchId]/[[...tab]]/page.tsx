@@ -4,7 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter, notFound } from "next/navigation";
 import Link from "next/link";
 import { getMatchById, getTeamById, getLeagueById } from "@/lib/football";
-import { MatchNavigation, type MatchTab } from "@/components/football/lineup/MatchNavigation";
+import { type MatchTab } from "@/components/football/lineup/MatchNavigation";
+import MatchTabBar from "@/components/football/MatchTabBar";
 import { MatchLineup } from "@/components/football/lineup/MatchLineup";
 import { MatchTimelineView } from "@/components/football/lineup/MatchTimeline";
 import { MatchStatsView } from "@/components/football/MatchStatsView";
@@ -68,7 +69,7 @@ export default function MatchPage() {
     return (
       <PageShell badge={realMatch.game.competitionId} activeDock="matches">
         <main className="flex-1 w-full max-w-[1200px] mx-auto px-3 py-5 space-y-5">
-          <MatchNavigation active={realTab} onChange={changeTab} />
+          <MatchTabBar matchId={params.matchId} active={realTab} />
           {realTab === "standings" ? (
             <div className="glass-panel p-6 text-center text-sm" style={{ color: "var(--color-muted)" }}>
               جدول لیگ در صفحه <Link href={`/football/leagues/${Object.entries({ GB1: "premier-league", ES1: "la-liga", IT1: "serie-a", L1: "bundesliga", FR1: "ligue-1", NL1: "eredivisie", PO1: "primeira-liga", TR1: "super-lig", SA1: "saudi-pro-league", BRA1: "brasileirao", MLS1: "mls" }).find(([code]) => code === realMatch.game.competitionId)?.[1] ?? ""}/standings`} className="hover:underline" style={{ color: "var(--color-club-green)" }}>لیگ</Link> قابل مشاهده است.
@@ -134,8 +135,8 @@ export default function MatchPage() {
           </div>
         </section>
 
-        {/* ناوبری */}
-        <MatchNavigation active={tab} onChange={changeTab} />
+        {/* ناوبری — FotMob underline */}
+        <MatchTabBar matchId={params.matchId} active={tab} />
 
         {/* تب‌ها */}
         {tab === "overview" && <MatchTimelineView match={match} />}
