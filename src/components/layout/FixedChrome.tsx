@@ -327,7 +327,8 @@ export function FixedChrome() {
 
       {/* ============ داک شناور ============ */}
       <nav
-        className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-6 py-2.5 rounded-full border border-white/10 shadow-2xl flex items-center gap-4 sm:gap-6 max-w-[95vw] overflow-x-auto"
+        data-mobile-dock
+        className="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] inset-x-3 z-50 px-2 py-2 rounded-2xl border border-white/10 shadow-2xl flex items-center justify-between gap-0 overflow-hidden sm:bottom-4 sm:left-1/2 sm:right-auto sm:w-auto sm:-translate-x-1/2 sm:px-6 sm:py-2.5 sm:rounded-full sm:gap-6"
         style={{ background: "rgba(16,22,16,0.94)", backdropFilter: "blur(20px)" }}
         dir="rtl"
       >
@@ -342,13 +343,13 @@ export function FixedChrome() {
             <Link
               key={item.key} href={item.href}
               aria-label={item.label}
-              className={`shrink-0 flex items-center gap-1.5 rounded-full transition-all duration-200 ${isActive ? "px-3.5 py-1.5" : "flex-col gap-0.5 px-1 py-0.5"}`}
+              className={`min-w-0 h-12 flex-1 flex flex-col items-center justify-center gap-0.5 rounded-xl transition-colors duration-200 sm:h-auto sm:flex-none sm:rounded-full ${isActive ? "sm:flex-row sm:gap-1.5 sm:px-3.5 sm:py-1.5" : "sm:px-1 sm:py-0.5"}`}
               style={isActive
                 ? { background: "rgba(74,225,131,0.15)", border: "1px solid rgba(74,225,131,0.3)", color: "#4AE183" }
                 : { color: "#9DAE9C" }}
             >
               <Icon size={isActive ? 18 : 19} className={isActive ? "fill-current" : ""} />
-              <span className={isActive ? "text-[12px] font-black" : "text-[9px] font-bold"}>{item.label}</span>
+              <span className={`max-w-full truncate text-[9px] font-bold ${isActive ? "sm:text-[12px] sm:font-black" : ""}`}>{item.label}</span>
             </Link>
           );
         })}
